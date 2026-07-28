@@ -1,0 +1,52 @@
+#!/bin/bash
+# sketchetc — one-shot install of my SketchyBar Vice City setup on a fresh Mac.
+set -e
+REPO="$(cd "$(dirname "$0")" && pwd)"
+
+echo "==> Installing sketchybar + fonts"
+brew tap FelixKratz/formulae 2>/dev/null || true
+brew trust felixkratz/formulae 2>/dev/null || true   # newer brew requires trusting third-party taps
+brew list sketchybar &>/dev/null || brew install sketchybar
+brew list --cask font-jetbrains-mono-nerd-font &>/dev/null || brew install --cask font-jetbrains-mono-nerd-font
+[ -f "$HOME/Library/Fonts/sketchybar-app-font.ttf" ] || \
+  curl -sL "https://github.com/kvndrsslr/sketchybar-app-font/releases/latest/download/sketchybar-app-font.ttf" \
+    -o "$HOME/Library/Fonts/sketchybar-app-font.ttf"
+
+echo "==> Linking config"
+if [ -e "$HOME/.config/sketchybar" ] && [ ! -L "$HOME/.config/sketchybar" ]; then
+  mv "$HOME/.config/sketchybar" "$HOME/.config/sketchybar.bak.$(date +%s)"
+fi
+mkdir -p "$HOME/.config"
+ln -sfn "$REPO/config" "$HOME/.config/sketchybar"
+chmod +x "$REPO/config/sketchybarrc" "$REPO/config/colors.sh" "$REPO/config/items/"* "$REPO/config/plugins/"*
+
+echo "==> Hiding native menu bar"
+defaults write NSGlobalDomain _HIHideMenuBar -bool true
+killall Finder 2>/dev/null || true
+
+echo "==> Enabling ctrl+1..4 desktop-switch hotkeys"
+TMP=$(mktemp -d)
+defaults export com.apple.symbolichotkeys "$TMP/shk.plist"
+python3 - "$TMP/shk.plist" <<'EOF'
+import plistlib, sys
+p = sys.argv[1]
+with open(p, 'rb') as f: d = plistlib.load(f)
+hk = d.setdefault('AppleSymbolicHotKeys', {})
+for i, key in enumerate([118, 119, 120, 121]):  # Switch to Desktop 1-4
+    hk[str(key)] = {'enabled': True, 'value': {'parameters': [65535, 18 + i, 262144], 'type': 'standard'}}
+with open(p, 'wb') as f: plistlib.dump(d, f)
+EOF
+defaults import com.apple.symbolichotkeys "$TMP/shk.plist"
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+
+echo "==> Starting service"
+brew services restart sketchybar
+
+cat <<'EOF'
+
+Done. Two one-time permission grants macOS will ask for:
+  1. Accessibility (space switching):  System Settings → Privacy & Security → Accessibility → sketchybar
+  2. Automation (media / app switching): allow "sketchybar wants to control ..." prompts
+If the native menu bar still shows: System Settings → Control Center →
+"Automatically hide and show the menu bar" → Always.
+EOF
