@@ -10,10 +10,15 @@ if [ "$1" = "paste" ]; then
     pbcopy < "$FILE"
   fi
   sketchybar --set clipboard popup.drawing=off
-  sleep 0.15
-  # try to paste into the frontmost app; harmless no-op without Accessibility
-  osascript -e 'tell application "System Events" to keystroke "v" using command down' 2>/dev/null \
-    || osascript -e 'display notification "Copied · press ⌘V to paste" with title "Clipboard"'
+  sleep 0.4   # let focus settle back on the target app (terminals are strict)
+  # HID-level ⌘V (cliclick) works where AppleScript keystrokes don't (Ghostty);
+  # System Events as fallback; otherwise tell the user it's on the clipboard.
+  if command -v cliclick >/dev/null; then
+    cliclick kd:cmd t:v ku:cmd
+  else
+    osascript -e 'tell application "System Events" to keystroke "v" using command down' 2>/dev/null \
+      || osascript -e 'display notification "Copied · press ⌘V to paste" with title "Clipboard"'
+  fi
   exit 0
 fi
 
