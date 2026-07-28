@@ -1,26 +1,51 @@
 # sketchetc
 
-My personal macOS menu bar — a [SketchyBar](https://felixkratz.github.io/SketchyBar/) config in GTA Vice City colors (hot pink · neon cyan · sunset orange on deep night-purple), JetBrains Mono Nerd Font.
+My macOS menu bar, rebuilt with [SketchyBar](https://felixkratz.github.io/SketchyBar/) — GTA Vice City colors (hot pink · neon cyan · sunset orange on deep night-purple), JetBrains Mono Nerd Font, fully interactive.
 
-## What's in the bar
+![topbar](assets/topbar.png)
 
-- 󰀵 Apple menu (About / Settings / Lock / Sleep / Reload)
-- Spaces 1–4 (click to switch), front app (click → app switcher popup)
-- Clock (click → calendar with today highlighted)
-- RAM + CPU pill (click → top processes, **Clear RAM** button that safely reaps orphaned helpers + purges)
-- Battery (click → time remaining, cycles), Wi-Fi (click → IP, toggle), Volume (click → slider, scroll to adjust)
-- 󰚩 AI agent counter (running claude/codex/gemini processes; click → list)
-- Now playing (click → play/pause, right-click → controls)
+## Features
 
-Popups are exclusive (one at a time), close when the mouse leaves the bar, and everything is animated.
+| Item | Click |
+|---|---|
+| 󰀵 Apple menu | About / Settings / Lock / Sleep / Reload / Fullscreen-guard toggle |
+| Spaces 1–4 | Switch desktop (⌃1–⌃4 under the hood) |
+| Front app | Popup listing running apps — click to switch |
+| Now playing | Play/pause; right-click for ⏮ ⏯ ⏭ |
+| 󰚩 AI agents | Counts running claude/codex/gemini processes; popup lists them |
+| Volume | Popup with live drag slider; scroll the icon to nudge |
+| Wi-Fi | IP, toggle Wi-Fi, Network Settings |
+| Battery | Time remaining + cycle count |
+| CPU / RAM pill | Top-5 processes; **Clear RAM** button (safely reaps orphaned helpers + purge, then speaks the result) |
+| Clock | Calendar with today highlighted |
 
-## Install
+Behaviors that make it feel native:
+
+- **Reserved space** — windows tile below the bar, never behind it (bar draws over the native menu bar's reserved strip).
+- **Fullscreen guard** — fullscreening any app auto-converts it to a fill-below-the-bar window; toggle off from the 󰀵 menu for real fullscreen.
+- **One popup at a time**, closes on outside click / app switch / mouse-out. Hover glows, animated everything.
+
+## Install (fresh Mac)
 
 ```bash
-./install.sh
+git clone https://github.com/himanshu007-creator/sketchetc.git
+cd sketchetc && ./install.sh
 ```
+
+Grant the two permissions macOS asks for (Accessibility + Automation for sketchybar) and you're done.
+
+## Layout
+
+```
+config/
+├── sketchybarrc   # bar geometry + defaults
+├── colors.sh      # Vice City palette
+├── items/         # one file per widget (creation + subscriptions)
+└── plugins/       # logic (bash) + bin/mouse_info (tiny Swift helper)
+```
+
+`~/.config/sketchybar` is a symlink to `config/`, so live tweaks are repo edits. See `CLAUDE.md` for conventions and the macOS quirks this setup works around.
 
 ## Credit
 
-Built on [FelixKratz/SketchyBar](https://github.com/FelixKratz/SketchyBar) — docs: https://felixkratz.github.io/SketchyBar/
-App icons: [sketchybar-app-font](https://github.com/kvndrsslr/sketchybar-app-font).
+Built on [FelixKratz/SketchyBar](https://github.com/FelixKratz/SketchyBar) · app icons from [sketchybar-app-font](https://github.com/kvndrsslr/sketchybar-app-font).
