@@ -13,11 +13,9 @@ case "$1" in
   setup)
     ROOT=$(osascript -e 'POSIX path of (choose folder with prompt "Where should your journal live?")' 2>/dev/null)
     [ -z "$ROOT" ] && exit 0
-    DAYS=$(line_input "Working days (comma separated)" "Mon,Tue,Wed,Thu,Fri") || DAYS=""
-    CUTOFF=$(line_input "Day cutoff time (entries auto-lock after this)" "21:00") || CUTOFF=""
     mkdir -p "$(dirname "$JCONF")"
-    printf 'root=%s\ndays=%s\ncutoff=%s\n' "${ROOT%/}" "${DAYS:-Mon,Tue,Wed,Thu,Fri}" "${CUTOFF:-21:00}" > "$JCONF"
-    osascript -e 'display notification "Journal ready. Open it from the journal menu." with title "Journal"'
+    printf 'root=%s\n' "${ROOT%/}" > "$JCONF"
+    osascript -e 'display notification "Journal ready. Each day locks the next day at noon." with title "Journal"'
     ;;
   open)
     # detach: the window must outlive this click_script

@@ -39,8 +39,8 @@
   Zoom/Meet link.
 - ○ **focus** · toggle Do Not Disturb (needs a Shortcut named "Toggle Focus").
 - ○ **temps** · CPU temperature, plus fan RPM on Macs that have a fan.
-- ○ **journal** · tamper-proof daily work log: write in a centered editor,
-  entries lock at your cutoff, export any range as markdown.
+- ○ **journal** · daily work log that locks at noon next day, plus a personal
+  scratchpad for free notes. Work entries are hash-chained and immutable.
 
 ## Good to know
 

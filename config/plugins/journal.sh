@@ -18,7 +18,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   }
   sketchybar --add item journal.row.head popup.journal \
     --set journal.row.head icon.drawing=off background.drawing=off \
-      label="Journal · $([ -f "$(jtoday_file)" ] && echo 'today locked ✓' || echo 'today open')" \
+      label="Journal · $([ -f "$(jfile_for "$(jtarget_date)")" ] && echo 'up to date ✓' || echo "$(jtarget_date) open")" \
       label.color=$PINK label.font="$HEAD_FONT" label.padding_left=12 label.padding_right=12
   if [ -z "$(jroot)" ]; then
     add_jrow setup 󰒓 "Set up journal…" setup
@@ -41,18 +41,14 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   exit 0
 fi
 
-# routine: state color + cutoff enforcement
+# routine: noon enforcement + state color (orange = target day unwritten)
 if [ -z "$(jroot)" ]; then
   sketchybar --set "$NAME" icon.color=0x66ffffff
   exit 0
 fi
-if [ -f "$(jtoday_file)" ]; then
+jenforce_noon
+if [ -f "$(jfile_for "$(jtarget_date)")" ]; then
   sketchybar --set "$NAME" icon.color=$CYAN
-elif jis_workday && jpast_cutoff; then
-  jfinalize
-  sketchybar --set "$NAME" icon.color=$CYAN
-elif jis_workday; then
-  sketchybar --set "$NAME" icon.color=$ORANGE
 else
-  sketchybar --set "$NAME" icon.color=0x66ffffff
+  sketchybar --set "$NAME" icon.color=$ORANGE
 fi

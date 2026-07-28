@@ -1,23 +1,28 @@
 #!/bin/bash
 # journal core · tamper-evident daily work log
-# conf: root=<dir> days=Mon,Tue,... cutoff=HH:MM
+# Locking model: each day's entry window is that day 12:00 -> next day 12:00.
+# Before noon you may still write YESTERDAY (late nights, weekends); at noon
+# yesterday locks forever (stub entry if nothing was written).
+# conf: root=<dir> only. Personal notes live under root/personal/ (never locked).
 JCONF="$HOME/.local/share/sketchetc/journal.conf"
 JDRAFT="$HOME/.local/share/sketchetc/journal_draft.md"
 
 jconf() { awk -F= -v k="$1" '$1 == k {print $2}' "$JCONF" 2>/dev/null; }
 jroot() { jconf root; }
 
-jtoday_file() { echo "$(jroot)/$(date +%Y)/$(date +%m)/$(date +%d).md"; }
-
-jis_workday() {
-  local days; days=$(jconf days)
-  [ -z "$days" ] && days="Mon,Tue,Wed,Thu,Fri"
-  [[ ",$days," == *",$(date +%a),"* ]]
+jfile_for() { # YYYY-MM-DD -> path
+  echo "$(jroot)/${1:0:4}/${1:5:2}/${1:8:2}.md"
 }
 
-jpast_cutoff() {
-  local cutoff; cutoff=$(jconf cutoff); [ -z "$cutoff" ] && cutoff="21:00"
-  [ "$(date +%H:%M)" \> "$cutoff" ] || [ "$(date +%H:%M)" = "$cutoff" ]
+jtarget_date() { # the day the editor writes for (respects JNOW_H override in tests)
+  local hour yesterday
+  hour=${JNOW_H:-$(date +%H)}
+  yesterday=$(date -v-1d +%Y-%m-%d)
+  if [ "${hour#0}" -lt 12 ] && [ ! -f "$(jfile_for "$yesterday")" ]; then
+    echo "$yesterday"
+  else
+    date +%Y-%m-%d
+  fi
 }
 
 jindex() { echo "$(jroot)/index.log"; }
@@ -32,28 +37,40 @@ jchain_append() { # file
   echo "$line" >> "$idx"
 }
 
-jfinalize() { # [content-file]  · write today's entry, chain it, lock it
-  local f dir src
-  f=$(jtoday_file); dir=$(dirname "$f")
+jfinalize() { # <YYYY-MM-DD> [content-file] · write that day's entry, chain, lock
+  local day f dir src
+  day="${1:-$(jtarget_date)}"
+  f=$(jfile_for "$day"); dir=$(dirname "$f")
   [ -z "$(jroot)" ] && return 1
-  [ -f "$f" ] && return 0   # already finalized today
+  [ -f "$f" ] && return 0   # already locked
   mkdir -p "$dir"
-  src="${1:-$JDRAFT}"
+  src="${2:-$JDRAFT}"
   {
-    echo "# $(date '+%A, %d %B %Y')"
+    echo "# $(date -j -f %Y-%m-%d "$day" '+%A, %d %B %Y' 2>/dev/null || echo "$day")"
     echo
-    echo "> aura today: $(source "$CONFIG_DIR/plugins/aura_lib.sh"; aura_today) · finalized $(date '+%H:%M')"
+    echo "> aura: $(source "$CONFIG_DIR/plugins/aura_lib.sh"; aura_today) · locked $(date '+%d %b %H:%M')"
     echo
     if [ -s "$src" ]; then cat "$src"; else echo "_(no update logged)_"; fi
   } > "$f"
   jchain_append "$f"
-  chflags uchg "$f"          # macOS immutable flag · editors and rm bounce off
+  chflags uchg "$f"
   rm -f "$JDRAFT"
-  "$CONFIG_DIR/plugins/notify.sh" "Journal" "Today's update is locked in" &
+  "$CONFIG_DIR/plugins/notify.sh" "Journal" "Entry for $day is locked in" &
 }
 
-jverify() { # -> OK or TAMPERED <file>
-  local idx prev expected
+jenforce_noon() { # at/after noon: lock yesterday if still open (stub if empty)
+  local hour yesterday setup_day
+  hour=${JNOW_H:-$(date +%H)}
+  yesterday=$(date -v-1d +%Y-%m-%d)
+  [ "${hour#0}" -ge 12 ] || return 0
+  [ -f "$(jfile_for "$yesterday")" ] && return 0
+  setup_day=$(date -r "$JCONF" +%Y-%m-%d 2>/dev/null) || return 0
+  [[ "$setup_day" > "$yesterday" ]] && return 0   # journal didn't exist yet that day
+  jfinalize "$yesterday"
+}
+
+jverify() {
+  local idx prev
   idx=$(jindex); prev="genesis"
   [ -s "$idx" ] || { echo "OK (empty)"; return; }
   while read -r p d rel hash; do
@@ -66,7 +83,7 @@ jverify() { # -> OK or TAMPERED <file>
   echo "OK ($(wc -l < "$idx" | tr -d ' ') entries)"
 }
 
-jexport() { # day|week|month|year -> markdown to stdout
+jexport() { # day|week|month|year -> markdown (work entries only)
   local days
   case "$1" in day) days=1 ;; week) days=7 ;; month) days=31 ;; year) days=366 ;; esac
   python3 - "$days" "$(jroot)" <<'EOF'
