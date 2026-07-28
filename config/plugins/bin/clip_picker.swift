@@ -1,6 +1,6 @@
 // clip_picker <file1> [file2 ...] — centered, autofocused clipboard picker.
-// ↑/↓ + Enter selects (prints the chosen path), Esc cancels, click selects.
-// Image entries render inline thumbnails; text entries show a monospace preview.
+// ↑/↓ + Enter selects (prints the chosen path), Esc cancels, click selects,
+// clicking anywhere outside dismisses. Images render inline thumbnails.
 import AppKit
 
 let files = Array(CommandLine.arguments.dropFirst())
@@ -11,11 +11,27 @@ app.setActivationPolicy(.accessory)
 
 let bgColor = NSColor(calibratedRed: 0.09, green: 0.05, blue: 0.16, alpha: 1)
 let rowColor = NSColor(calibratedRed: 0.14, green: 0.09, blue: 0.25, alpha: 1)
+let selColor = NSColor(calibratedRed: 0.22, green: 0.13, blue: 0.38, alpha: 1)
 let pink = NSColor(calibratedRed: 1.0, green: 0.43, blue: 0.78, alpha: 1)
 let mono = NSFont(name: "JetBrainsMono Nerd Font", size: 13) ?? .monospacedSystemFont(ofSize: 13, weight: .regular)
 
-let ROW_H: CGFloat = 52, W: CGFloat = 560
-let H = CGFloat(files.count) * (ROW_H + 6) + 74
+let W: CGFloat = 480, ROW_H: CGFloat = 56, GAP: CGFloat = 8, PAD: CGFloat = 16
+let H = CGFloat(files.count) * (ROW_H + GAP) + 64
+
+final class RowView: NSTableRowView {
+    override func drawSelection(in dirtyRect: NSRect) {}
+    override func drawBackground(in dirtyRect: NSRect) {
+        let r = bounds.insetBy(dx: 0, dy: GAP / 2)
+        let path = NSBezierPath(roundedRect: r, xRadius: 12, yRadius: 12)
+        (isSelected ? selColor : rowColor).setFill()
+        path.fill()
+        if isSelected {
+            pink.setStroke()
+            path.lineWidth = 2
+            path.stroke()
+        }
+    }
+}
 
 final class Picker: NSObject, NSTableViewDataSource, NSTableViewDelegate {
     var files: [String]
@@ -23,25 +39,24 @@ final class Picker: NSObject, NSTableViewDataSource, NSTableViewDelegate {
     init(_ f: [String]) { files = f }
 
     func numberOfRows(in tableView: NSTableView) -> Int { files.count }
-    func tableView(_ t: NSTableView, heightOfRow r: Int) -> CGFloat { ROW_H + 6 }
+    func tableView(_ t: NSTableView, heightOfRow r: Int) -> CGFloat { ROW_H + GAP }
+    func tableView(_ t: NSTableView, rowViewForRow r: Int) -> NSTableRowView? { RowView() }
 
     func tableView(_ t: NSTableView, viewFor c: NSTableColumn?, row r: Int) -> NSView? {
         let path = files[r]
-        let cell = NSView(frame: NSRect(x: 0, y: 0, width: W - 32, height: ROW_H))
-        cell.wantsLayer = true
-        cell.layer?.backgroundColor = rowColor.cgColor
-        cell.layer?.cornerRadius = 10
+        let width = W - 2 * PAD
+        let cell = NSView(frame: NSRect(x: 0, y: 0, width: width, height: ROW_H + GAP))
 
-        var textX: CGFloat = 14
+        var textX: CGFloat = 16
         if path.hasSuffix(".png"), let img = NSImage(contentsOfFile: path) {
-            let iv = NSImageView(frame: NSRect(x: 10, y: 4, width: 64, height: ROW_H - 8))
+            let iv = NSImageView(frame: NSRect(x: 12, y: GAP / 2 + 6, width: 70, height: ROW_H - 12))
             iv.image = img
             iv.imageScaling = .scaleProportionallyUpOrDown
             iv.wantsLayer = true
-            iv.layer?.cornerRadius = 6
+            iv.layer?.cornerRadius = 8
             iv.layer?.masksToBounds = true
             cell.addSubview(iv)
-            textX = 86
+            textX = 94
         }
 
         var preview: String
@@ -52,13 +67,15 @@ final class Picker: NSObject, NSTableViewDataSource, NSTableViewDelegate {
         } else {
             preview = (try? String(contentsOfFile: path, encoding: .utf8)) ?? ""
             preview = preview.replacingOccurrences(of: "\n", with: " ")
-            if preview.count > 52 { preview = String(preview.prefix(52)) + "…" }
+                             .trimmingCharacters(in: .whitespaces)
+            if preview.count > 44 { preview = String(preview.prefix(44)) + "…" }
         }
         let label = NSTextField(labelWithString: preview)
         label.font = mono
         label.textColor = NSColor(calibratedWhite: 0.93, alpha: 1)
         label.lineBreakMode = .byTruncatingTail
-        label.frame = NSRect(x: textX, y: (ROW_H - 18) / 2, width: W - 32 - textX - 12, height: 18)
+        label.frame = NSRect(x: textX, y: (ROW_H + GAP - 18) / 2, width: width - textX - 16, height: 18)
+        label.autoresizingMask = [.width]
         cell.addSubview(label)
         return cell
     }
@@ -94,15 +111,18 @@ win.appearance = NSAppearance(named: .darkAqua)
 let title = NSTextField(labelWithString: "Clipboard")
 title.font = NSFont(name: "JetBrainsMono Nerd Font Bold", size: 15) ?? .boldSystemFont(ofSize: 15)
 title.textColor = pink
-title.frame = NSRect(x: 18, y: H - 40, width: W - 36, height: 20)
+title.frame = NSRect(x: PAD + 2, y: H - 40, width: W - 2 * PAD, height: 20)
 win.contentView!.addSubview(title)
 
-let table = KeyTable(frame: NSRect(x: 16, y: 14, width: W - 32, height: H - 62))
+let col = NSTableColumn(identifier: .init("c"))
+col.width = W - 2 * PAD
+let table = KeyTable(frame: NSRect(x: PAD, y: 12, width: W - 2 * PAD, height: H - 60))
 table.headerView = nil
 table.backgroundColor = .clear
 table.selectionHighlightStyle = .regular
-table.intercellSpacing = NSSize(width: 0, height: 6)
-table.addTableColumn(NSTableColumn(identifier: .init("c")))
+table.intercellSpacing = .zero
+table.style = .plain
+table.addTableColumn(col)
 table.dataSource = picker
 table.delegate = picker
 table.target = picker
@@ -117,6 +137,10 @@ scroll.hasVerticalScroller = false
 win.contentView!.addSubview(scroll)
 
 table.selectRowIndexes([0], byExtendingSelection: false)
+
+// dismiss when the user clicks anywhere outside (window loses key status)
+NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification,
+                                       object: win, queue: .main) { _ in exit(1) }
 
 win.makeKeyAndOrderFront(nil)
 win.makeFirstResponder(table)
