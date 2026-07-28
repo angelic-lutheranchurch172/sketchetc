@@ -25,7 +25,7 @@ fi
 REM=$(( $(cat "$STATE") - $(date +%s) ))
 if [ "$REM" -le 0 ]; then
   rm -f "$STATE"
-  osascript -e 'display notification "25 minutes done · take a break" with title "Pomodoro" sound name "Glass"'
+  "$CONFIG_DIR/plugins/notify.sh" "Pomodoro" "25 minutes done · take a break"
   sketchybar --set "$NAME" icon=$ICON_POMO icon.color=$WHITE label.drawing=off
 
   # ---- aura scoring for this pomodoro ----

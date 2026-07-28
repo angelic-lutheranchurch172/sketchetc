@@ -9,7 +9,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   add_jrow() { # name icon label cmd hint [hidden]
     sketchybar --add item "journal.row.$1" popup.journal \
       --set "journal.row.$1" icon="$2" icon.color=$CYAN icon.padding_left=10 \
-        background.drawing=off background.corner_radius=6 \
+        background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 \
         label="$3" label.font="$ROW_FONT" label.padding_right=12 \
         ${6:+drawing=off icon.padding_left=22} \
         script="$CONFIG_DIR/plugins/popup_row.sh" \
@@ -32,7 +32,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
     add_jrow browse 󰉋 "Browse folder" browse "opens the journal root in Finder"
     sketchybar --add item journal.row.copyhead popup.journal \
       --set journal.row.copyhead icon=󰆏 icon.color=$CYAN icon.padding_left=10 \
-        background.drawing=off background.corner_radius=6 \
+        background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 \
         label="Copy…" label.font="$ROW_FONT" label.padding_right=12 \
         script="$CONFIG_DIR/plugins/popup_row.sh" \
         click_script="$CONFIG_DIR/plugins/journal_accordion.sh" \
@@ -44,7 +44,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
     add_jrow verify 󰄬 "Verify audit chain" verify "recomputes every hash in the chain"
   fi
   sketchybar --add item journal.hint popup.journal \
-    --set journal.hint icon.drawing=off background.drawing=off \
+    --set journal.hint width=300 icon.drawing=off background.drawing=off \
       label="hover an option" label.color=0x44ffffff \
       label.font="JetBrainsMono Nerd Font:Regular:10.0" \
       label.padding_left=12 label.padding_right=12

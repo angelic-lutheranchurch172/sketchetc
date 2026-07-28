@@ -39,7 +39,7 @@ for w in $WIDGETS; do
   sketchybar --add item "widgets_menu.$w" popup.widgets_menu \
     --set "widgets_menu.$w" icon="$MARK" icon.color="$COLOR" icon.padding_left=10 \
       label="$w" label.font="JetBrainsMono Nerd Font:Regular:11.0" label.padding_right=12 \
-      background.drawing=off background.corner_radius=5 \
+      background.drawing=on background.color=$TRANSPARENT background.corner_radius=5 \
       script="$CONFIG_DIR/plugins/popup_row.sh" \
       click_script="$CONFIG_DIR/plugins/widget_toggle.sh $w" \
     --subscribe "widgets_menu.$w" mouse.entered mouse.exited
@@ -48,7 +48,7 @@ done
 
 # tooltip line (always drawn; popup_row.sh swaps its text on hover)
 sketchybar --add item widgets_menu.hint popup.widgets_menu \
-  --set widgets_menu.hint icon.drawing=off background.drawing=off \
+  --set widgets_menu.hint width=300 icon.drawing=off background.drawing=off \
     label="hover an option" label.color=0x44ffffff \
     label.font="JetBrainsMono Nerd Font:Regular:10.0" \
     label.padding_left=12 label.padding_right=12

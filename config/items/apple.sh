@@ -12,7 +12,7 @@ sketchybar --add item apple left \
     script="$PLUGIN_DIR/apple.sh" \
   --subscribe apple mouse.clicked mouse.entered mouse.exited mouse.entered.global mouse.exited.global
 
-ROW_PROPS="icon.padding_left=10 label.padding_right=12 background.corner_radius=6 background.drawing=off"
+ROW_PROPS="icon.padding_left=10 label.padding_right=12 background.corner_radius=6 background.drawing=on background.color=$TRANSPARENT"
 
 add_row() { # name icon label click_cmd [keep_open]
   local close="; sketchybar --set apple popup.drawing=off"
@@ -29,6 +29,7 @@ add_row settings 󰒓 "System Settings…" "open -a 'System Settings'"
 add_row lock     󰌾 "Lock Screen"      "pmset displaysleepnow"
 add_row sleep    󰐥 "Sleep"            "pmset sleepnow"
 add_row reload   󰑓 "Reload SketchyBar" "sketchybar --reload"
+add_row sound    󰋋 "Notification sound…" "$PLUGIN_DIR/notify_pick.sh"
 
 FS_LABEL=$([ -f "$CONFIG_DIR/.fs_guard_off" ] && echo "Fullscreen Guard: OFF" || echo "Fullscreen Guard: ON")
 add_row fsguard 󰊓 "$FS_LABEL" 'CFG="$HOME/.config/sketchybar"; if [ -f "$CFG/.fs_guard_off" ]; then rm "$CFG/.fs_guard_off"; sketchybar --set apple.fsguard label="Fullscreen Guard: ON"; else touch "$CFG/.fs_guard_off"; sketchybar --set apple.fsguard label="Fullscreen Guard: OFF"; fi' keep_open

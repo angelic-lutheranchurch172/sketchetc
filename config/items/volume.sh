@@ -25,7 +25,7 @@ sketchybar --add slider volume.slider popup.volume 150 \
 
 sketchybar --add item volume.typed popup.volume \
   --set volume.typed icon=󰎠 icon.color=$CYAN icon.padding_left=12 \
-    background.drawing=off background.corner_radius=6 \
+    background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 \
     label="type a value" label.font="JetBrainsMono Nerd Font:Regular:11.0" label.padding_right=12 \
     script="$PLUGIN_DIR/popup_row.sh" \
     click_script="$PLUGIN_DIR/volume_typed.sh" \

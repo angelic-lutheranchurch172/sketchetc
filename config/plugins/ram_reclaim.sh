@@ -45,6 +45,6 @@ else
   SPOKEN="${GAINED} megabytes"
 fi
 
-osascript -e "display notification \"Freed ${AMOUNT} · reaped ${REAPED} orphaned helper(s) · nothing running was stopped\" with title \"RAM Reclaim\" sound name \"Glass\""
+"$HOME/.config/sketchybar/plugins/notify.sh" "RAM Reclaim" "Freed ${AMOUNT} · reaped ${REAPED} orphaned helper(s) · nothing running was stopped"
 say -v Samantha "Reclaimed ${SPOKEN} of RAM. ${REAPED} orphaned helpers reaped." &
 sketchybar --update

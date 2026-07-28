@@ -43,7 +43,7 @@ build_popup() {
     if [[ "$f" == *-img.png ]]; then
       sketchybar --add item "clipboard.row.$i" popup.clipboard \
         --set "clipboard.row.$i" icon=󰋩 icon.color=$CYAN icon.padding_left=10 \
-          background.drawing=off background.corner_radius=6 \
+          background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 \
           label="image · $(date -r "${f%%-*}" '+%H:%M')" label.font="$ROW_FONT" label.padding_right=12 \
           script="$CONFIG_DIR/plugins/clipboard_row.sh" \
           click_script="$CONFIG_DIR/plugins/clipboard_row.sh paste '$STORE/$f'" \
@@ -53,7 +53,7 @@ build_popup() {
       PREVIEW=$(head -c 300 "$STORE/$f" | tr '\n\t' '  ' | cut -c1-42)
       sketchybar --add item "clipboard.row.$i" popup.clipboard \
         --set "clipboard.row.$i" icon=󰦨 icon.color=$WHITE icon.padding_left=10 \
-          background.drawing=off background.corner_radius=6 \
+          background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 \
           label="$PREVIEW" label.font="$ROW_FONT" label.padding_right=12 \
           script="$CONFIG_DIR/plugins/clipboard_row.sh" \
           click_script="$CONFIG_DIR/plugins/clipboard_row.sh paste '$STORE/$f'" \

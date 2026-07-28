@@ -23,10 +23,10 @@ if [ "$SENDER" = "mouse.clicked" ]; then
     i=$((i + 1))
     sketchybar --add item "ports.row.$i" popup.ports \
       --set "ports.row.$i" icon=$ICON_PORTS icon.color=$ORANGE icon.padding_left=10 \
-        background.drawing=off background.corner_radius=6 \
+        background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 \
         label=":$port · $comm (pid $pid)" label.font="$ROW_FONT" label.padding_right=12 \
         script="$CONFIG_DIR/plugins/popup_row.sh" \
-        click_script="kill $pid && osascript -e 'display notification \"Stopped $comm on port $port\" with title \"Dev servers\" sound name \"Glass\"'; sketchybar --set ports popup.drawing=off" \
+        click_script="kill $pid && $CONFIG_DIR/plugins/notify.sh 'Dev servers' 'Stopped $comm on port $port'; sketchybar --set ports popup.drawing=off" \
       --subscribe "ports.row.$i" mouse.entered mouse.exited
   done
   toggle_popup

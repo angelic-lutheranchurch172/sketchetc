@@ -49,7 +49,7 @@ jfinalize() { # [content-file]  · write today's entry, chain it, lock it
   jchain_append "$f"
   chflags uchg "$f"          # macOS immutable flag · editors and rm bounce off
   rm -f "$JDRAFT"
-  osascript -e 'display notification "Today'"'"'s update is locked in" with title "Journal" sound name "Glass"' &
+  "$CONFIG_DIR/plugins/notify.sh" "Journal" "Today's update is locked in" &
 }
 
 jverify() { # -> OK or TAMPERED <file>
