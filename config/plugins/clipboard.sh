@@ -6,7 +6,7 @@ close_popup_on_exit
 STORE="$HOME/.local/share/sketchetc/clipboard"
 mkdir -p "$STORE"
 LAST_HASH_FILE="$STORE/.last"
-MAX=30
+MAX=5   # keep it tight: only the last five copies
 
 capture() {
   local info hash f

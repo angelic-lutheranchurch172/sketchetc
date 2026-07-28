@@ -15,7 +15,6 @@ if [ "$SENDER" = "mouse.clicked" ]; then
         script="$CONFIG_DIR/plugins/popup_row.sh" \
         click_script="$CONFIG_DIR/plugins/journal_actions.sh $4; sketchybar --set journal popup.drawing=off" \
       --subscribe "journal.row.$1" mouse.entered mouse.exited
-    [ -n "$5" ] && echo "$5" > "${TMPDIR:-/tmp}/sketchybar_hint_journal.row.$1"
   }
   sketchybar --add item journal.row.head popup.journal \
     --set journal.row.head icon.drawing=off background.drawing=off \
@@ -37,20 +36,12 @@ if [ "$SENDER" = "mouse.clicked" ]; then
         script="$CONFIG_DIR/plugins/popup_row.sh" \
         click_script="$CONFIG_DIR/plugins/journal_accordion.sh" \
       --subscribe journal.row.copyhead mouse.entered mouse.exited
-    echo "copy a range as clean markdown" > "${TMPDIR:-/tmp}/sketchybar_hint_journal.row.copyhead"
     for r in day week month year; do
       add_jrow "copy_$r" 󰧟 "$r" "copy $r" "" hidden
     done
     add_jrow verify 󰄬 "Verify audit chain" verify "recomputes every hash in the chain"
   fi
-  sketchybar --add item journal.hint popup.journal \
-    --set journal.hint drawing=on width=300 icon.drawing=off background.drawing=off \
-      label="" label.color=0x44ffffff \
-      label.font="JetBrainsMono Nerd Font:Regular:10.0" \
-      label.padding_left=12 label.padding_right=12
-  toggle_popup
-  exit 0
-fi
+  fi
 
 # routine: state color + cutoff enforcement
 if [ -z "$(jroot)" ]; then

@@ -32,7 +32,6 @@ EOF
       script="$CONFIG_DIR/plugins/popup_row.sh" \
       click_script="$CONFIG_DIR/plugins/aura_accordion.sh" \
     --subscribe aura.row.export mouse.entered mouse.exited
-  echo "shareable PNG card into Downloads" > "${TMPDIR:-/tmp}/sketchybar_hint_aura.row.export"
   for range in day week month year; do
     sketchybar --add item "aura.row.png_$range" popup.aura \
       --set "aura.row.png_$range" drawing=off icon=󰧟 icon.color=$CYAN icon.padding_left=22 \
@@ -42,14 +41,7 @@ EOF
         click_script="$CONFIG_DIR/plugins/aura_export.sh $range; sketchybar --set aura popup.drawing=off" \
       --subscribe "aura.row.png_$range" mouse.entered mouse.exited
   done
-  sketchybar --add item aura.hint popup.aura \
-    --set aura.hint drawing=on width=300 icon.drawing=off background.drawing=off \
-      label="" label.color=0x44ffffff \
-      label.font="JetBrainsMono Nerd Font:Regular:10.0" \
-      label.padding_left=12 label.padding_right=12
-  toggle_popup
-  exit 0
-fi
+  fi
 
 # passive accrual: every 30 min tick, meaningful typing earns a trickle
 read -r _ _ CLICKS _ _ KEYS < <("$CONFIG_DIR/plugins/bin/mouse_info")

@@ -5,81 +5,11 @@ source "$CONFIG_DIR/colors.sh"
 
 POPUP_MARKER="${TMPDIR:-/tmp}/sketchybar_open_popup"
 
-# one-line description per bar item, shown as a hover tooltip
-item_hint() {
-  case "$1" in
-    apple)        echo "system menu" ;;
-    theme_picker) echo "themes and icon sets" ;;
-    widgets_menu) echo "toggle widgets on or off" ;;
-    front_app)    echo "click to switch apps" ;;
-    clock)        echo "click opens Calendar" ;;
-    ram)          echo "memory · click for top processes" ;;
-    cpu)          echo "processor · click for top processes" ;;
-    battery)      echo "click for time left and cycles" ;;
-    wifi)         echo "click for IP and toggle" ;;
-    volume)       echo "click for slider · scroll to nudge" ;;
-    network)      echo "click for top talkers" ;;
-    github)       echo "PRs waiting on you" ;;
-    pomodoro)     echo "click to start 25 min focus" ;;
-    caffeine)     echo "click to keep the Mac awake" ;;
-    speedtest)    echo "click to run a speed test" ;;
-    focus)        echo "click to toggle Do Not Disturb" ;;
-    ports)        echo "dev servers · click to manage" ;;
-    clipboard)    echo "copy history · also Option+V" ;;
-    aura)         echo "your effort score · click to review" ;;
-    journal)      echo "daily work log · click to write" ;;
-    media)        echo "click to pause · right-click controls" ;;
-    meeting)      echo "click to join the meeting" ;;
-  esac
-}
-
-TT_CUR="${TMPDIR:-/tmp}/sketchybar_tooltip_cur"
-
-# glow + themed tooltip on hover (only wire this to items whose click does something)
-# Tooltip rules: idempotent (re-fired entered events are no-ops → no flicker)
-# and globally exclusive (showing one closes any stray from a skipped exited).
+# border glow on hover (wire only to items whose click does something)
 hover() {
   case "$SENDER" in
-    mouse.entered)
-      sketchybar --animate tanh 8 --set "$NAME" background.border_color=$PURPLE
-      # single-tooltip rule: entering ANY item clears another item's tooltip
-      if [ ! -f "$POPUP_MARKER" ] && [ -s "$TT_CUR" ] && [ "$(cat "$TT_CUR")" != "$NAME" ]; then
-        sketchybar --set "/.*/" popup.drawing=off
-        rm -f "$TT_CUR"
-      fi
-      # items with permanent popup rows can't lend their popup as a tooltip
-      case "$NAME" in apple|theme_picker|widgets_menu|wifi|volume|media) exit 0 ;; esac
-      # idempotent: our tooltip is already up AND actually drawn, don't rebuild
-      if [ "$(cat "$TT_CUR" 2>/dev/null)" = "$NAME" ]; then
-        DRAWN=$(sketchybar --query "$NAME" 2>/dev/null | awk '/"popup"/ {getline l; print (l ~ /"on"/) ? 1 : 0; exit}')
-        [ "$DRAWN" = "1" ] && exit 0
-        rm -f "$TT_CUR"   # stale state: popup is closed, fall through and re-show
-      fi
-      if [ ! -f "$POPUP_MARKER" ]; then
-        HINT=$(item_hint "$NAME")
-        if [ -n "$HINT" ]; then
-          # stale rows from the last real popup open persist as items; hide
-          # them so the tooltip is ONLY the one-line hint (clicks rebuild rows)
-          sketchybar --set "/${NAME}\..*/" drawing=off 2>/dev/null
-          sketchybar --remove "$NAME.tt" 2>/dev/null
-          sketchybar --add item "$NAME.tt" "popup.$NAME" \
-            --set "$NAME.tt" drawing=on icon.drawing=off background.drawing=off \
-              label="$HINT" label.color=$CYAN \
-              label.font="JetBrainsMono Nerd Font:Regular:11.0" \
-              label.padding_left=10 label.padding_right=10 \
-            --set "$NAME" $POPUP_PROPS popup.drawing=on
-          echo "$NAME" > "$TT_CUR"
-        fi
-      fi
-      exit 0 ;;
-    mouse.exited)
-      sketchybar --animate tanh 8 --set "$NAME" background.border_color=$TRANSPARENT
-      if [ ! -f "$POPUP_MARKER" ] && [ "$(cat "$TT_CUR" 2>/dev/null)" = "$NAME" ]; then
-        sketchybar --set "$NAME" popup.drawing=off
-        sketchybar --remove "$NAME.tt" 2>/dev/null
-        rm -f "$TT_CUR"
-      fi
-      exit 0 ;;
+    mouse.entered) sketchybar --animate tanh 8 --set "$NAME" background.border_color=$PURPLE; exit 0 ;;
+    mouse.exited)  sketchybar --animate tanh 8 --set "$NAME" background.border_color=$TRANSPARENT; exit 0 ;;
   esac
 }
 
@@ -98,8 +28,7 @@ toggle_popup() {
   WAS_OPEN=0
   [ "$(cat "$POPUP_MARKER" 2>/dev/null | awk '{print $1}')" = "$NAME" ] && WAS_OPEN=1
   sketchybar --set "/.*/" popup.drawing=off
-  sketchybar --remove "$NAME.tt" 2>/dev/null   # hover tooltip must not linger in the real popup
-  rm -f "$POPUP_MARKER" "$TT_CUR"
+  rm -f "$POPUP_MARKER"
   if [ "$WAS_OPEN" -eq 0 ]; then
     sketchybar --animate sin 12 --set "$NAME" icon.y_offset=3 icon.y_offset=0
     sketchybar --set "$NAME" popup.drawing=on

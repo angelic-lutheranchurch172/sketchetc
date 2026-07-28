@@ -51,6 +51,8 @@ if command -v swiftc >/dev/null; then
   swiftc -O -o "$REPO/config/plugins/bin/mouse_info" "$REPO/config/plugins/bin/mouse_info.swift"
   swiftc -O -o "$REPO/config/plugins/bin/next_event" "$REPO/config/plugins/bin/next_event.swift"
   swiftc -O -o "$REPO/config/plugins/bin/aura_card" "$REPO/config/plugins/bin/aura_card.swift"
+  swiftc -O -o "$REPO/config/plugins/bin/clip_picker" "$REPO/config/plugins/bin/clip_picker.swift"
+  swiftc -O -o "$REPO/config/plugins/bin/entry_box" "$REPO/config/plugins/bin/entry_box.swift"
 else
   echo "   swiftc not found — skipping (popups still close via app-switch; meetings widget hides)"
 fi
