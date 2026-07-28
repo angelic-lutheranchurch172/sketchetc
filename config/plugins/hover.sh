@@ -43,9 +43,12 @@ hover() {
       if [ ! -f "$POPUP_MARKER" ]; then
         HINT=$(item_hint "$NAME")
         if [ -n "$HINT" ]; then
+          # stale rows from the last real popup open persist as items; hide
+          # them so the tooltip is ONLY the one-line hint (clicks rebuild rows)
+          sketchybar --set "/${NAME}\..*/" drawing=off 2>/dev/null
           sketchybar --remove "$NAME.tt" 2>/dev/null
           sketchybar --add item "$NAME.tt" "popup.$NAME" \
-            --set "$NAME.tt" icon.drawing=off background.drawing=off \
+            --set "$NAME.tt" drawing=on icon.drawing=off background.drawing=off \
               label="$HINT" label.color=$CYAN \
               label.font="JetBrainsMono Nerd Font:Regular:11.0" \
               label.padding_left=10 label.padding_right=10 \

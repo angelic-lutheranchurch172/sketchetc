@@ -43,7 +43,7 @@ EOF
       --subscribe "aura.row.png_$range" mouse.entered mouse.exited
   done
   sketchybar --add item aura.hint popup.aura \
-    --set aura.hint width=300 icon.drawing=off background.drawing=off \
+    --set aura.hint drawing=on width=300 icon.drawing=off background.drawing=off \
       label="" label.color=0x44ffffff \
       label.font="JetBrainsMono Nerd Font:Regular:10.0" \
       label.padding_left=12 label.padding_right=12

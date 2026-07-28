@@ -44,7 +44,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
     add_jrow verify 󰄬 "Verify audit chain" verify "recomputes every hash in the chain"
   fi
   sketchybar --add item journal.hint popup.journal \
-    --set journal.hint width=300 icon.drawing=off background.drawing=off \
+    --set journal.hint drawing=on width=300 icon.drawing=off background.drawing=off \
       label="" label.color=0x44ffffff \
       label.font="JetBrainsMono Nerd Font:Regular:10.0" \
       label.padding_left=12 label.padding_right=12
