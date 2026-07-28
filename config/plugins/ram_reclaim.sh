@@ -38,4 +38,5 @@ GAINED=$((AFTER - BEFORE))
 [ "$GAINED" -lt 0 ] && GAINED=0
 
 osascript -e "display notification \"Freed ${GAINED} MB · reaped ${REAPED} orphaned helper(s) · nothing running was stopped\" with title \"RAM Reclaim\" sound name \"Glass\""
+say -v Samantha "Reclaimed ${GAINED} megabytes of RAM. ${REAPED} orphaned helpers reaped." &
 sketchybar --update

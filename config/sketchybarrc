@@ -7,10 +7,10 @@ export PLUGIN_DIR
 
 # ---- Bar: floating, blurred, neon ----
 sketchybar --bar \
-  height=36 \
+  height=30 \
   position=top \
   sticky=on \
-  topmost=window \
+  topmost=on \
   show_in_fullscreen=on \
   margin=0 \
   y_offset=0 \
@@ -33,7 +33,7 @@ sketchybar --default \
   label.padding_right=8 \
   background.color=$ITEM_BG_COLOR \
   background.corner_radius=8 \
-  background.height=26 \
+  background.height=24 \
   background.border_width=1 \
   background.border_color=$TRANSPARENT \
   padding_left=4 \

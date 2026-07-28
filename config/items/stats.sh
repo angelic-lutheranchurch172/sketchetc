@@ -26,6 +26,6 @@ sketchybar --add bracket stats cpu ram \
   --set stats \
     background.color=$ITEM_BG_COLOR \
     background.corner_radius=8 \
-    background.height=26 \
+    background.height=24 \
     background.border_width=1 \
     background.border_color=0x669b5de5

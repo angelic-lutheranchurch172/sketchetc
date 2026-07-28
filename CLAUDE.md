@@ -13,7 +13,7 @@ to `sketchybar` when macOS prompts.
 
 ```
 config/
-├── sketchybarrc      # bar geometry (h=36, topmost=window, show_in_fullscreen=on), defaults, sources items/
+├── sketchybarrc      # bar geometry (h=30, topmost=on, show_in_fullscreen=on), defaults, sources items/
 ├── colors.sh         # Vice City palette + shared $POPUP_PROPS
 ├── items/            # one file per widget: --add, subscriptions, static popup rows
 └── plugins/          # update + event logic, one per widget (chmod +x, invoked by sketchybar with $NAME/$SENDER/$CONFIG_DIR)
@@ -37,8 +37,14 @@ config/
 - `font-sf-pro` cask needs sudo → use JetBrains Mono Nerd Font instead (no sudo).
 - macOS 26 redacts Wi-Fi SSID from CLI (returns literal `<redacted>`) → show connectivity only.
 - `media_change` event is broken since macOS 15.4 → poll Spotify/Music via osascript.
-- Bar needs `topmost=window` AND `show_in_fullscreen=on` to stay visible everywhere;
-  sketchybar cannot reserve screen space (maximized windows tuck under the bar).
+- Sketchybar cannot reserve screen space — the RESERVED-SPACE architecture is:
+  native menu bar VISIBLE (`_HIHideMenuBar false`, macOS reserves its 30px strip,
+  windows tile below) + our bar `topmost=on` `height=30` drawn over the native bar.
+  Cost: app File/Edit menus sit behind the bar (use Cmd+Shift+/ menu search).
+  Menubar height measured via a temp sketchybar item running osascript
+  (sketchybar holds the Accessibility grant, the terminal doesn't).
+- Sliders emit ONE event on drag-release, never during drag → live volume =
+  `volume_watch.sh` polls `slider.percentage` while the popup is open.
 - In `--query` JSON the popup block nests `background.drawing` — read only the FIRST
   `drawing` after `"popup"` to get popup state (see `toggle_popup`).
 - No `mouse.clicked.global` event exists; outside-click close = `mouse.exited.global`

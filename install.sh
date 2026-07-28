@@ -20,8 +20,10 @@ mkdir -p "$HOME/.config"
 ln -sfn "$REPO/config" "$HOME/.config/sketchybar"
 chmod +x "$REPO/config/sketchybarrc" "$REPO/config/colors.sh" "$REPO/config/items/"* "$REPO/config/plugins/"*
 
-echo "==> Hiding native menu bar"
-defaults write NSGlobalDomain _HIHideMenuBar -bool true
+# Native menu bar stays VISIBLE: macOS reserves the top strip so windows tile
+# below it, and sketchybar (topmost=on) draws over the native bar in that strip.
+echo "==> Ensuring native menu bar is visible (reserves bar space)"
+defaults write NSGlobalDomain _HIHideMenuBar -bool false
 killall Finder 2>/dev/null || true
 
 echo "==> Enabling ctrl+1..4 desktop-switch hotkeys"
