@@ -17,6 +17,21 @@ let personalDir = rootDir + "/personal"
 let app = NSApplication.shared
 app.setActivationPolicy(.accessory)
 
+// Accessory apps have no menu bar, but text views only get ⌘C/⌘V/⌘X/⌘A/undo
+// through an Edit menu's key equivalents — so install a minimal hidden one.
+let mainMenu = NSMenu()
+let editHolder = NSMenuItem()
+mainMenu.addItem(editHolder)
+let editMenu = NSMenu(title: "Edit")
+editMenu.addItem(withTitle: "Undo", action: Selector(("undo:")), keyEquivalent: "z")
+editMenu.addItem(withTitle: "Redo", action: Selector(("redo:")), keyEquivalent: "Z")
+editMenu.addItem(withTitle: "Cut", action: #selector(NSText.cut(_:)), keyEquivalent: "x")
+editMenu.addItem(withTitle: "Copy", action: #selector(NSText.copy(_:)), keyEquivalent: "c")
+editMenu.addItem(withTitle: "Paste", action: #selector(NSText.paste(_:)), keyEquivalent: "v")
+editMenu.addItem(withTitle: "Select All", action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
+editHolder.submenu = editMenu
+app.mainMenu = mainMenu
+
 let bg = NSColor(calibratedRed: 0.09, green: 0.05, blue: 0.16, alpha: 1)
 let panel = NSColor(calibratedRed: 0.14, green: 0.09, blue: 0.25, alpha: 1)
 let panelDeep = NSColor(calibratedRed: 0.11, green: 0.07, blue: 0.20, alpha: 1)
