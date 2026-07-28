@@ -16,7 +16,7 @@ sketchybar --bar \
   y_offset=0 \
   corner_radius=0 \
   blur_radius=30 \
-  shadow=on \
+  shadow=off \
   color=$BAR_COLOR \
   padding_left=10 \
   padding_right=10

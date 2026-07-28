@@ -25,6 +25,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
 fi
 
 if [ "$SENDER" = "front_app_switched" ]; then
+  sketchybar --set "/.*/" popup.drawing=off   # clicking another app closes popups
   __icon_map "$INFO"
   sketchybar --set "$NAME" label="$INFO" icon="$icon_result"
 fi

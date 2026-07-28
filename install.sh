@@ -41,6 +41,13 @@ EOF
 defaults import com.apple.symbolichotkeys "$TMP/shk.plist"
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
+echo "==> Compiling mouse_info helper (outside-click popup close)"
+if command -v swiftc >/dev/null; then
+  swiftc -O -o "$REPO/config/plugins/bin/mouse_info" "$REPO/config/plugins/bin/mouse_info.swift"
+else
+  echo "   swiftc not found — skipping (popups still close via app-switch/mouse-exit)"
+fi
+
 echo "==> Starting service"
 brew services restart sketchybar
 
