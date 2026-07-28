@@ -138,9 +138,14 @@ win.contentView!.addSubview(scroll)
 
 table.selectRowIndexes([0], byExtendingSelection: false)
 
-// dismiss when the user clicks anywhere outside (window loses key status)
-NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification,
-                                       object: win, queue: .main) { _ in exit(1) }
+// dismiss when the user clicks anywhere outside (window loses key status).
+// Armed only after a short grace period — activation from a hotkey daemon can
+// bounce focus for a moment right at launch, which must not count as "outside".
+DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+    NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification,
+                                           object: win, queue: .main) { _ in exit(1) }
+    if !win.isKeyWindow { win.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true) }
+}
 
 win.makeKeyAndOrderFront(nil)
 win.makeFirstResponder(table)
