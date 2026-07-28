@@ -1,5 +1,5 @@
 #!/bin/bash
-# 󰨝 → compact widget on/off popover
+# 󰨝 → compact widget on/off popover with hover tooltips and an active-count cap
 sketchybar --add item widgets_menu left \
   --set widgets_menu \
     icon=$ICON_WIDGETS \
@@ -12,7 +12,28 @@ sketchybar --add item widgets_menu left \
     script="$PLUGIN_DIR/widgets_menu.sh" \
   --subscribe widgets_menu mouse.clicked mouse.entered mouse.exited mouse.entered.global mouse.exited.global
 
-for w in network caffeine ports pomodoro github weather speedtest meeting focus temps media clipboard aura journal; do
+widget_hint() {
+  case "$1" in
+    spaces)    echo "desktop spaces 1-4, click to switch" ;;
+    network)   echo "live up/down speed, click for top talkers" ;;
+    caffeine)  echo "keep the Mac awake, click to toggle" ;;
+    ports)     echo "running dev servers, click a row to kill" ;;
+    pomodoro)  echo "25 min focus timer, earns aura points" ;;
+    github)    echo "PRs waiting on you, click to open" ;;
+    weather)   echo "temperature and air quality" ;;
+    speedtest) echo "one-click internet speed test" ;;
+    meeting)   echo "next meeting countdown, click to join" ;;
+    focus)     echo "toggle Do Not Disturb" ;;
+    temps)     echo "CPU temperature and fan speed" ;;
+    media)     echo "now playing, click to pause" ;;
+    clipboard) echo "copy history, also on Option+V" ;;
+    aura)      echo "your effort score, click to review" ;;
+    journal)   echo "tamper-proof daily work log" ;;
+  esac
+}
+
+WIDGETS="spaces network caffeine ports pomodoro github weather speedtest meeting focus temps media clipboard aura journal"
+for w in $WIDGETS; do
   MARK="○" COLOR=0x66ffffff
   widget_on "$w" && MARK="●" && COLOR=$PINK
   sketchybar --add item "widgets_menu.$w" popup.widgets_menu \
@@ -20,6 +41,13 @@ for w in network caffeine ports pomodoro github weather speedtest meeting focus 
       label="$w" label.font="JetBrainsMono Nerd Font:Regular:11.0" label.padding_right=12 \
       background.drawing=off background.corner_radius=5 \
       script="$CONFIG_DIR/plugins/popup_row.sh" \
-      click_script="CFG=\$HOME/.config/sketchybar; if grep -q '^$w=on' \$CFG/widgets.conf; then sed -i '' 's/^$w=on/$w=off/' \$CFG/widgets.conf; else sed -i '' 's/^$w=off/$w=on/' \$CFG/widgets.conf; fi; sketchybar --reload" \
+      click_script="$CONFIG_DIR/plugins/widget_toggle.sh $w" \
     --subscribe "widgets_menu.$w" mouse.entered mouse.exited
+  widget_hint "$w" > "${TMPDIR:-/tmp}/sketchybar_hint_widgets_menu.$w"
 done
+
+# tooltip surface (shown by popup_row.sh on hover)
+sketchybar --add item widgets_menu.hint popup.widgets_menu \
+  --set widgets_menu.hint drawing=off icon.drawing=off background.drawing=off \
+    label.color=$CYAN label.font="JetBrainsMono Nerd Font:Regular:10.0" \
+    label.padding_left=12 label.padding_right=12

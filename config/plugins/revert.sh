@@ -1,6 +1,6 @@
 #!/bin/bash
 # Revert to the native macOS menu bar (with confirmation). The native bar is
-# already live underneath (reserved-space design) — stopping the service IS the
+# already live underneath (reserved-space design) · stopping the service IS the
 # revert. Bring sketchybar back anytime: brew services start sketchybar
 CHOICE=$(osascript -e 'display dialog "Switch back to the native macOS menu bar?
 

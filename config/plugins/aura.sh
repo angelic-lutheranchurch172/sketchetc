@@ -24,15 +24,28 @@ today    $TODAY ✨
 7 days   $WEEK
 30 days  $MONTH
 EOF
+  # single Export row; the range options expand inline (accordion)
+  sketchybar --add item aura.row.export popup.aura \
+    --set aura.row.export icon=󰥶 icon.color=$CYAN icon.padding_left=10 \
+      background.drawing=off background.corner_radius=6 \
+      label="Export…" label.font="$ROW_FONT" label.padding_right=12 \
+      script="$CONFIG_DIR/plugins/popup_row.sh" \
+      click_script="$CONFIG_DIR/plugins/aura_accordion.sh" \
+    --subscribe aura.row.export mouse.entered mouse.exited
+  echo "shareable PNG card into Downloads" > "${TMPDIR:-/tmp}/sketchybar_hint_aura.row.export"
   for range in day week month year; do
     sketchybar --add item "aura.row.png_$range" popup.aura \
-      --set "aura.row.png_$range" icon=󰥶 icon.color=$CYAN icon.padding_left=10 \
+      --set "aura.row.png_$range" drawing=off icon=󰧟 icon.color=$CYAN icon.padding_left=22 \
         background.drawing=off background.corner_radius=6 \
-        label="Export $range PNG" label.font="$ROW_FONT" label.padding_right=12 \
+        label="$range" label.font="$ROW_FONT" label.padding_right=12 \
         script="$CONFIG_DIR/plugins/popup_row.sh" \
         click_script="$CONFIG_DIR/plugins/aura_export.sh $range; sketchybar --set aura popup.drawing=off" \
       --subscribe "aura.row.png_$range" mouse.entered mouse.exited
   done
+  sketchybar --add item aura.hint popup.aura \
+    --set aura.hint drawing=off icon.drawing=off background.drawing=off \
+      label.color=$CYAN label.font="JetBrainsMono Nerd Font:Regular:10.0" \
+      label.padding_left=12 label.padding_right=12
   toggle_popup
   exit 0
 fi

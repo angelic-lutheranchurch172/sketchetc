@@ -35,7 +35,7 @@ build_popup() {
   sketchybar --remove '/clipboard.row\..*/' 2>/dev/null
   sketchybar --add item clipboard.row.head popup.clipboard \
     --set clipboard.row.head icon.drawing=off background.drawing=off \
-      label="Clipboard — click to paste" label.color=$PINK label.font="$HEAD_FONT" \
+      label="Clipboard · click to paste" label.color=$PINK label.font="$HEAD_FONT" \
       label.padding_left=12 label.padding_right=12
   i=0
   ls -t "$STORE" | grep -v '^\.' | head -10 | while read -r f; do

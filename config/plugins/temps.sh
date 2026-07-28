@@ -1,11 +1,10 @@
 #!/bin/bash
 source "$CONFIG_DIR/plugins/hover.sh"
-hover
 
 command -v macmon >/dev/null || { sketchybar --set "$NAME" drawing=off; exit 0; }
 
 # one macmon sample: cpu temp from temp.cpu_temp_avg, fan speed from fans[].rpm
-# (fanless Macs report no fans / rpm 0 — the rpm segment auto-hides)
+# (fanless Macs report no fans / rpm 0 · the rpm segment auto-hides)
 read -r TEMP RPM < <(macmon pipe -s 1 2>/dev/null | python3 -c "
 import json, sys
 try:

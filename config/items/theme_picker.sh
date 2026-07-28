@@ -22,7 +22,7 @@ for entry in "vice-city:0xffff6ec7" "cyberpunk:0xfffcee0a" "matrix:0xff00ff41" "
     --set "theme_picker.$t" icon="$DOT" icon.color="$c" \
       icon.font="JetBrainsMono Nerd Font:Bold:20.0" \
       icon.padding_left=6 icon.padding_right=6 label.drawing=off background.drawing=off \
-      click_script="echo $t > \$HOME/.config/sketchybar/.theme; sketchybar --reload"
+      click_script="echo $t > \$HOME/.config/sketchybar/.theme; osascript -e 'display notification \"Theme: '$t'\" with title \"sketchetc\"'; sketchybar --reload"
 done
 
 CURRENT_SET=$(cat "$CONFIG_DIR/.iconset" 2>/dev/null || echo nerd)
@@ -32,5 +32,5 @@ for s in nerd minimal emoji; do
     --set "theme_picker.set_$s" icon.drawing=off label="$s" label.color="$COLOR" \
       label.font="JetBrainsMono Nerd Font:Bold:11.0" \
       label.padding_left=8 label.padding_right=8 background.drawing=off \
-      click_script="echo $s > \$HOME/.config/sketchybar/.iconset; sketchybar --reload"
+      click_script="echo $s > \$HOME/.config/sketchybar/.iconset; osascript -e 'display notification \"Icons: '$s'\" with title \"sketchetc\"'; sketchybar --reload"
 done

@@ -14,7 +14,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
     i=$((i + 1))
     sketchybar --add item "ram.top.$i" popup.ram \
       --set "ram.top.$i" icon.drawing=off background.drawing=off \
-        label="$(printf '%-18.18s %5d MB' "$(basename "$comm")" $((rss / 1024)))" \
+        label="$(printf '%-18.18s %7s' "$(basename "$comm")" "$(human_kb "$rss")")" \
         label.font="$ROW_FONT" label.padding_left=12 label.padding_right=12
   done
   sketchybar --add item ram.top.clear popup.ram \

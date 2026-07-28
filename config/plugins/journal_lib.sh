@@ -1,5 +1,5 @@
 #!/bin/bash
-# journal core — tamper-evident daily work log
+# journal core · tamper-evident daily work log
 # conf: root=<dir> days=Mon,Tue,... cutoff=HH:MM
 JCONF="$HOME/.local/share/sketchetc/journal.conf"
 JDRAFT="$HOME/.local/share/sketchetc/journal_draft.md"
@@ -32,7 +32,7 @@ jchain_append() { # file
   echo "$line" >> "$idx"
 }
 
-jfinalize() { # [content-file]  — write today's entry, chain it, lock it
+jfinalize() { # [content-file]  · write today's entry, chain it, lock it
   local f dir src
   f=$(jtoday_file); dir=$(dirname "$f")
   [ -z "$(jroot)" ] && return 1
@@ -47,7 +47,7 @@ jfinalize() { # [content-file]  — write today's entry, chain it, lock it
     if [ -s "$src" ]; then cat "$src"; else echo "_(no update logged)_"; fi
   } > "$f"
   jchain_append "$f"
-  chflags uchg "$f"          # macOS immutable flag — editors and rm bounce off
+  chflags uchg "$f"          # macOS immutable flag · editors and rm bounce off
   rm -f "$JDRAFT"
   osascript -e 'display notification "Today'"'"'s update is locked in" with title "Journal" sound name "Glass"' &
 }

@@ -32,9 +32,9 @@ fi
 # ponytail: polls Spotify then Music via osascript; media_change event is broken on macOS 15.4+
 track=""
 if pgrep -xq Spotify; then
-  track=$(osascript -e 'tell application "Spotify" to if player state is playing then (get name of current track) & " — " & (get artist of current track)' 2>/dev/null)
+  track=$(osascript -e 'tell application "Spotify" to if player state is playing then (get name of current track) & " · " & (get artist of current track)' 2>/dev/null)
 elif pgrep -xq Music; then
-  track=$(osascript -e 'tell application "Music" to if player state is playing then (get name of current track) & " — " & (get artist of current track)' 2>/dev/null)
+  track=$(osascript -e 'tell application "Music" to if player state is playing then (get name of current track) & " · " & (get artist of current track)' 2>/dev/null)
 fi
 
 if [ -n "$track" ]; then

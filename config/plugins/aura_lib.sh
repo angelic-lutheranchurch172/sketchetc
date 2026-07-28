@@ -1,5 +1,5 @@
 #!/bin/bash
-# aura accounting — source after hover.sh. CSV: date,points,kind,keys,clicks,agents,prs
+# aura accounting · source after hover.sh. CSV: date,points,kind,keys,clicks,agents,prs
 AURA_DIR="$HOME/.local/share/sketchetc/aura"
 mkdir -p "$AURA_DIR"
 
@@ -28,10 +28,10 @@ aura_add() { # points kind keys clicks agents prs
   echo "$(date +%Y-%m-%d),$1,$2,${3:-0},${4:-0},${5:-0},${6:-0}" >> "$(aura_csv)"
 }
 
-aura_award() { # points  — celebrate: flash widget + voice + notification
+aura_award() { # points  · celebrate: flash widget + voice + notification
   local P=$1
   aura_add "$P" "${2:-pomodoro}" "${3:-0}" "${4:-0}" "${5:-0}" "${6:-0}"
-  osascript -e "display notification \"+$P aura — locked in 🔥\" with title \"Aura\" sound name \"Glass\"" &
+  osascript -e "display notification \"+$P aura · locked in 🔥\" with title \"Aura\" sound name \"Glass\"" &
   say -v Samantha "Plus $P aura points. You are locked in." &
   sketchybar --set aura drawing=on label="+$P ✨" label.color=$PINK icon.color=$PINK
   sketchybar --animate sin 20 --set aura icon.y_offset=4 icon.y_offset=0

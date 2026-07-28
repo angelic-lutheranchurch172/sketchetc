@@ -1,9 +1,11 @@
 #!/bin/bash
-# shared interactivity helpers — source at top of every plugin.
-# also loads the active theme palette ($PINK/$CYAN/... ) for all plugins.
+# shared interactivity helpers · source at top of every plugin.
+# also loads the active theme palette ($PINK/$CYAN/...) + iconset for all plugins.
 source "$CONFIG_DIR/colors.sh"
 
-# glow on hover
+POPUP_MARKER="${TMPDIR:-/tmp}/sketchybar_open_popup"
+
+# glow on hover (only wire this to items whose click does something)
 hover() {
   case "$SENDER" in
     mouse.entered) sketchybar --animate tanh 8 --set "$NAME" background.border_color=$PURPLE; exit 0 ;;
@@ -11,23 +13,41 @@ hover() {
   esac
 }
 
-# close ALL popups when mouse leaves the bar/popup entirely
+# macOS-native popup behavior: popups close ONLY on outside click / other item /
+# app switch · never on mere mouse-out. These senders are swallowed here.
 close_popup_on_exit() {
   case "$SENDER" in
-    mouse.exited.global)  sketchybar --set "/.*/" popup.drawing=off; exit 0 ;;
-    mouse.entered.global) exit 0 ;;
+    mouse.exited.global|mouse.entered.global) exit 0 ;;
   esac
 }
 
-# exclusive toggle: close every other popup, then toggle self
+# exclusive toggle: close every other popup, then toggle self; track state in a
+# marker file so click_watch never has to poll every item.
 toggle_popup() {
-  # popup's own drawing is the first key inside the "popup" block
-  WAS_OPEN=$(sketchybar --query "$NAME" | awk '/"popup"/ {getline l; print (l ~ /"on"/) ? 1 : 0; exit}')
+  WAS_OPEN=0
+  [ "$(cat "$POPUP_MARKER" 2>/dev/null)" = "$NAME" ] && WAS_OPEN=1
   sketchybar --set "/.*/" popup.drawing=off
+  rm -f "$POPUP_MARKER"
   if [ "$WAS_OPEN" -eq 0 ]; then
     sketchybar --animate sin 12 --set "$NAME" icon.y_offset=3 icon.y_offset=0
     sketchybar --set "$NAME" popup.drawing=on
+    echo "$NAME" > "$POPUP_MARKER"
   fi
+}
+
+close_all_popups() {
+  sketchybar --set "/.*/" popup.drawing=off
+  rm -f "$POPUP_MARKER"
+}
+
+# human-readable size from a KB value: 823K · 12.4M · 1.2G · 1.1T
+human_kb() {
+  awk -v k="$1" 'BEGIN {
+    if (k >= 1073741824)      printf "%.1fT", k/1073741824
+    else if (k >= 1048576)    printf "%.1fG", k/1048576
+    else if (k >= 1024)       printf "%.1fM", k/1024
+    else                      printf "%dK", k
+  }'
 }
 
 # standard styling for dynamic popup rows

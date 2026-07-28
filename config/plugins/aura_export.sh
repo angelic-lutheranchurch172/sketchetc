@@ -1,12 +1,12 @@
 #!/bin/bash
-# aura_export.sh day|week|month|year — classy shareable PNG into ~/Downloads
+# aura_export.sh day|week|month|year · classy shareable PNG into ~/Downloads
 source "$CONFIG_DIR/colors.sh"
 source "$CONFIG_DIR/plugins/aura_lib.sh"
 RANGE="${1:-week}"
 
 case "$RANGE" in
   day)   DAYS=1;   TITLE="$(date '+%A, %d %B %Y')" ;;
-  week)  DAYS=7;   TITLE="week of $(date -v-6d '+%d %b') – $(date '+%d %b %Y')" ;;
+  week)  DAYS=7;   TITLE="week of $(date -v-6d '+%d %b') · $(date '+%d %b %Y')" ;;
   month) DAYS=30;  TITLE="$(date '+%B %Y')" ;;
   year)  DAYS=365; TITLE="$(date '+%Y') in review" ;;
 esac

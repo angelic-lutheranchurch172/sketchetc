@@ -1,5 +1,5 @@
 #!/bin/bash
-# media_ctl.sh <prev|playpause|next> — drives whichever player is running
+# media_ctl.sh <prev|playpause|next> · drives whichever player is running
 APP=""
 pgrep -xq Spotify && APP="Spotify"
 [ -z "$APP" ] && pgrep -xq Music && APP="Music"

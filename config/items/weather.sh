@@ -6,4 +6,4 @@ sketchybar --add item weather right \
     icon=$ICON_WEATHER \
     icon.color=$CYAN \
     script="$PLUGIN_DIR/weather.sh" \
-  --subscribe weather mouse.entered mouse.exited
+

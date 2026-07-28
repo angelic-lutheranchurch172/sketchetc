@@ -1,4 +1,5 @@
 #!/bin/bash
+widget_on spaces || return 0
 # ponytail: fixed 4 spaces; bump the loop if you use more
 for sid in 1 2 3 4; do
   sketchybar --add space space.$sid left \

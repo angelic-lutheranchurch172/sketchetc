@@ -13,7 +13,7 @@ if [ "$1" = "paste" ]; then
   sleep 0.15
   # try to paste into the frontmost app; harmless no-op without Accessibility
   osascript -e 'tell application "System Events" to keystroke "v" using command down' 2>/dev/null \
-    || osascript -e 'display notification "Copied — press ⌘V to paste" with title "Clipboard"'
+    || osascript -e 'display notification "Copied · press ⌘V to paste" with title "Clipboard"'
   exit 0
 fi
 

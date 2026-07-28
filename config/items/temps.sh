@@ -7,4 +7,4 @@ sketchybar --add item temps right \
     icon=$ICON_TEMPS \
     icon.color=$CYAN \
     script="$PLUGIN_DIR/temps.sh" \
-  --subscribe temps mouse.entered mouse.exited
+

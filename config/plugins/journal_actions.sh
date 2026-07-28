@@ -1,5 +1,5 @@
 #!/bin/bash
-# journal_actions.sh setup|draft|finalize|copy <range>|verify
+# journal_actions.sh setup|draft|finalize|view|browse|copy <range>|verify
 source "$CONFIG_DIR/colors.sh"
 source "$CONFIG_DIR/plugins/journal_lib.sh"
 
@@ -11,18 +11,46 @@ case "$1" in
     CUTOFF=$(osascript -e 'text returned of (display dialog "Day cutoff time (entries auto-lock after this):" default answer "21:00")' 2>/dev/null)
     mkdir -p "$(dirname "$JCONF")"
     printf 'root=%s\ndays=%s\ncutoff=%s\n' "${ROOT%/}" "${DAYS:-Mon,Tue,Wed,Thu,Fri}" "${CUTOFF:-21:00}" > "$JCONF"
-    osascript -e 'display notification "Journal ready — write your first update from the 󱓧 menu" with title "Journal"'
+    osascript -e 'display notification "Journal ready. Write your first update from the journal menu." with title "Journal"'
     ;;
   draft)
-    [ -f "$JDRAFT" ] || printf -- "- \n" > "$JDRAFT"
-    open -t "$JDRAFT" 2>/dev/null || open "$JDRAFT"
-    osascript -e 'display notification "Write in the draft, save, then hit Finalize in the 󱓧 menu" with title "Journal"'
+    # centered overlay editor: native multiline dialog, appends to today's draft
+    ENTRY=$(osascript <<'AS' 2>/dev/null
+display dialog "Today's update (markdown):" with title "Journal" default answer "-
+-
+- " buttons {"Cancel", "Add"} default button "Add"
+AS
+)
+    [[ "$ENTRY" != *"Add"* ]] && exit 0
+    TEXT="${ENTRY#*text returned:}"
+    [ -z "$(echo "$TEXT" | tr -d ' \n-')" ] && exit 0
+    {
+      [ -s "$JDRAFT" ] && echo
+      echo "**$(date '+%H:%M')**"
+      echo
+      echo "$TEXT" | sed '/^[[:space:]]*-[[:space:]]*$/d'
+    } >> "$JDRAFT"
+    osascript -e 'display notification "Added to today. Finalize from the journal menu when done." with title "Journal"'
     ;;
   finalize)
     if [ ! -s "$JDRAFT" ]; then
-      osascript -e 'display dialog "No draft written yet — finalize with an empty entry?" buttons {"Cancel","Finalize empty"} default button "Cancel"' | grep -q Finalize || exit 0
+      osascript -e 'display dialog "No draft written yet. Finalize with an empty entry?" buttons {"Cancel","Finalize empty"} default button "Cancel"' 2>/dev/null | grep -q Finalize || exit 0
     fi
     jfinalize
+    ;;
+  view)
+    ROOT=$(jroot)
+    CHOICES=$(find "$ROOT" -name '*.md' | sort -r | head -14 | while read -r f; do
+      rel="${f#"$ROOT"/}"
+      echo "${rel%.md}" | tr '/' '-'
+    done)
+    [ -z "$CHOICES" ] && { osascript -e 'display notification "No entries yet" with title "Journal"'; exit 0; }
+    PICK=$(osascript -e "choose from list {$(echo "$CHOICES" | sed 's/^/"/; s/$/"/' | paste -sd, -)} with prompt \"View which day?\"" 2>/dev/null)
+    [ "$PICK" = "false" ] || [ -z "$PICK" ] && exit 0
+    qlmanage -p "$ROOT/$(echo "$PICK" | tr '-' '/').md" >/dev/null 2>&1 &
+    ;;
+  browse)
+    open "$(jroot)"
     ;;
   copy)
     jexport "$2" | pbcopy

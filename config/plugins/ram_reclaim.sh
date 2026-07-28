@@ -1,5 +1,5 @@
 #!/bin/bash
-# RAM Reclaim SAFE — frees memory without stopping anything the user relies on.
+# RAM Reclaim SAFE · frees memory without stopping anything the user relies on.
 # Only reaps ORPHANED idle helpers: ppid==1 (parent already dead), owned by
 # current user, <1% CPU, matching known helper patterns. Then purge + DNS
 # flush (one admin password prompt). Ported from user's AppleScript.
@@ -29,7 +29,7 @@ for pid in $PIDS; do
   kill -0 "$pid" 2>/dev/null && kill -KILL "$pid" 2>/dev/null
 done
 
-# purge + DNS flush — single admin prompt; user may cancel, that's fine
+# purge + DNS flush · single admin prompt; user may cancel, that's fine
 osascript -e 'do shell script "/usr/sbin/purge; dscacheutil -flushcache; killall -HUP mDNSResponder" with administrator privileges' 2>/dev/null
 
 sleep 3

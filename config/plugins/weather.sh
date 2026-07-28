@@ -1,6 +1,5 @@
 #!/bin/bash
 source "$CONFIG_DIR/plugins/hover.sh"
-hover
 
 LOC_CACHE="$CONFIG_DIR/.loc"
 [ -f "$LOC_CACHE" ] || curl -s --max-time 5 ipinfo.io/loc > "$LOC_CACHE" 2>/dev/null
