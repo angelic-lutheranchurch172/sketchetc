@@ -7,6 +7,7 @@ echo "==> Installing sketchybar + fonts"
 brew tap FelixKratz/formulae 2>/dev/null || true
 brew trust felixkratz/formulae 2>/dev/null || true   # newer brew requires trusting third-party taps
 brew list sketchybar &>/dev/null || brew install sketchybar
+brew list macmon &>/dev/null || brew install macmon   # temps + fan RPM widget
 brew list --cask font-jetbrains-mono-nerd-font &>/dev/null || brew install --cask font-jetbrains-mono-nerd-font
 [ -f "$HOME/Library/Fonts/sketchybar-app-font.ttf" ] || \
   curl -sL "https://github.com/kvndrsslr/sketchybar-app-font/releases/latest/download/sketchybar-app-font.ttf" \
@@ -41,11 +42,12 @@ EOF
 defaults import com.apple.symbolichotkeys "$TMP/shk.plist"
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
-echo "==> Compiling mouse_info helper (outside-click popup close)"
+echo "==> Compiling Swift helpers (outside-click close, meetings widget)"
 if command -v swiftc >/dev/null; then
   swiftc -O -o "$REPO/config/plugins/bin/mouse_info" "$REPO/config/plugins/bin/mouse_info.swift"
+  swiftc -O -o "$REPO/config/plugins/bin/next_event" "$REPO/config/plugins/bin/next_event.swift"
 else
-  echo "   swiftc not found — skipping (popups still close via app-switch/mouse-exit)"
+  echo "   swiftc not found — skipping (popups still close via app-switch; meetings widget hides)"
 fi
 
 echo "==> Starting service"

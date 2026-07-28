@@ -1,51 +1,72 @@
 # sketchetc
 
-My macOS menu bar, rebuilt with [SketchyBar](https://felixkratz.github.io/SketchyBar/) — GTA Vice City colors (hot pink · neon cyan · sunset orange on deep night-purple), JetBrains Mono Nerd Font, fully interactive.
+A themeable, fully interactive macOS menu bar built on [SketchyBar](https://felixkratz.github.io/SketchyBar/).
+Free and open source — and it replaces a small pile of paid menu bar apps.
 
 ![topbar](assets/topbar.png)
 
-## Features
+## Replaces ~$45+ of paid apps
 
-| Item | Click |
+| Widget | What it does | Replaces |
+|---|---|---|
+| 󰛴 Network speed | live ↓/↑, click → top-5 bandwidth hogs | iStat Menus ($12) |
+| 󰔏 Temps | CPU °C + fan RPM (auto-hides RPM on fanless Macs) | TG Pro ($10) |
+| 󰅶 Caffeinate | one-click keep-awake toggle | Lungo ($10) |
+| 󰓅 Speedtest | click → Apple's `networkQuality`, result in the bar | Speedtest app |
+| 󰔛 Pomodoro | click → 25:00 countdown, spoken finish | Flow ($) |
+| 󰤙 Meetings | "Standup in 8m" appears <60 min out, click joins the Zoom/Meet | Meeter ($) |
+| 󰊤 GitHub | PRs awaiting your review · your open PRs, click to open | — |
+| 󰙨 Dev ports | running dev servers (3000, 5173, 8080…), click to kill | — |
+| 󰚩 AI agents | running claude/codex/gemini sessions with uptime | — |
+| 󰃢 Clear RAM | reaps orphaned helpers + purge, then *speaks* the result | CleanMyMac-ish |
+| 󰖙 Weather | temp + AQI, color-coded | paid weather widgets |
+| + | spaces, front-app switcher, media controls + progress, volume slider, battery health, calendar | — |
+
+Everything is **toggleable** from the 󰀵 menu — turn off what you don't want, it
+vanishes from the bar.
+
+## Themes (hot-swap from the 󰀵 menu)
+
+| | |
 |---|---|
-| 󰀵 Apple menu | About / Settings / Lock / Sleep / Reload / Fullscreen-guard toggle |
-| Spaces 1–4 | Switch desktop (⌃1–⌃4 under the hood) |
-| Front app | Popup listing running apps — click to switch |
-| Now playing | Play/pause; right-click for ⏮ ⏯ ⏭ |
-| 󰚩 AI agents | Counts running claude/codex/gemini processes; popup lists them |
-| Volume | Popup with live drag slider; scroll the icon to nudge |
-| Wi-Fi | IP, toggle Wi-Fi, Network Settings |
-| Battery | Time remaining + cycle count |
-| CPU / RAM pill | Top-5 processes; **Clear RAM** button (safely reaps orphaned helpers + purge, then speaks the result) |
-| Clock | Calendar with today highlighted |
+| **Vice City** ![](assets/theme-vice-city.png) | **Cyberpunk** ![](assets/theme-cyberpunk.png) |
+| **Matrix** ![](assets/theme-matrix.png) | **Catppuccin** ![](assets/theme-catppuccin.png) |
+| **Miami Sunset** ![](assets/theme-miami-sunset.png) | *[add yours →](WIDGETS.md)* |
 
-Behaviors that make it feel native:
+A theme is a 12-line file in `config/themes/`. Every widget uses palette roles,
+so new themes restyle the whole bar including popups.
 
-- **Reserved space** — windows tile below the bar, never behind it (bar draws over the native menu bar's reserved strip).
-- **Fullscreen guard** — fullscreening any app auto-converts it to a fill-below-the-bar window; toggle off from the 󰀵 menu for real fullscreen.
-- **One popup at a time**, closes on outside click / app switch / mouse-out. Hover glows, animated everything.
+## Feel
 
-## Install (fresh Mac)
+- **One popup at a time**, closes on outside click / app switch / mouse-out
+- **Reserved space** — windows tile below the bar, never behind it
+- **Fullscreen guard** — fullscreening an app converts it to fill-below-the-bar (toggleable)
+- Hover glows, bounce animations, all in the active theme's colors
+- **Autostarts** on login (brew services / launchd)
+
+## Install
 
 ```bash
 git clone https://github.com/himanshu007-creator/sketchetc.git
 cd sketchetc && ./install.sh
 ```
 
-Grant the two permissions macOS asks for (Accessibility + Automation for sketchybar) and you're done.
+Grant the permissions macOS asks for (Accessibility → space switching + fullscreen
+guard; Calendar → meetings widget). Everything degrades gracefully if you decline.
 
-## Layout
+## Leave anytime
 
-```
-config/
-├── sketchybarrc   # bar geometry + defaults
-├── colors.sh      # Vice City palette
-├── items/         # one file per widget (creation + subscriptions)
-└── plugins/       # logic (bash) + bin/mouse_info (tiny Swift helper)
-```
+- **󰀵 menu → "Revert to macOS bar"** — confirmation dialog, then the native bar
+  is back instantly (`brew services start sketchybar` returns you).
+- `./uninstall.sh` — full clean removal.
 
-`~/.config/sketchybar` is a symlink to `config/`, so live tweaks are repo edits. See `CLAUDE.md` for conventions and the macOS quirks this setup works around.
+## Extend
+
+`WIDGETS.md` — a widget is ~30 lines of bash in two files. `ROADMAP.md` — what's
+next (album-art tinting, per-agent token burn, more themes — PRs welcome).
 
 ## Credit
 
-Built on [FelixKratz/SketchyBar](https://github.com/FelixKratz/SketchyBar) · app icons from [sketchybar-app-font](https://github.com/kvndrsslr/sketchybar-app-font).
+Built on [FelixKratz/SketchyBar](https://github.com/FelixKratz/SketchyBar) ·
+app icons from [sketchybar-app-font](https://github.com/kvndrsslr/sketchybar-app-font) ·
+temps via [macmon](https://github.com/vladkens/macmon).

@@ -1,4 +1,5 @@
 #!/bin/bash
+source "$CONFIG_DIR/colors.sh"
 if [ "$SENDER" = "mouse.clicked" ]; then
   # ctrl+1..4 via "Switch to Desktop N" hotkeys (key codes 18-21)
   KEY=$((17 + ${NAME#space.}))
@@ -7,4 +8,4 @@ if [ "$SENDER" = "mouse.clicked" ]; then
 fi
 
 sketchybar --animate tanh 10 --set "$NAME" icon.highlight="$SELECTED" \
-  background.color=$([ "$SELECTED" = "true" ] && echo 0xd9241640 || echo 0x00000000)
+  background.color=$([ "$SELECTED" = "true" ] && echo $ITEM_BG_COLOR || echo $TRANSPARENT)

@@ -40,16 +40,26 @@ sketchybar --default \
   padding_right=4 \
   updates=on
 
-# ---- Items ----
+# ---- Items (right side: first sourced = rightmost) ----
 source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/front_app.sh"
+source "$ITEM_DIR/meeting.sh"
 
 source "$ITEM_DIR/clock.sh"
 source "$ITEM_DIR/stats.sh"       # ram + cpu bracket
+source "$ITEM_DIR/temps.sh"
 source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/volume.sh"
+source "$ITEM_DIR/network.sh"
+source "$ITEM_DIR/weather.sh"
+source "$ITEM_DIR/github.sh"
+source "$ITEM_DIR/pomodoro.sh"
+source "$ITEM_DIR/caffeine.sh"
+source "$ITEM_DIR/speedtest.sh"
+source "$ITEM_DIR/focus.sh"
+source "$ITEM_DIR/ports.sh"
 source "$ITEM_DIR/ai_agents.sh"
 source "$ITEM_DIR/media.sh"
 source "$ITEM_DIR/fs_guard.sh"

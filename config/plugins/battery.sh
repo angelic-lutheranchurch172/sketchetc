@@ -10,11 +10,11 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   sketchybar --remove '/battery.info\..*/' 2>/dev/null
   sketchybar \
     --add item battery.info.time popup.battery \
-    --set battery.info.time icon=󰥔 icon.color=0xffffa552 icon.padding_left=10 \
-      label="$TIME_LEFT" label.padding_right=12 \
+    --set battery.info.time icon=󰥔 icon.color=$ORANGE icon.padding_left=10 \
+      background.drawing=off label="$TIME_LEFT" label.padding_right=12 \
     --add item battery.info.cycles popup.battery \
-    --set battery.info.cycles icon=󰑓 icon.color=0xffffa552 icon.padding_left=10 \
-      label="${CYCLES:-?} cycles" label.padding_right=12
+    --set battery.info.cycles icon=󰑓 icon.color=$ORANGE icon.padding_left=10 \
+      background.drawing=off label="${CYCLES:-?} cycles" label.padding_right=12
   toggle_popup
   exit 0
 fi
@@ -24,7 +24,7 @@ PCT=$(echo "$BATT" | grep -Eo '[0-9]+%' | head -1 | tr -d '%')
 [ -z "$PCT" ] && exit 0
 
 if echo "$BATT" | grep -q 'AC Power'; then
-  ICON=󰂄 COLOR=0xff0bd3d3
+  ICON=󰂄 COLOR=$CYAN
 else
   case $PCT in
     9[0-9]|100) ICON=󰁹 ;;
@@ -33,8 +33,8 @@ else
     [1-2][0-9]) ICON=󰁻 ;;
     *)          ICON=󰁺 ;;
   esac
-  COLOR=0xffffa552
-  [ "$PCT" -le 20 ] && COLOR=0xffff5577
+  COLOR=$ORANGE
+  [ "$PCT" -le 20 ] && COLOR=$RED
 fi
 
 sketchybar --set "$NAME" icon="$ICON" icon.color=$COLOR label="${PCT}%"

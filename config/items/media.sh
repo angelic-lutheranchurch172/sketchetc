@@ -1,4 +1,5 @@
 #!/bin/bash
+widget_on media || return 0
 sketchybar --add item media right \
   --set media \
     update_freq=5 \
@@ -20,4 +21,7 @@ sketchybar --add item media.prev popup.media \
   --add item media.play popup.media \
   --set media.play icon=󰐊 $CTL_PROPS icon.color=$PINK click_script="$PLUGIN_DIR/media_ctl.sh playpause" \
   --add item media.next popup.media \
-  --set media.next icon=󰒭 $CTL_PROPS click_script="$PLUGIN_DIR/media_ctl.sh next"
+  --set media.next icon=󰒭 $CTL_PROPS click_script="$PLUGIN_DIR/media_ctl.sh next" \
+  --add item media.progress popup.media \
+  --set media.progress icon.drawing=off background.drawing=off drawing=off \
+    label.font="JetBrainsMono Nerd Font:Regular:11.0" label.padding_right=10

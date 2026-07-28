@@ -1,11 +1,13 @@
 #!/bin/bash
-# shared interactivity helpers — source at top of every plugin
+# shared interactivity helpers — source at top of every plugin.
+# also loads the active theme palette ($PINK/$CYAN/... ) for all plugins.
+source "$CONFIG_DIR/colors.sh"
 
-# purple glow on hover
+# glow on hover
 hover() {
   case "$SENDER" in
-    mouse.entered) sketchybar --animate tanh 8 --set "$NAME" background.border_color=0xcc9b5de5; exit 0 ;;
-    mouse.exited)  sketchybar --animate tanh 8 --set "$NAME" background.border_color=0x00000000; exit 0 ;;
+    mouse.entered) sketchybar --animate tanh 8 --set "$NAME" background.border_color=$PURPLE; exit 0 ;;
+    mouse.exited)  sketchybar --animate tanh 8 --set "$NAME" background.border_color=$TRANSPARENT; exit 0 ;;
   esac
 }
 
@@ -27,3 +29,7 @@ toggle_popup() {
     sketchybar --set "$NAME" popup.drawing=on
   fi
 }
+
+# standard styling for dynamic popup rows
+ROW_FONT="JetBrainsMono Nerd Font:Regular:12.0"
+HEAD_FONT="JetBrainsMono Nerd Font:Bold:13.0"
