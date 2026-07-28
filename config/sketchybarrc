@@ -52,5 +52,6 @@ source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/volume.sh"
 source "$ITEM_DIR/ai_agents.sh"
 source "$ITEM_DIR/media.sh"
+source "$ITEM_DIR/fs_guard.sh"
 
 sketchybar --update

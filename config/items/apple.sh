@@ -27,3 +27,11 @@ add_row settings 󰒓 "System Settings…" "open -a 'System Settings'"
 add_row lock     󰌾 "Lock Screen"      "pmset displaysleepnow"
 add_row sleep    󰐥 "Sleep"            "pmset sleepnow"
 add_row reload   󰑓 "Reload SketchyBar" "sketchybar --reload"
+
+# fullscreen-guard toggle (label reflects state; popup stays open to show it)
+FS_LABEL=$([ -f "$CONFIG_DIR/.fs_guard_off" ] && echo "Fullscreen Guard: OFF" || echo "Fullscreen Guard: ON")
+sketchybar --add item apple.fsguard popup.apple \
+  --set apple.fsguard icon=󰊓 icon.color=$CYAN label="$FS_LABEL" $ROW_PROPS \
+    script="$PLUGIN_DIR/popup_row.sh" \
+    click_script='CFG="$HOME/.config/sketchybar"; if [ -f "$CFG/.fs_guard_off" ]; then rm "$CFG/.fs_guard_off"; sketchybar --set apple.fsguard label="Fullscreen Guard: ON"; else touch "$CFG/.fs_guard_off"; sketchybar --set apple.fsguard label="Fullscreen Guard: OFF"; fi' \
+  --subscribe apple.fsguard mouse.entered mouse.exited

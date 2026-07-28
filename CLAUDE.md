@@ -13,7 +13,7 @@ to `sketchybar` when macOS prompts.
 
 ```
 config/
-├── sketchybarrc      # bar geometry (h=30, topmost=on, show_in_fullscreen=on), defaults, sources items/
+├── sketchybarrc      # bar geometry (h=30, topmost=on, show_in_fullscreen=off), defaults, sources items/
 ├── colors.sh         # Vice City palette + shared $POPUP_PROPS
 ├── items/            # one file per widget: --add, subscriptions, static popup rows
 └── plugins/          # update + event logic, one per widget (chmod +x, invoked by sketchybar with $NAME/$SENDER/$CONFIG_DIR)
@@ -43,6 +43,9 @@ config/
   Cost: app File/Edit menus sit behind the bar (use Cmd+Shift+/ menu search).
   Menubar height measured via a temp sketchybar item running osascript
   (sketchybar holds the Accessibility grant, the terminal doesn't).
+- Fullscreen spaces reserve nothing — a visible bar there ALWAYS overlays the
+  app and clashes with the native hover-reveal. Decision (user-chosen):
+  `show_in_fullscreen=off`; fullscreen is native, bar lives on normal desktops.
 - Sliders emit ONE event on drag-release, never during drag → live volume =
   `volume_watch.sh` polls `slider.percentage` while the popup is open.
 - In `--query` JSON the popup block nests `background.drawing` — read only the FIRST
