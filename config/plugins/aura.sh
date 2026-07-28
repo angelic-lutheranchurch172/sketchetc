@@ -43,8 +43,9 @@ EOF
       --subscribe "aura.row.png_$range" mouse.entered mouse.exited
   done
   sketchybar --add item aura.hint popup.aura \
-    --set aura.hint drawing=off icon.drawing=off background.drawing=off \
-      label.color=$CYAN label.font="JetBrainsMono Nerd Font:Regular:10.0" \
+    --set aura.hint icon.drawing=off background.drawing=off \
+      label="hover an option" label.color=0x44ffffff \
+      label.font="JetBrainsMono Nerd Font:Regular:10.0" \
       label.padding_left=12 label.padding_right=12
   toggle_popup
   exit 0

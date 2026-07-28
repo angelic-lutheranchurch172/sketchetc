@@ -21,17 +21,19 @@ close_popup_on_exit() {
   esac
 }
 
-# exclusive toggle: close every other popup, then toggle self; track state in a
-# marker file so click_watch never has to poll every item.
+# exclusive toggle: close every other popup, then toggle self. The marker file
+# records "<name> <click-counter-at-open>" so click_watch closes only on clicks
+# that happen AFTER the popup opened (the opening click can never self-close).
 toggle_popup() {
   WAS_OPEN=0
-  [ "$(cat "$POPUP_MARKER" 2>/dev/null)" = "$NAME" ] && WAS_OPEN=1
+  [ "$(cat "$POPUP_MARKER" 2>/dev/null | awk '{print $1}')" = "$NAME" ] && WAS_OPEN=1
   sketchybar --set "/.*/" popup.drawing=off
   rm -f "$POPUP_MARKER"
   if [ "$WAS_OPEN" -eq 0 ]; then
     sketchybar --animate sin 12 --set "$NAME" icon.y_offset=3 icon.y_offset=0
     sketchybar --set "$NAME" popup.drawing=on
-    echo "$NAME" > "$POPUP_MARKER"
+    read -r _ _ OPEN_CLICKS _ _ _ < <("$CONFIG_DIR/plugins/bin/mouse_info" 2>/dev/null || echo "0 0 0 0 0 0")
+    echo "$NAME ${OPEN_CLICKS:-0}" > "$POPUP_MARKER"
   fi
 }
 

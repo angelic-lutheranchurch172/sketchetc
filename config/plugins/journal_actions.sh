@@ -14,15 +14,8 @@ case "$1" in
     osascript -e 'display notification "Journal ready. Write your first update from the journal menu." with title "Journal"'
     ;;
   draft)
-    # centered overlay editor: native multiline dialog, appends to today's draft
-    ENTRY=$(osascript <<'AS' 2>/dev/null
-display dialog "Today's update (markdown):" with title "Journal" default answer "-
--
-- " buttons {"Cancel", "Add"} default button "Add"
-AS
-)
-    [[ "$ENTRY" != *"Add"* ]] && exit 0
-    TEXT="${ENTRY#*text returned:}"
+    # centered overlay editor (custom dark window, 720x520)
+    TEXT=$("$CONFIG_DIR/plugins/bin/entry_box" "Today's update · $(date '+%A, %d %B')" "- ") || exit 0
     [ -z "$(echo "$TEXT" | tr -d ' \n-')" ] && exit 0
     {
       [ -s "$JDRAFT" ] && echo

@@ -25,7 +25,7 @@ case "$(head -1 "$STATE")" in
     ;;
   done*)
     IFS='|' read -r _ DOWN UP TS < "$STATE"
-    if [ $(( $(date +%s) - TS )) -gt 60 ]; then
+    if [ $(( $(date +%s) - TS )) -gt 10 ]; then
       rm -f "$STATE"
       sketchybar --set "$NAME" icon=$ICON_SPEED icon.color=$WHITE label.drawing=off
     else
