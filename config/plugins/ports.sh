@@ -3,12 +3,14 @@ source "$CONFIG_DIR/plugins/hover.sh"
 hover
 close_popup_on_exit
 
-# ponytail: fixed dev-port list; extend as needed
-PORT_RE=':(300[0-9]|4200|5000|5173|8000|8080|9000)$'
-
+# every user listener in the dev range (1024-9999), minus macOS system noise;
+# deduped by port (IPv4/IPv6 double entries)
 listeners() {
   lsof -iTCP -sTCP:LISTEN -P -n 2>/dev/null \
-    | awk -v re="$PORT_RE" '$9 ~ re {split($9,a,":"); print a[length(a)], $2, $1}' | sort -un
+    | awk '$1 !~ /^(ControlCe|rapportd|sharingd|AirPlay|mDNSRespo|identitys|launchd)/ {
+        split($9, a, ":"); p = a[length(a)]
+        if (p >= 1024 && p <= 9999 && !seen[p]++) print p, $2, $1
+      }' | sort -un
 }
 
 if [ "$SENDER" = "mouse.clicked" ]; then

@@ -2,7 +2,7 @@
 widget_on ports || return 0
 sketchybar --add item ports right \
   --set ports \
-    update_freq=10 \
+    update_freq=5 \
     icon=$ICON_PORTS \
     icon.color=$ORANGE \
     drawing=off \
