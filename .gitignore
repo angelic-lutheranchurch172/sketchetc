@@ -1,2 +1,5 @@
 .DS_Store
 config/plugins/bin/mouse_info
+config/.fs_guard.log
+config/.fs_guard_prompted
+config/.fs_guard_off

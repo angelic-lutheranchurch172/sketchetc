@@ -6,5 +6,6 @@ import CoreGraphics
 let loc = NSEvent.mouseLocation
 let screenH = NSScreen.screens.map { $0.frame.maxY }.max() ?? 0
 let clicks = CGEventSource.counterForEventType(.combinedSessionState, eventType: .leftMouseDown)
+let screenW = NSScreen.screens.map { $0.frame.maxX }.max() ?? 0
 // Cocoa origin is bottom-left; report Y as distance from the TOP of the screen
-print("\(Int(loc.x)) \(Int(screenH - loc.y)) \(clicks) \(Int(screenH))")
+print("\(Int(loc.x)) \(Int(screenH - loc.y)) \(clicks) \(Int(screenH)) \(Int(screenW))")
