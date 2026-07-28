@@ -9,7 +9,6 @@ case "$SENDER" in
   mouse.clicked)
     sketchybar --set volume.slider slider.percentage="$(get_vol)"
     toggle_popup
-    nohup "$CONFIG_DIR/plugins/volume_watch.sh" >/dev/null 2>&1 &
     exit 0
     ;;
   mouse.scrolled)

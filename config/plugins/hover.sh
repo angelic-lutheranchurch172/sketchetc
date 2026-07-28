@@ -25,6 +25,5 @@ toggle_popup() {
   if [ "$WAS_OPEN" -eq 0 ]; then
     sketchybar --animate sin 12 --set "$NAME" icon.y_offset=3 icon.y_offset=0
     sketchybar --set "$NAME" popup.drawing=on
-    nohup "$CONFIG_DIR/plugins/popup_guard.sh" "$NAME" >/dev/null 2>&1 &
   fi
 }
