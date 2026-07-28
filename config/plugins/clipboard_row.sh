@@ -35,19 +35,4 @@ if [ "$1" = "paste" ]; then
   exit 0
 fi
 
-# hover: for image rows, show/hide the large preview
-IDX="${NAME##*.}"
-FILE=$(cat "${TMPDIR:-/tmp}/sketchybar_clip_$IDX" 2>/dev/null)
-case "$SENDER" in
-  mouse.entered)
-    sketchybar --set "$NAME" background.drawing=on background.color=$ITEM_BG_COLOR
-    if [[ "$FILE" == *.png ]]; then
-      sketchybar --set clipboard.row.preview drawing=on \
-        background.image="$FILE" background.image.scale=0.25 background.image.corner_radius=8
-    fi
-    ;;
-  mouse.exited)
-    sketchybar --set "$NAME" background.drawing=off
-    sketchybar --set clipboard.row.preview drawing=off
-    ;;
-esac
+# (hover highlighting for clipboard rows lives in popup_row.sh)
