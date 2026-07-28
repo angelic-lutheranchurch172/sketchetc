@@ -16,6 +16,6 @@ case "$SENDER" in
     ;;
   mouse.exited)
     sketchybar --set "$NAME" background.color=$TRANSPARENT
-    sketchybar --set "$PARENT.hint" label="hover an option" label.color=0x44ffffff 2>/dev/null
+    sketchybar --set "$PARENT.hint" label="" 2>/dev/null
     ;;
 esac

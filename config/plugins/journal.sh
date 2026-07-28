@@ -45,7 +45,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   fi
   sketchybar --add item journal.hint popup.journal \
     --set journal.hint width=300 icon.drawing=off background.drawing=off \
-      label="hover an option" label.color=0x44ffffff \
+      label="" label.color=0x44ffffff \
       label.font="JetBrainsMono Nerd Font:Regular:10.0" \
       label.padding_left=12 label.padding_right=12
   toggle_popup

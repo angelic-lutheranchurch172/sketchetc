@@ -49,6 +49,6 @@ done
 # tooltip line (always drawn; popup_row.sh swaps its text on hover)
 sketchybar --add item widgets_menu.hint popup.widgets_menu \
   --set widgets_menu.hint width=300 icon.drawing=off background.drawing=off \
-    label="hover an option" label.color=0x44ffffff \
+    label="" label.color=0x44ffffff \
     label.font="JetBrainsMono Nerd Font:Regular:10.0" \
     label.padding_left=12 label.padding_right=12
