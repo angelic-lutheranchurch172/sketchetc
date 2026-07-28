@@ -37,6 +37,14 @@ AFTER=$(free_mb)
 GAINED=$((AFTER - BEFORE))
 [ "$GAINED" -lt 0 ] && GAINED=0
 
-osascript -e "display notification \"Freed ${GAINED} MB · reaped ${REAPED} orphaned helper(s) · nothing running was stopped\" with title \"RAM Reclaim\" sound name \"Glass\""
-say -v Samantha "Reclaimed ${GAINED} megabytes of RAM. ${REAPED} orphaned helpers reaped." &
+if [ "$GAINED" -ge 1024 ]; then
+  AMOUNT=$(awk -v m="$GAINED" 'BEGIN {printf "%.1f GB", m/1024}')
+  SPOKEN=$(awk -v m="$GAINED" 'BEGIN {printf "%.1f gigabytes", m/1024}')
+else
+  AMOUNT="${GAINED} MB"
+  SPOKEN="${GAINED} megabytes"
+fi
+
+osascript -e "display notification \"Freed ${AMOUNT} · reaped ${REAPED} orphaned helper(s) · nothing running was stopped\" with title \"RAM Reclaim\" sound name \"Glass\""
+say -v Samantha "Reclaimed ${SPOKEN} of RAM. ${REAPED} orphaned helpers reaped." &
 sketchybar --update
