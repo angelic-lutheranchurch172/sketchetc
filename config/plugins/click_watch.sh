@@ -8,7 +8,6 @@
 BIN="$CONFIG_DIR/plugins/bin/mouse_info"
 [ -x "$BIN" ] || exit 0
 STATE="${TMPDIR:-/tmp}/sketchybar_clickwatch"
-ZONE="${CLICKWATCH_ZONE:-380}"
 
 popup_open() {
   sketchybar --query "$1" 2>/dev/null | awk '/"popup"/ {getline l; exit !(l ~ /"on"/)}'
@@ -28,6 +27,13 @@ fi
 
 LAST=$(cat "$STATE" 2>/dev/null || echo "$CLICKS")
 echo "$CLICKS" > "$STATE"
+
+# any click below the bar closes popups; clicking a popup row still runs its
+# click_script first (close follows on the next tick). The volume popup gets a
+# taller protected zone so slider dragging isn't cut short.
+ZONE=30
+[ "$OPEN_ITEM" = "volume" ] && ZONE=150
+ZONE="${CLICKWATCH_ZONE:-$ZONE}"
 
 if [ "$CLICKS" -gt "${LAST:-$CLICKS}" ] && [ "$Y" -gt "$ZONE" ]; then
   sketchybar --set "/.*/" popup.drawing=off
