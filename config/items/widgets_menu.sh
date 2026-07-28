@@ -32,5 +32,5 @@ sketchybar --add item widgets_menu.help popup.widgets_menu \
     label.padding_right=12 \
     background.drawing=on background.color=$TRANSPARENT background.corner_radius=5 \
     script="$CONFIG_DIR/plugins/popup_row.sh" \
-    click_script="sketchybar --set widgets_menu popup.drawing=off; qlmanage -p '$CONFIG_DIR/HELP.md' >/dev/null 2>&1 &" \
+    click_script="sketchybar --set widgets_menu popup.drawing=off; osascript -e 'do shell script \"nohup qlmanage -p $CONFIG_DIR/HELP.md > /dev/null 2>&1 &\"'" \
   --subscribe widgets_menu.help mouse.entered mouse.exited

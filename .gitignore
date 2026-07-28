@@ -9,3 +9,4 @@ config/.theme
 config/plugins/bin/aura_card
 config/plugins/bin/clip_picker
 config/plugins/bin/entry_box
+config/plugins/bin/journal_win

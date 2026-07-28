@@ -2,13 +2,16 @@
 // monospace text view with padding. Prints entered text on OK, exits 1 on cancel.
 import AppKit
 
-let title = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "Entry"
-let placeholder = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : ""
+var args = Array(CommandLine.arguments.dropFirst())
+var lineMode = false
+if args.first == "--line" { lineMode = true; args.removeFirst() }
+let title = args.count > 0 ? args[0] : "Entry"
+let placeholder = args.count > 1 ? args[1] : ""
 
 let app = NSApplication.shared
 app.setActivationPolicy(.accessory)
 
-let W: CGFloat = 720, H: CGFloat = 520, PAD: CGFloat = 24
+let W: CGFloat = lineMode ? 460 : 720, H: CGFloat = lineMode ? 150 : 520, PAD: CGFloat = 24
 
 let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: W, height: H),
                    styleMask: [.titled, .fullSizeContentView],
@@ -29,7 +32,7 @@ titleLabel.textColor = NSColor(calibratedRed: 1.0, green: 0.43, blue: 0.78, alph
 titleLabel.frame = NSRect(x: PAD, y: H - 52, width: W - 2 * PAD, height: 24)
 content.addSubview(titleLabel)
 
-let scroll = NSScrollView(frame: NSRect(x: PAD, y: 76, width: W - 2 * PAD, height: H - 148))
+let scroll = NSScrollView(frame: NSRect(x: PAD, y: lineMode ? 62 : 76, width: W - 2 * PAD, height: lineMode ? 40 : H - 148))
 scroll.hasVerticalScroller = true
 scroll.borderType = .noBorder
 scroll.wantsLayer = true
@@ -56,12 +59,17 @@ cancel.keyEquivalent = "\u{1b}"
 ok.frame = NSRect(x: W - PAD - 90, y: PAD, width: 90, height: 32)
 cancel.frame = NSRect(x: W - PAD - 190, y: PAD, width: 90, height: 32)
 
-class Handler: NSObject {
+class Handler: NSObject, NSTextViewDelegate {
     var tv: NSTextView
     var done: (String?) -> Void
     init(tv: NSTextView, done: @escaping (String?) -> Void) { self.tv = tv; self.done = done }
     @objc func ok() { done(tv.string) }
     @objc func cancel() { done(nil) }
+    // in line mode, Enter submits
+    func textView(_ textView: NSTextView, doCommandBy sel: Selector) -> Bool {
+        if lineMode && sel == #selector(NSResponder.insertNewline(_:)) { ok(); return true }
+        return false
+    }
 }
 let handler = Handler(tv: tv) { text in
     result = text
@@ -69,6 +77,8 @@ let handler = Handler(tv: tv) { text in
 }
 ok.target = handler; ok.action = #selector(Handler.ok)
 cancel.target = handler; cancel.action = #selector(Handler.cancel)
+tv.delegate = handler
+if lineMode { ok.title = "OK" }
 content.addSubview(ok); content.addSubview(cancel)
 
 win.makeKeyAndOrderFront(nil)
