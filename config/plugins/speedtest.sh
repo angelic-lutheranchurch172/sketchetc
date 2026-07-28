@@ -15,7 +15,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
 fi
 
 if [ ! -f "$STATE" ]; then
-  sketchybar --set "$NAME" icon=󰓅 icon.color=$WHITE label.drawing=off
+  sketchybar --set "$NAME" icon=$ICON_SPEED icon.color=$WHITE label.drawing=off
   exit 0
 fi
 
@@ -27,9 +27,9 @@ case "$(head -1 "$STATE")" in
     IFS='|' read -r _ DOWN UP TS < "$STATE"
     if [ $(( $(date +%s) - TS )) -gt 60 ]; then
       rm -f "$STATE"
-      sketchybar --set "$NAME" icon=󰓅 icon.color=$WHITE label.drawing=off
+      sketchybar --set "$NAME" icon=$ICON_SPEED icon.color=$WHITE label.drawing=off
     else
-      sketchybar --set "$NAME" icon=󰓅 icon.color=$CYAN label.drawing=on label="↓${DOWN} ↑${UP}"
+      sketchybar --set "$NAME" icon=$ICON_SPEED icon.color=$CYAN label.drawing=on label="↓${DOWN} ↑${UP}"
     fi
     ;;
 esac

@@ -20,7 +20,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   listeners | while read -r port pid comm; do
     i=$((i + 1))
     sketchybar --add item "ports.row.$i" popup.ports \
-      --set "ports.row.$i" icon=󰙨 icon.color=$ORANGE icon.padding_left=10 \
+      --set "ports.row.$i" icon=$ICON_PORTS icon.color=$ORANGE icon.padding_left=10 \
         background.drawing=off background.corner_radius=6 \
         label=":$port · $comm (pid $pid)" label.font="$ROW_FONT" label.padding_right=12 \
         script="$CONFIG_DIR/plugins/popup_row.sh" \

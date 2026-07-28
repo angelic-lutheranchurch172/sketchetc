@@ -24,14 +24,14 @@ PCT=$(echo "$BATT" | grep -Eo '[0-9]+%' | head -1 | tr -d '%')
 [ -z "$PCT" ] && exit 0
 
 if echo "$BATT" | grep -q 'AC Power'; then
-  ICON=󰂄 COLOR=$CYAN
+  ICON=$ICON_BAT_CHG COLOR=$CYAN
 else
   case $PCT in
-    9[0-9]|100) ICON=󰁹 ;;
-    [6-8][0-9]) ICON=󰂀 ;;
-    [3-5][0-9]) ICON=󰁾 ;;
-    [1-2][0-9]) ICON=󰁻 ;;
-    *)          ICON=󰁺 ;;
+    9[0-9]|100) ICON=$ICON_BAT_100 ;;
+    [6-8][0-9]) ICON=$ICON_BAT_75 ;;
+    [3-5][0-9]) ICON=$ICON_BAT_50 ;;
+    [1-2][0-9]) ICON=$ICON_BAT_25 ;;
+    *)          ICON=$ICON_BAT_10 ;;
   esac
   COLOR=$ORANGE
   [ "$PCT" -le 20 ] && COLOR=$RED

@@ -1,7 +1,7 @@
 #!/bin/bash
 sketchybar --add item wifi right \
   --set wifi \
-    icon=󰖩 \
+    icon=$ICON_WIFI \
     icon.color=$CYAN \
     $POPUP_PROPS \
     popup.align=right \
@@ -14,7 +14,7 @@ sketchybar --add item wifi.ip popup.wifi \
   --set wifi.ip icon=󰩟 icon.color=$CYAN label="…" $ROW_PROPS
 
 sketchybar --add item wifi.toggle popup.wifi \
-  --set wifi.toggle icon=󰖩 icon.color=$PINK label="Toggle Wi-Fi" $ROW_PROPS \
+  --set wifi.toggle icon=$ICON_WIFI icon.color=$PINK label="Toggle Wi-Fi" $ROW_PROPS \
     script="$PLUGIN_DIR/popup_row.sh" \
     click_script="if networksetup -getairportpower en0 | grep -q ': On'; then networksetup -setairportpower en0 off; else networksetup -setairportpower en0 on; fi; sketchybar --set wifi popup.drawing=off" \
   --subscribe wifi.toggle mouse.entered mouse.exited

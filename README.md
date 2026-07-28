@@ -22,8 +22,13 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 | 󰖙 Weather | temp + AQI, color-coded | paid weather widgets |
 | + | spaces, front-app switcher, media controls + progress, volume slider, battery health, calendar | — |
 
-Everything is **toggleable** from the 󰀵 menu — turn off what you don't want, it
-vanishes from the bar.
+| 󰅍 Clipboard history | **Ctrl+V anywhere** → last 30 copies (text + images, hover previews), click to paste | Paste ($30/yr) / Maccy |
+| 󱠇 Aura points | pomodoros scored on real activity (keys/clicks/agents/PRs) → spoken awards, shareable PNG cards ([how](AURA.md)) | — |
+| 󱓧 Journal | tamper-evident daily work log: immutable files + hash chain, export any timeframe ([how](JOURNAL.md)) | — |
+
+Everything is **toggleable** from the 󰨝 popover — turn off what you don't want,
+it vanishes from the bar. Icons come in three sets (nerd / minimal / emoji),
+switchable next to the theme dots in the 󰏘 popover.
 
 ## Themes (hot-swap from the 󰀵 menu)
 

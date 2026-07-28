@@ -2,7 +2,7 @@
 sketchybar --add item clock right \
   --set clock \
     update_freq=10 \
-    icon=󰥔 \
+    icon=$ICON_CLOCK \
     icon.color=$CYAN \
     $POPUP_PROPS \
     popup.align=right \

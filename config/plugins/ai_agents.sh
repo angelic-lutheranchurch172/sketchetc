@@ -13,7 +13,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   ps -axo pid=,etime=,%cpu=,comm= | grep -E '(^|/| )(claude|codex|gemini)$' | while read -r pid etime pcpu comm; do
     i=$((i + 1))
     sketchybar --add item "ai_agents.row.$i" popup.ai_agents \
-      --set "ai_agents.row.$i" icon=󰚩 icon.color=$PURPLE icon.padding_left=10 \
+      --set "ai_agents.row.$i" icon=$ICON_AGENTS icon.color=$PURPLE icon.padding_left=10 \
         background.drawing=off \
         label="$(printf '%s · up %s · %s%% cpu · pid %s' "$(basename "$comm")" "$etime" "$pcpu" "$pid")" \
         label.font="$ROW_FONT" label.padding_right=12

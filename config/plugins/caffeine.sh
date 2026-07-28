@@ -12,7 +12,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
 fi
 
 if pgrep -x caffeinate >/dev/null; then
-  sketchybar --set "$NAME" icon=󰅶 icon.color=$PINK
+  sketchybar --set "$NAME" icon=$ICON_CAF_ON icon.color=$PINK
 else
-  sketchybar --set "$NAME" icon=󰛊 icon.color=$WHITE
+  sketchybar --set "$NAME" icon=$ICON_CAF_OFF icon.color=$WHITE
 fi

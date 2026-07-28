@@ -14,7 +14,7 @@ popup_open() {
 }
 
 OPEN_ITEM=""
-for it in apple clock ram cpu battery wifi volume ai_agents media front_app network ports github; do
+for it in apple clock ram cpu battery wifi volume ai_agents media front_app network ports github clipboard aura journal theme_picker widgets_menu; do
   popup_open "$it" && OPEN_ITEM="$it" && break
 done
 

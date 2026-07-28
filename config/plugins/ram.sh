@@ -18,7 +18,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
         label.font="$ROW_FONT" label.padding_left=12 label.padding_right=12
   done
   sketchybar --add item ram.top.clear popup.ram \
-    --set ram.top.clear icon=󰃢 icon.color=$PINK icon.padding_left=12 \
+    --set ram.top.clear icon=$ICON_CLEAN icon.color=$PINK icon.padding_left=12 \
       background.drawing=off background.corner_radius=6 \
       label="Clear RAM" label.color=$PINK \
       label.font="JetBrainsMono Nerd Font:Bold:12.0" label.padding_right=12 \

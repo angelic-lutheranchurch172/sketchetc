@@ -2,7 +2,7 @@
 sketchybar --add item ram right \
   --set ram \
     update_freq=4 \
-    icon=󰍛 \
+    icon=$ICON_RAM \
     icon.color=$PINK \
     background.drawing=off \
     $POPUP_PROPS \
@@ -13,7 +13,7 @@ sketchybar --add item ram right \
 sketchybar --add item cpu right \
   --set cpu \
     update_freq=4 \
-    icon=󰘚 \
+    icon=$ICON_CPU \
     icon.color=$CYAN \
     background.drawing=off \
     $POPUP_PROPS \

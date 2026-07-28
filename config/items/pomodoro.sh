@@ -3,7 +3,7 @@ widget_on pomodoro || return 0
 sketchybar --add item pomodoro right \
   --set pomodoro \
     update_freq=1 \
-    icon=󰔛 \
+    icon=$ICON_POMO \
     icon.color=$WHITE \
     label.drawing=off \
     script="$PLUGIN_DIR/pomodoro.sh" \

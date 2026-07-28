@@ -7,7 +7,11 @@ echo "==> Installing sketchybar + fonts"
 brew tap FelixKratz/formulae 2>/dev/null || true
 brew trust felixkratz/formulae 2>/dev/null || true   # newer brew requires trusting third-party taps
 brew list sketchybar &>/dev/null || brew install sketchybar
-brew list macmon &>/dev/null || brew install macmon   # temps + fan RPM widget
+brew list macmon &>/dev/null || brew install macmon      # temps + fan RPM widget
+brew list pngpaste &>/dev/null || brew install pngpaste  # clipboard image capture
+brew tap koekeishiya/formulae 2>/dev/null || true
+brew trust koekeishiya/formulae 2>/dev/null || true
+brew list skhd &>/dev/null || brew install koekeishiya/formulae/skhd  # Ctrl+V clipboard hotkey
 brew list --cask font-jetbrains-mono-nerd-font &>/dev/null || brew install --cask font-jetbrains-mono-nerd-font
 [ -f "$HOME/Library/Fonts/sketchybar-app-font.ttf" ] || \
   curl -sL "https://github.com/kvndrsslr/sketchybar-app-font/releases/latest/download/sketchybar-app-font.ttf" \
@@ -46,9 +50,17 @@ echo "==> Compiling Swift helpers (outside-click close, meetings widget)"
 if command -v swiftc >/dev/null; then
   swiftc -O -o "$REPO/config/plugins/bin/mouse_info" "$REPO/config/plugins/bin/mouse_info.swift"
   swiftc -O -o "$REPO/config/plugins/bin/next_event" "$REPO/config/plugins/bin/next_event.swift"
+  swiftc -O -o "$REPO/config/plugins/bin/aura_card" "$REPO/config/plugins/bin/aura_card.swift"
 else
   echo "   swiftc not found — skipping (popups still close via app-switch; meetings widget hides)"
 fi
+
+echo "==> Ctrl+V clipboard hotkey (skhd)"
+mkdir -p "$HOME/.config/skhd"
+grep -q clip_hotkey "$HOME/.config/skhd/skhdrc" 2>/dev/null || \
+  echo 'ctrl - v : sketchybar --trigger clip_hotkey' >> "$HOME/.config/skhd/skhdrc"
+skhd --install-service 2>/dev/null || true
+skhd --start-service 2>/dev/null || true
 
 echo "==> Starting service"
 brew services restart sketchybar

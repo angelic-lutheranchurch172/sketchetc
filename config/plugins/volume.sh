@@ -24,10 +24,10 @@ VOL="$INFO"
 [ -z "$VOL" ] && VOL=$(get_vol)
 
 case $VOL in
-  [7-9][0-9]|100)   ICON=󰕾 ;;
-  [3-6][0-9])       ICON=󰖀 ;;
-  [1-9]|[1-2][0-9]) ICON=󰕿 ;;
-  *)                ICON=󰝟 ;;
+  [7-9][0-9]|100)   ICON=$ICON_VOL_HI ;;
+  [3-6][0-9])       ICON=$ICON_VOL_MID ;;
+  [1-9]|[1-2][0-9]) ICON=$ICON_VOL_LO ;;
+  *)                ICON=$ICON_VOL_MUTE ;;
 esac
 
 sketchybar --set "$NAME" icon="$ICON" label="${VOL}%" \

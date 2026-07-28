@@ -3,7 +3,7 @@ widget_on meeting || return 0
 sketchybar --add item meeting left \
   --set meeting \
     update_freq=60 \
-    icon=󰤙 \
+    icon=$ICON_MEETING \
     icon.color=$PINK \
     drawing=off \
     script="$PLUGIN_DIR/meeting.sh" \

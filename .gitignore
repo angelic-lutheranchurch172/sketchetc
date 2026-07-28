@@ -6,3 +6,4 @@ config/.fs_guard_off
 config/plugins/bin/next_event
 config/.loc
 config/.theme
+config/plugins/bin/aura_card

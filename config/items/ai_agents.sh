@@ -2,7 +2,7 @@
 sketchybar --add item ai_agents right \
   --set ai_agents \
     update_freq=10 \
-    icon=󰚩 \
+    icon=$ICON_AGENTS \
     icon.color=$PURPLE \
     label.color=$PURPLE \
     drawing=off \

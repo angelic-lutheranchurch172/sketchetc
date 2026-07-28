@@ -3,7 +3,7 @@ widget_on speedtest || return 0
 sketchybar --add item speedtest right \
   --set speedtest \
     update_freq=2 \
-    icon=󰓅 \
+    icon=$ICON_SPEED \
     icon.color=$WHITE \
     label.drawing=off \
     script="$PLUGIN_DIR/speedtest.sh" \

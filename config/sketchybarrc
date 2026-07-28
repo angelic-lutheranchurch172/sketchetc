@@ -42,6 +42,8 @@ sketchybar --default \
 
 # ---- Items (right side: first sourced = rightmost) ----
 source "$ITEM_DIR/apple.sh"
+source "$ITEM_DIR/theme_picker.sh"
+source "$ITEM_DIR/widgets_menu.sh"
 source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/front_app.sh"
 source "$ITEM_DIR/meeting.sh"
@@ -60,6 +62,9 @@ source "$ITEM_DIR/caffeine.sh"
 source "$ITEM_DIR/speedtest.sh"
 source "$ITEM_DIR/focus.sh"
 source "$ITEM_DIR/ports.sh"
+source "$ITEM_DIR/clipboard.sh"
+source "$ITEM_DIR/aura.sh"
+source "$ITEM_DIR/journal.sh"
 source "$ITEM_DIR/ai_agents.sh"
 source "$ITEM_DIR/media.sh"
 source "$ITEM_DIR/fs_guard.sh"
