@@ -4,7 +4,7 @@ source "$CONFIG_DIR/colors.sh"
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 ITEM_DIR="$CONFIG_DIR/items"
 export PLUGIN_DIR
-rm -f "${TMPDIR:-/tmp}/sketchybar_open_popup"   # popup state always starts clean
+rm -f "${TMPDIR:-/tmp}/sketchybar_open_popup" "${TMPDIR:-/tmp}/sketchybar_tooltip_cur"   # popup state always starts clean
 
 # ---- Bar: floating, blurred, neon ----
 sketchybar --bar \
