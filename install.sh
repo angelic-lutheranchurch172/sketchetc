@@ -57,10 +57,10 @@ else
   echo "   swiftc not found — skipping (popups still close via app-switch; meetings widget hides)"
 fi
 
-echo "==> Ctrl+V clipboard hotkey (skhd)"
+echo "==> Option+V clipboard hotkey (skhd)"
 mkdir -p "$HOME/.config/skhd"
-grep -q clip_hotkey "$HOME/.config/skhd/skhdrc" 2>/dev/null || \
-  echo 'ctrl - v : sketchybar --trigger clip_hotkey' >> "$HOME/.config/skhd/skhdrc"
+grep -q clipboard_choose "$HOME/.config/skhd/skhdrc" 2>/dev/null || \
+  echo 'alt - v : CONFIG_DIR=$HOME/.config/sketchybar $HOME/.config/sketchybar/plugins/clipboard_choose.sh' >> "$HOME/.config/skhd/skhdrc"
 skhd --install-service 2>/dev/null || true
 skhd --start-service 2>/dev/null || true
 
