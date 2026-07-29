@@ -94,7 +94,10 @@ final class Ctl: NSObject, NSTableViewDataSource, NSTableViewDelegate {
     var wells: [String: NSColorWell] = [:]
     var nameField: NSTextField!
     var deleteBtn: NSButton!
+    var applyBtn: NSButton!
+    var lockLabel: NSTextField!
     var current: Int = 0
+    var locked: Bool { BUILTIN.contains(themes[current].name) }
 
     func numberOfRows(in t: NSTableView) -> Int { themes.count }
     func tableView(_ t: NSTableView, heightOfRow r: Int) -> CGFloat { 34 }
@@ -126,7 +129,16 @@ final class Ctl: NSObject, NSTableViewDataSource, NSTableViewDelegate {
         let th = themes[current]
         nameField.stringValue = th.name
         for (k, _) in ROLES { wells[k]?.color = color(th.colors[k] ?? "0xff888888") }
-        deleteBtn.isEnabled = !BUILTIN.contains(th.name)
+        let built = BUILTIN.contains(th.name)
+        deleteBtn.isEnabled = !built
+        nameField.isEditable = !built
+        // shipped themes are read-only: editing is disabled, copy first
+        for (_, w) in wells { w.isEnabled = !built }
+        applyBtn.title = built ? "Use theme" : "Apply"
+        lockLabel.stringValue = built
+            ? "built in · read only. Duplicate it to edit the colors."
+            : "your theme · edit any color, then Apply"
+        lockLabel.textColor = built ? dimC : accent2
     }
 
     func collect(named: String) -> Theme {
@@ -140,16 +152,12 @@ final class Ctl: NSObject, NSTableViewDataSource, NSTableViewDelegate {
         return t
     }
     @objc func apply() {
-        var name = themes[current].name
-        if BUILTIN.contains(name) {
-            // never mutate shipped themes: fork
-            let edited = collect(named: name)
-            if edited.colors != themes[current].colors { name += "-custom" }
+        let name = themes[current].name
+        if !BUILTIN.contains(name) {
+            writeTheme(collect(named: name))     // only ever writes user themes
         }
-        let t = collect(named: name)
-        writeTheme(t)
-        shell("echo '\(t.name)' > \"$HOME/.config/sketchybar/.theme\"; sketchybar --reload")
-        activeTheme = t.name
+        shell("echo '\(name)' > \"$HOME/.config/sketchybar/.theme\"; sketchybar --reload")
+        activeTheme = name
         themes = loadThemes()
         table.reloadData()
     }
@@ -157,7 +165,13 @@ final class Ctl: NSObject, NSTableViewDataSource, NSTableViewDelegate {
         var n = nameField.stringValue.trimmingCharacters(in: .whitespaces)
             .lowercased().replacingOccurrences(of: " ", with: "-")
         if n.isEmpty { n = "custom" }
-        if BUILTIN.contains(n) { n += "-custom" }
+        // never overwrite a shipped theme: land on a free "<name>-copy[-n]"
+        if BUILTIN.contains(n) { n += "-copy" }
+        var k = 1
+        while FileManager.default.fileExists(atPath: themesDir + "/" + n + ".sh") {
+            k += 1
+            n = n.hasSuffix("-copy") ? n + "-2" : n.replacingOccurrences(of: #"-\d+$"#, with: "", options: .regularExpression) + "-\(k)"
+        }
         let t = collect(named: n)
         writeTheme(t)
         themes = loadThemes()
@@ -238,7 +252,7 @@ var wells: [String: NSColorWell] = [:]
 let colW = (dW - 60) / 2
 for (i, role) in ROLES.enumerated() {
     let cx: CGFloat = i < 5 ? 20 : 40 + colW
-    let cy = detail.frame.height - 92 - CGFloat(i % 5) * 44
+    let cy = detail.frame.height - 106 - CGFloat(i % 5) * 44
     let well = NSColorWell(frame: NSRect(x: cx, y: cy, width: 44, height: 28))
     if #available(macOS 13.0, *) { well.colorWellStyle = .minimal }
     detail.addSubview(well)
@@ -250,18 +264,39 @@ for (i, role) in ROLES.enumerated() {
 }
 
 // iconset strip
-let stripY: CGFloat = 66
+let stripY: CGFloat = 102
 let stripLabel = NSTextField(labelWithString: "iconset")
 stripLabel.font = mono; stripLabel.textColor = dimC
 stripLabel.frame = NSRect(x: 20, y: stripY + 30, width: 100, height: 16)
 detail.addSubview(stripLabel)
-let SAMPLES = ["nerd": "󰥔 󰍛 󰖩 󰔛 󱠇 󱓧", "minimal": "󰅐 󰘚 󰤨 󱦟 󰫢 󰧮", "emoji": "🕐 🧠 📶 🍅 ✨ 📓"]
-for (i, set) in ["nerd", "minimal", "emoji"].enumerated() {
-    let b = NSButton(title: "\(set)  \(SAMPLES[set] ?? "")", target: ctl, action: #selector(Ctl.setIconset(_:)))
+// iconsets are files in ../icons — read them and preview real glyphs
+let iconDir = (themesDir as NSString).deletingLastPathComponent + "/icons"
+let sets = ((try? FileManager.default.contentsOfDirectory(atPath: iconDir)) ?? [])
+    .filter { $0.hasSuffix(".sh") }.map { String($0.dropLast(3)) }.sorted()
+func sample(_ set: String) -> String {
+    guard let src = try? String(contentsOfFile: iconDir + "/" + set + ".sh", encoding: .utf8) else { return "" }
+    var glyphs: [String] = []
+    for key in ["ICON_CLOCK", "ICON_RAM", "ICON_WIFI", "ICON_POMO", "ICON_AURA"] {
+        for line in src.components(separatedBy: "\n") where line.contains(key + "=") {
+            if let part = line.components(separatedBy: key + "=").last {
+                let g = part.components(separatedBy: " ")[0].replacingOccurrences(of: "\"", with: "")
+                if !g.isEmpty { glyphs.append(g) }
+            }
+            break
+        }
+    }
+    return glyphs.joined(separator: " ")
+}
+let perRow = 3
+let bw = (dW - 40 - CGFloat(perRow - 1) * 8) / CGFloat(perRow)
+for (i, set) in sets.enumerated() {
+    let b = NSButton(title: "\(set)  \(sample(set))", target: ctl, action: #selector(Ctl.setIconset(_:)))
     b.alternateTitle = set
     b.bezelStyle = .rounded
     b.font = mono
-    b.frame = NSRect(x: 20 + CGFloat(i) * ((dW - 40) / 3), y: stripY, width: (dW - 48) / 3, height: 30)
+    let rowIdx = i / perRow, colIdx = i % perRow
+    b.frame = NSRect(x: 20 + CGFloat(colIdx) * (bw + 8),
+                     y: stripY - CGFloat(rowIdx) * 36, width: bw, height: 30)
     if set == activeIconset { b.contentTintColor = accent1 }
     detail.addSubview(b)
 }
@@ -272,15 +307,24 @@ func btn(_ t: String, _ x: CGFloat, _ w: CGFloat, _ a: Selector) -> NSButton {
     b.frame = NSRect(x: x, y: 16, width: w, height: 30)
     return b
 }
-detail.addSubview(btn("Apply", dW - 110, 90, #selector(Ctl.apply)))
-detail.addSubview(btn("Save as new", dW - 240, 120, #selector(Ctl.saveAs)))
+let applyBtn = btn("Apply", dW - 110, 90, #selector(Ctl.apply))
+detail.addSubview(btn("Duplicate", dW - 240, 120, #selector(Ctl.saveAs)))
+detail.addSubview(applyBtn)
 let deleteBtn = btn("Delete", 20, 90, #selector(Ctl.deleteTheme))
 detail.addSubview(deleteBtn)
+
+let lockLabel = NSTextField(labelWithString: "")
+lockLabel.font = mono
+lockLabel.textColor = dimC
+lockLabel.frame = NSRect(x: 20, y: detail.frame.height - 68, width: dW - 40, height: 16)
+detail.addSubview(lockLabel)
 
 ctl.table = table
 ctl.wells = wells
 ctl.nameField = nameField
 ctl.deleteBtn = deleteBtn
+ctl.applyBtn = applyBtn
+ctl.lockLabel = lockLabel
 
 if let i = themes.firstIndex(where: { $0.name == activeTheme }) {
     table.selectRowIndexes([i], byExtendingSelection: false)

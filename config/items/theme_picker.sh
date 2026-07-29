@@ -29,7 +29,8 @@ for f in "$CONFIG_DIR"/themes/*.sh; do
 done
 
 CURRENT_SET=$(cat "$CONFIG_DIR/.iconset" 2>/dev/null || echo nerd)
-for s in nerd minimal emoji; do
+for f2 in "$CONFIG_DIR"/icons/*.sh; do
+  s=$(basename "$f2" .sh)
   COLOR=0x66ffffff; [ "$s" = "$CURRENT_SET" ] && COLOR=$PINK
   sketchybar --add item "theme_picker.set_$s" popup.theme_picker \
     --set "theme_picker.set_$s" icon.drawing=off label="$s" label.color="$COLOR" \

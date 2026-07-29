@@ -43,8 +43,9 @@ switchable next to the theme dots in the 󰏘 popover.
 | **Matrix** ![](assets/theme-matrix.png) | **Catppuccin** ![](assets/theme-catppuccin.png) |
 | **Miami Sunset** ![](assets/theme-miami-sunset.png) | *[add yours →](WIDGETS.md)* |
 
-**Theme Studio** (󰏘 → studio) edits every color with native pickers, saves your
-own themes, and previews icon sets. A theme is a 12-line file in
+**Theme Studio** (󰏘 → studio) ships six icon sets (nerd, minimal, outline,
+retro, emoji, plain) and full color editing with native pickers. Built-in themes
+are read only: Duplicate one, then edit and Apply. A theme is a 12-line file in
 `config/themes/`, and every widget uses palette roles, so any theme restyles the
 whole bar including popups.
 

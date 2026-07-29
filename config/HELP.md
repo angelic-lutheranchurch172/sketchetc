@@ -5,8 +5,10 @@
 - **󰀵 apple** · system menu: About, Settings, Lock, Sleep, Reload, notification
   sound, Fullscreen Guard toggle, and *Revert to macOS bar*.
 - **󰏘 theme dot** · a dot per theme (click to hot-swap the whole bar), three
-  icon sets, and **studio** which opens Theme Studio: edit every color with
-  native pickers, save your own themes, delete them, preview icon sets.
+  icon sets, and **studio** which opens Theme Studio: six icon sets (nerd,
+  minimal, outline, retro, emoji, plain), and full color editing. Built-in
+  themes are read only, so Duplicate one to make it yours, then edit any color
+  with the native picker and Apply.
 - **󰨝 widgets** · turn any widget below on or off. The bar allows 9 active at
   a time so it never overflows.
 - **front app** · the focused app. Click for a switcher listing running apps.
