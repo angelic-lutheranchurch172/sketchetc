@@ -268,7 +268,8 @@ temps via [macmon](https://github.com/vladkens/macmon).
 
 ## License
 
-[CC BY-NC-ND 4.0](LICENSE). Free to use forever, and it will never be sold.
+[CC BY-NC-ND 4.0](LICENSE) — plain English version: [LICENSE-SUMMARY.md](LICENSE-SUMMARY.md).
+Free to use forever, and it will never be sold.
 Share it and credit it freely; do not charge for it, and do not publish a
 modified copy as your own release. Configuring your own bar, writing your own
 themes, and forking to open a pull request here are all fine.
