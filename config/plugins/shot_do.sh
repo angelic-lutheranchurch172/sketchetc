@@ -4,6 +4,8 @@ CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
 OUT="$HOME/Desktop/shot-$(date +%H%M%S).png"
 sleep 0.3   # let the popup close before interactive capture starts
 
+# Interactive captures can take as long as the user needs, so they must not be
+# tied to the click_script's lifetime; the detach pattern keeps them alive.
 case "$1" in
   area)     screencapture -i "$OUT" ;;
   areaclip) screencapture -ic ;;

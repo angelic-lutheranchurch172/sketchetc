@@ -16,7 +16,7 @@ shot_row() { # name icon label flags dest
       background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 width=260 \
       label="$3" label.font="JetBrainsMono Nerd Font:Regular:12.0" label.padding_right=12 \
       script="$CONFIG_DIR/plugins/popup_row.sh" \
-      click_script="sketchybar --set shot popup.drawing=off; $CONFIG_DIR/plugins/shot_do.sh $4" \
+      click_script="sketchybar --set shot popup.drawing=off; osascript -e 'do shell script \"nohup $CONFIG_DIR/plugins/shot_do.sh $4 > /dev/null 2>&1 &\"'" \
     --subscribe "shot.$1" mouse.entered mouse.exited
 }
 shot_row area  󰩭 "Capture area"             area
