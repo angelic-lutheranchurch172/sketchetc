@@ -1,0 +1,26 @@
+#!/bin/bash
+widget_on shot || return 0
+sketchybar --add item shot right \
+  --set shot \
+    icon=$ICON_SHOT \
+    icon.color=$CYAN \
+    label.drawing=off \
+    $POPUP_PROPS \
+    popup.align=right \
+    script="$PLUGIN_DIR/shot.sh" \
+  --subscribe shot mouse.entered mouse.exited mouse.clicked mouse.entered.global mouse.exited.global
+
+shot_row() { # name icon label flags dest
+  sketchybar --add item "shot.$1" popup.shot \
+    --set "shot.$1" icon="$2" icon.color=$CYAN icon.padding_left=10 \
+      background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 width=260 \
+      label="$3" label.font="JetBrainsMono Nerd Font:Regular:12.0" label.padding_right=12 \
+      script="$CONFIG_DIR/plugins/popup_row.sh" \
+      click_script="sketchybar --set shot popup.drawing=off; $CONFIG_DIR/plugins/shot_do.sh $4" \
+    --subscribe "shot.$1" mouse.entered mouse.exited
+}
+shot_row area  󰩭 "Capture area"             area
+shot_row clip  󰅍 "Capture area → clipboard" areaclip
+shot_row win   󰖯 "Capture window"           window
+shot_row full  󰹑 "Full screen"              full
+shot_row timer 󰔛 "Full screen in 5s"        timer

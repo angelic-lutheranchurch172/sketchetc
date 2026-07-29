@@ -11,3 +11,4 @@ config/plugins/bin/clip_picker
 config/plugins/bin/entry_box
 config/plugins/bin/journal_win
 config/plugins/bin/help_win
+config/plugins/bin/theme_win

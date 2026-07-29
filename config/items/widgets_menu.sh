@@ -12,7 +12,7 @@ sketchybar --add item widgets_menu left \
     script="$PLUGIN_DIR/widgets_menu.sh" \
   --subscribe widgets_menu mouse.clicked mouse.entered mouse.exited mouse.entered.global mouse.exited.global
 
-WIDGETS="spaces network caffeine ports pomodoro github weather speedtest meeting focus temps media clipboard aura journal"
+WIDGETS="spaces network caffeine ports pomodoro github weather speedtest meeting focus temps media clipboard aura journal snap switches shot bluetooth"
 for w in $WIDGETS; do
   MARK="○" COLOR=0x66ffffff
   widget_on "$w" && MARK="●" && COLOR=$PINK

@@ -4,8 +4,9 @@
 
 - **󰀵 apple** · system menu: About, Settings, Lock, Sleep, Reload, notification
   sound, Fullscreen Guard toggle, and *Revert to macOS bar*.
-- **󰏘 theme dot** · five theme color dots (click to hot-swap the whole bar) and
-  three icon sets: nerd, minimal, emoji.
+- **󰏘 theme dot** · a dot per theme (click to hot-swap the whole bar), three
+  icon sets, and **studio** which opens Theme Studio: edit every color with
+  native pickers, save your own themes, delete them, preview icon sets.
 - **󰨝 widgets** · turn any widget below on or off. The bar allows 9 active at
   a time so it never overflows.
 - **front app** · the focused app. Click for a switcher listing running apps.
@@ -14,8 +15,8 @@
   the result).
 - **battery** · click for time remaining and cycle count.
 - **wifi** · click for IP, a Wi-Fi toggle, and Network Settings.
-- **volume** · click for a live slider or type an exact 0-100. Scroll the icon
-  to nudge.
+- **volume** · click for a live slider, an exact 0-100 entry, and an output
+  device switcher (speakers, headphones, AirPlay). Scroll the icon to nudge.
 - **clock** · click opens Calendar.
 
 ## Toggleable widgets (defaults marked ●)
@@ -39,6 +40,14 @@
   Zoom/Meet link.
 - ○ **focus** · toggle Do Not Disturb (needs a Shortcut named "Toggle Focus").
 - ○ **temps** · CPU temperature, plus fan RPM on Macs that have a fan.
+- ● **snap** · window snapping: halves, thirds, maximize, center for the
+  frontmost window. Replaces Magnet.
+- ○ **switches** · quick toggles: dark mode, hide desktop icons, empty Trash,
+  screensaver. Replaces One Switch.
+- ○ **shot** · screenshot menu: area, window, full screen, straight to
+  clipboard, 5 second timer.
+- ○ **bluetooth** · paired devices with battery where reported; click to
+  connect or disconnect.
 - ○ **journal** · daily work log that locks at noon next day, plus a personal
   scratchpad for free notes. Work entries are hash-chained and immutable.
 

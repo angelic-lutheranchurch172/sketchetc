@@ -5,7 +5,7 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 
 ![topbar](assets/topbar.png)
 
-## Replaces ~$45+ of paid apps
+## Replaces ~$120 of paid apps
 
 | Widget | What it does | Replaces |
 |---|---|---|
@@ -17,6 +17,11 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 | 󰤙 Meetings | "Standup in 8m" appears <60 min out, click joins the Zoom/Meet | Meeter ($) |
 | 󰊤 GitHub | PRs awaiting your review · your open PRs, click to open | — |
 | 󰙨 Dev ports | running dev servers (3000, 5173, 8080…), click to kill | — |
+| 󱂬 Window snapping | halves, thirds, maximize, center the frontmost window | Magnet ($8) |
+| 󰨚 Quick switches | dark mode, hide desktop icons, empty Trash, screensaver | One Switch ($10) |
+| 󰹑 Screenshots | area, window, full screen, to clipboard, 5s timer | CleanShot ($29) |
+| 󰂯 Bluetooth | paired devices + battery, click to connect | AirBuddy ($10) |
+| 󰕾 Audio switching | pick output device right in the volume popup | SoundSource ($47) |
 | 󰚩 AI agents | running claude/codex/gemini sessions with uptime | — |
 | 󰃢 Clear RAM | reaps orphaned helpers + purge, then *speaks* the result | CleanMyMac-ish |
 | 󰖙 Weather | temp + AQI, color-coded | paid weather widgets |
@@ -38,8 +43,10 @@ switchable next to the theme dots in the 󰏘 popover.
 | **Matrix** ![](assets/theme-matrix.png) | **Catppuccin** ![](assets/theme-catppuccin.png) |
 | **Miami Sunset** ![](assets/theme-miami-sunset.png) | *[add yours →](WIDGETS.md)* |
 
-A theme is a 12-line file in `config/themes/`. Every widget uses palette roles,
-so new themes restyle the whole bar including popups.
+**Theme Studio** (󰏘 → studio) edits every color with native pickers, saves your
+own themes, and previews icon sets. A theme is a 12-line file in
+`config/themes/`, and every widget uses palette roles, so any theme restyles the
+whole bar including popups.
 
 ## Feel
 

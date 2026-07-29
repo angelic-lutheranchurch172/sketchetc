@@ -9,6 +9,8 @@ brew trust felixkratz/formulae 2>/dev/null || true   # newer brew requires trust
 brew list sketchybar &>/dev/null || brew install sketchybar
 brew list macmon &>/dev/null || brew install macmon      # temps + fan RPM widget
 brew list pngpaste &>/dev/null || brew install pngpaste  # clipboard image capture
+brew list switchaudio-osx &>/dev/null || brew install switchaudio-osx  # audio output switcher
+brew list blueutil &>/dev/null || brew install blueutil  # bluetooth widget
 brew tap koekeishiya/formulae 2>/dev/null || true
 brew trust koekeishiya/formulae 2>/dev/null || true
 brew list skhd &>/dev/null || brew install koekeishiya/formulae/skhd  # Ctrl+V clipboard hotkey
@@ -55,6 +57,7 @@ if command -v swiftc >/dev/null; then
   swiftc -O -o "$REPO/config/plugins/bin/entry_box" "$REPO/config/plugins/bin/entry_box.swift"
   swiftc -O -o "$REPO/config/plugins/bin/journal_win" "$REPO/config/plugins/bin/journal_win.swift"
   swiftc -O -o "$REPO/config/plugins/bin/help_win" "$REPO/config/plugins/bin/help_win.swift"
+  swiftc -O -o "$REPO/config/plugins/bin/theme_win" "$REPO/config/plugins/bin/theme_win.swift"
 else
   echo "   swiftc not found — skipping (popups still close via app-switch; meetings widget hides)"
 fi

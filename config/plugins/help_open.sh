@@ -22,18 +22,23 @@ desc() {
     clipboard) echo "Your last 5 copies, text and images. Press Option+V anywhere for the picker: arrow keys and Enter, image previews included. Click entries to paste." ;;
     aura)      echo "Your effort score. Pomodoros and real activity earn points. Click for totals and shareable PNG cards via Export." ;;
     journal)   echo "Daily work log that locks each day at noon the next day (hash-chained, tamper-evident), plus a personal scratchpad with autosave." ;;
+    snap)      echo "Window snapping: halves, thirds, maximize, center for the frontmost window. Replaces Magnet." ;;
+    switches)  echo "Quick toggles: dark mode, hide desktop icons, empty Trash, screensaver. Replaces One Switch." ;;
+    shot)      echo "Screenshot menu: area, window, full screen, clipboard, 5s timer. A free CleanShot-lite." ;;
+    bluetooth) echo "Paired Bluetooth devices with battery where reported. Click a device to connect or disconnect." ;;
   esac
 }
 
 TSV="${TMPDIR:-/tmp}/sketchetc_help.tsv"
 : > "$TSV"
-for w in spaces network caffeine ports pomodoro github weather speedtest meeting focus temps media clipboard aura journal; do
+for w in spaces network caffeine ports pomodoro github weather speedtest meeting focus temps media clipboard aura journal snap switches shot bluetooth; do
   case "$w" in
     spaces) I="1·2·3" ;; network) I="$ICON_NET" ;; caffeine) I="$ICON_CAF_ON" ;;
     ports) I="$ICON_PORTS" ;; pomodoro) I="$ICON_POMO" ;; github) I="󰊤" ;;
     weather) I="$ICON_WEATHER" ;; speedtest) I="$ICON_SPEED" ;; meeting) I="$ICON_MEETING" ;;
     focus) I="$ICON_FOCUS" ;; temps) I="$ICON_TEMPS" ;; media) I="$ICON_MEDIA" ;;
     clipboard) I="$ICON_CLIP" ;; aura) I="$ICON_AURA" ;; journal) I="$ICON_JOURNAL" ;;
+    snap) I="$ICON_SNAP" ;; switches) I="$ICON_SWITCHES" ;; shot) I="$ICON_SHOT" ;; bluetooth) I="$ICON_BT" ;;
   esac
   A=0; widget_on "$w" && A=1
   printf '%s\t%s\t%s\t%s\n' "$w" "$I" "$A" "$(desc "$w")" >> "$TSV"
