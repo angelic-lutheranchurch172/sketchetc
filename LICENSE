@@ -1,21 +1,36 @@
-MIT License
+Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International
+(CC BY-NC-ND 4.0)
 
 Copyright (c) 2026 Himanshu
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+sketchetc is free to use, forever, and will never be sold.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+You are free to:
+  Share — copy and redistribute this work in any medium or format, for any
+  non-commercial purpose, as long as you credit the original.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+Under the following terms:
+  Attribution   — you must give appropriate credit and link back to
+                  https://github.com/himanshu007-creator/sketchetc
+  NonCommercial — you may not use this work, or any part of it, for
+                  commercial purposes, and you may not charge anyone for it.
+  NoDerivatives — if you remix, transform, or build upon this work, you may
+                  not distribute the modified material.
+
+Running it, configuring it through the app's own settings, themes and widget
+toggles, and writing your own theme files for personal use are all ordinary
+"use" and are unrestricted. NoDerivatives is about redistributing a changed
+copy of sketchetc, not about you tuning your own menu bar.
+
+Contributions: you are welcome to fork this repository in order to open a
+pull request here, and issues and suggestions are always welcome. What is not
+permitted is publishing or distributing a modified sketchetc as your own
+release.
+
+Full legal text: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT
+OF OR IN CONNECTION WITH THE WORK OR ITS USE.

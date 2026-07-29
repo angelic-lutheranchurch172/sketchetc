@@ -14,12 +14,7 @@ if ! git -C "$APP" pull --ff-only --quiet origin "$CHANNEL" 2>/dev/null; then
 fi
 
 # helpers are gitignored binaries, so rebuild whatever changed
-if command -v swiftc >/dev/null; then
-  for s in "$APP/config/plugins/bin/"*.swift; do
-    [ -e "$s" ] || continue
-    swiftc -O -o "${s%.swift}" "$s" 2>/dev/null
-  done
-fi
+CONFIG_DIR="$APP/config" "$APP/config/plugins/build.sh"
 
 NEW=$(cat "$APP/VERSION" 2>/dev/null || echo "$OLD")
 rm -f "$CONFIG_DIR"/.update_notified_* "$CONFIG_DIR/.update_skip"

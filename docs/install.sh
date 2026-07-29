@@ -66,10 +66,7 @@ run ln -sfn "$APP/config" "$HOME/.config/sketchybar"
 # ---------- helpers ----------
 if command -v swiftc >/dev/null; then
   say "Compiling helpers"
-  for s in "$APP/config/plugins/bin/"*.swift; do
-    [ -e "$s" ] || continue
-    run swiftc -O -o "${s%.swift}" "$s"
-  done
+  run env CONFIG_DIR="$APP/config" "$APP/config/plugins/build.sh"
 else
   warn "swiftc missing (install Xcode command line tools) — windows and pickers will be unavailable"
 fi

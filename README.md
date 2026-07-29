@@ -1,7 +1,7 @@
 # sketchetc
 
 A themeable, fully interactive macOS menu bar built on [SketchyBar](https://felixkratz.github.io/SketchyBar/).
-Free and open source — and it replaces a small pile of paid menu bar apps.
+Free forever, source visible to everyone — and it replaces a small pile of paid menu bar apps.
 
 ![topbar](assets/topbar.png)
 
@@ -13,6 +13,7 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 <img alt="visits" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.counterapi.dev%2Fv1%2Fsketchetc%2Fvisits%2F&query=%24.count&label=site%20visits&color=ffa552&labelColor=1b0d33">
 <img alt="last commit" src="https://img.shields.io/github/last-commit/himanshu007-creator/sketchetc?style=flat&color=555">
 <a href="https://scorecard.dev/viewer/?uri=github.com/himanshu007-creator/sketchetc"><img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/himanshu007-creator/sketchetc/badge"></a>
+<a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-0bd3d3?style=flat&labelColor=1b0d33"></a>
 </p>
 
 ## Install
@@ -23,7 +24,7 @@ curl -fsSL https://himanshu007-creator.github.io/sketchetc/install.sh | bash
 
 <!-- INSTALLER:START -->
 <details>
-<summary><b>Read the installer before you run it</b> (recommended — it is 131 lines, no obfuscation)</summary>
+<summary><b>Read the installer before you run it</b> (recommended — it is 128 lines, no obfuscation)</summary>
 
 ```bash
 #!/bin/bash
@@ -98,10 +99,7 @@ run ln -sfn "$APP/config" "$HOME/.config/sketchybar"
 # ---------- helpers ----------
 if command -v swiftc >/dev/null; then
   say "Compiling helpers"
-  for s in "$APP/config/plugins/bin/"*.swift; do
-    [ -e "$s" ] || continue
-    run swiftc -O -o "${s%.swift}" "$s"
-  done
+  run env CONFIG_DIR="$APP/config" "$APP/config/plugins/build.sh"
 else
   warn "swiftc missing (install Xcode command line tools) — windows and pickers will be unavailable"
 fi
@@ -171,7 +169,7 @@ EOF
 
 ```bash
 curl -fsSLO https://himanshu007-creator.github.io/sketchetc/install.sh
-shasum -a 256 install.sh    # expect 481858602fe65024268faf0bf8dba285e723afc7c317b0d74b32141eb443ee82
+shasum -a 256 install.sh    # expect 346e5114e86d84308f22295fd4c7eda1ed4fc45fb5d818188eeb7ce45dfca9d0
 less install.sh             # read it
 bash install.sh
 ```
@@ -246,12 +244,7 @@ whole bar including popups.
   `config/settings.conf`, editable by hand too.
 - **Autostarts** on login (brew services / launchd)
 
-## Install
-
-```bash
-git clone https://github.com/himanshu007-creator/sketchetc.git
-cd sketchetc && ./install.sh
-```
+## Permissions
 
 Grant the permissions macOS asks for (Accessibility → space switching + fullscreen
 guard; Calendar → meetings widget). Everything degrades gracefully if you decline.
@@ -272,3 +265,10 @@ next (album-art tinting, per-agent token burn, more themes — PRs welcome).
 Built on [FelixKratz/SketchyBar](https://github.com/FelixKratz/SketchyBar) ·
 app icons from [sketchybar-app-font](https://github.com/kvndrsslr/sketchybar-app-font) ·
 temps via [macmon](https://github.com/vladkens/macmon).
+
+## License
+
+[CC BY-NC-ND 4.0](LICENSE). Free to use forever, and it will never be sold.
+Share it and credit it freely; do not charge for it, and do not publish a
+modified copy as your own release. Configuring your own bar, writing your own
+themes, and forking to open a pull request here are all fine.

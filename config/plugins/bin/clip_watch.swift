@@ -95,34 +95,23 @@ func importShot(_ path: String) {
     sketchybar(["--update"])
 }
 
-// these must outlive the setup scope or the source is cancelled on dealloc
-var watchSource: DispatchSourceFileSystemObject?
-var debounce: DispatchWorkItem?
-
-let fd = open(shotDir, O_EVTONLY)
-if fd >= 0 {
-    let src = DispatchSource.makeFileSystemObjectSource(
-        fileDescriptor: fd, eventMask: .write, queue: .main)
-    src.setEventHandler {
-        debounce?.cancel()
-        // screenshots land in two steps (temp file then rename); wait it out
-        let work = DispatchWorkItem {
-            let now = Set((try? fm.contentsOfDirectory(atPath: shotDir)) ?? [])
-            for name in now.subtracting(known) where isImage(name) {
-                let full = shotDir + "/" + name
-                // only fresh files, and only once they finished writing
-                if let d = (try? fm.attributesOfItem(atPath: full)[.modificationDate] as? Date) ?? nil,
-                   Date().timeIntervalSince(d) < 30 {
-                    importShot(full)
-                }
-            }
-            known = now
-        }
-        debounce = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: work)
+// Polled rather than watched on purpose: a DispatchSource here needs a live fd
+// and a strong reference, and when either lapses the widget fails silently with
+// no symptom except "my screenshot never showed up". A 1s directory diff costs
+// nothing and cannot die quietly.
+Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+    let now = Set((try? fm.contentsOfDirectory(atPath: shotDir)) ?? [])
+    var deferred = Set<String>()
+    for name in now.subtracting(known) where isImage(name) {
+        let full = shotDir + "/" + name
+        // only fresh files, and only once they have finished being written
+        guard let d = (try? fm.attributesOfItem(atPath: full)[.modificationDate] as? Date) ?? nil,
+              Date().timeIntervalSince(d) < 30 else { continue }
+        let size = (try? fm.attributesOfItem(atPath: full)[.size] as? Int) ?? 0
+        if size == 0 { deferred.insert(name); continue }   // still writing, retry next tick
+        importShot(full)
     }
-    src.resume()
-    watchSource = src
+    known = now.subtracting(deferred)
 }
 
 app.run()

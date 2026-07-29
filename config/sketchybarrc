@@ -42,6 +42,8 @@ sketchybar --default \
   updates=on
 
 # ---- Items (right side: first sourced = rightmost) ----
+"$CONFIG_DIR/plugins/build.sh" >/dev/null 2>&1
+
 source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/theme_picker.sh"
 source "$ITEM_DIR/widgets_menu.sh"

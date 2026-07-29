@@ -12,6 +12,7 @@ const FAQ = [
   ["where does my data live?", "One folder you choose: journal entries, aura history and clipboard history all sit under it. Reinstall, point at the same folder, and everything is restored."],
   ["how do I uninstall?", "<code>~/.local/share/sketchetc/app/uninstall.sh</code> — stops the service, removes the symlink, restores any config it backed up."],
   ["can I add my own widget?", "Yes, about 30 lines of bash in two files. WIDGETS.md walks through it, and this page picks it up automatically once it is in the config."],
+  ["what is the licence?", "CC BY-NC-ND 4.0 — free forever, never sold. Use it, share it, credit it. Do not charge for it and do not ship a modified copy as your own release. Tuning your own bar and writing your own themes are just use, not derivatives."],
 ];
 
 function applyTheme(t) {
@@ -163,10 +164,10 @@ function badges() {
   });
 }
 
-// cursor spotlight + hero tilt + scroll progress
+// cursor glow + hero tilt + scroll progress
 function motion() {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const spot = $("#spot"), glow = $("#glow"), bar = $("#fauxbar");
+  const glow = $("#glow"), bar = $("#fauxbar");
   let tx = innerWidth / 2, ty = innerHeight * .22, cx = tx, cy = ty;
   addEventListener("pointermove", e => {
     tx = e.clientX; ty = e.clientY;
@@ -179,7 +180,6 @@ function motion() {
   }, { passive: true });
   (function loop() {
     cx += (tx - cx) * .12; cy += (ty - cy) * .12;
-    if (spot) { spot.style.left = cx + "px"; spot.style.top = cy + "px"; }
     if (glow) { glow.style.left = cx + "px"; glow.style.top = cy + "px"; }
     requestAnimationFrame(loop);
   })();

@@ -1,6 +1,6 @@
 # Roadmap
 
-Free and open-source, always. Rough order:
+Free always, never sold. Rough order:
 
 - **Fan control (read stays, write won't ship by default)** — the temps widget
   already shows fan RPM where hardware has one. Actively *setting* fan curves
