@@ -1,7 +1,7 @@
 name: OpenSSF Scorecard
 on:
   push:
-    branches: [production]
+    branches: [develop]      # Scorecard only analyzes the default branch
   schedule:
     - cron: "27 6 * * 1"   # weekly, Monday morning
   workflow_dispatch:
