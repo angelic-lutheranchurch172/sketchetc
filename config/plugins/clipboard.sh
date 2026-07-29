@@ -5,7 +5,6 @@ close_popup_on_exit
 
 STORE="$HOME/.local/share/sketchetc/clipboard"
 mkdir -p "$STORE"
-LAST_HASH_FILE="$STORE/.last"
 MAX=5   # keep it tight: only the last five copies
 
 # if content matches an EXISTING entry, bump it to the top (newest); otherwise
@@ -17,12 +16,10 @@ bump_or_store() { # hash tmpfile suffix
     if [ "$(md5 -q "$f")" = "$hash" ]; then
       touch "$f"                       # re-copy of an old entry: newest again
       rm -f "$tmp"
-      echo "$hash" > "$LAST_HASH_FILE"
       return
     fi
   done
   mv "$tmp" "$STORE/$(date +%s)-$suffix"
-  echo "$hash" > "$LAST_HASH_FILE"
   ls -t "$STORE" | grep -v '^\.' | tail -n +$((MAX + 1)) | while read -r old; do rm -f "$STORE/$old"; done
 }
 
@@ -35,14 +32,12 @@ capture() {
     f="$STORE/.candidate.png"
     pngpaste "$f" 2>/dev/null || return
     hash=$(md5 -q "$f")
-    [ "$hash" = "$(cat "$LAST_HASH_FILE" 2>/dev/null)" ] && { rm -f "$f"; return; }
     bump_or_store "$hash" "$f" "img.png"
   else
     local text
     text=$(pbpaste 2>/dev/null | head -c 100000)
     [ -z "$text" ] && return
     hash=$(printf '%s' "$text" | md5 -q)
-    [ "$hash" = "$(cat "$LAST_HASH_FILE" 2>/dev/null)" ] && return
     f="$STORE/.candidate.txt"
     printf '%s' "$text" > "$f"
     bump_or_store "$hash" "$f" "txt.txt"
@@ -90,8 +85,13 @@ build_popup() {
 
 case "$SENDER" in
   clip_hotkey|mouse.clicked)
+    capture
     build_popup
     toggle_popup
+    exit 0
+    ;;
+  clip_captured)
+    capture
     exit 0
     ;;
   routine|forced)
