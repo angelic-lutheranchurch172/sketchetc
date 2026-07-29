@@ -22,7 +22,7 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 | 󰖙 Weather | temp + AQI, color-coded | paid weather widgets |
 | + | spaces, front-app switcher, media controls + progress, volume slider, battery health, calendar | — |
 
-| 󰅍 Clipboard history | **Ctrl+V anywhere** → last 30 copies (text + images, hover previews), click to paste | Paste ($30/yr) / Maccy |
+| 󰅍 Clipboard history | **Option+V anywhere** → native picker of your last 5 copies (text + image thumbnails), arrow keys + Enter or click to paste — works in terminals too | Paste ($30/yr) / Maccy |
 | 󱠇 Aura points | pomodoros scored on real activity (keys/clicks/agents/PRs) → spoken awards, shareable PNG cards ([how](AURA.md)) | — |
 | 󱓧 Journal | tamper-evident daily work log: immutable files + hash chain, export any timeframe ([how](JOURNAL.md)) | — |
 
