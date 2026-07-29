@@ -7,6 +7,7 @@ const FAQ = [
   ["Does this replace my menu bar?", "It draws over the native bar in the strip macOS already reserves, so your windows still tile below it. The native menus stay reachable, and one row in the 󰀵 menu reverts everything instantly."],
   ["What permissions does it need?", "Accessibility for window snapping and desktop switching, Automation for media and app switching, Calendar for the meeting widget, Screen Recording for screenshots. Everything degrades gracefully if you decline."],
   ["How do I uninstall?", "<code>~/.local/share/sketchetc/app/uninstall.sh</code> stops the service, removes the symlink and restores any config it backed up. Brew packages stay unless you remove them."],
+  ["Is piping to bash safe here?", "Read it first — that is the honest answer. The installer is ~130 lines of plain shell with no obfuscation: the site shows its SHA256, the README embeds the whole script, and you can pin an immutable release tag. It never uses sudo."],
   ["Is it really free?", "Free and open source, forever. No tiers, no telemetry, no account."],
   ["Can I add my own widget?", "Yes — a widget is about 30 lines of bash in two files. WIDGETS.md in the repo walks through it, and the landing page picks it up automatically once it is in the config."],
 ];
@@ -124,6 +125,13 @@ addEventListener("pointermove", e => {
   g.style.top = e.clientY + "px";
 }, { passive: true });
 
+// trust material: checksum + pinned tag, straight from the generated file
+fetch("data/trust.json").then(r => r.json()).then(t => {
+  $("#sum").textContent = "# " + t.sha256;
+  $("#lines").textContent = t.lines;
+  $("#pin").textContent = `raw.githubusercontent.com/himanshu007-creator/sketchetc/v${t.version}/docs/install.sh`;
+}).catch(() => {});
+
 // install counter (CounterAPI v1, no auth) and GitHub badges
 fetch("https://api.counterapi.dev/v1/sketchetc/installs/")
   .then(r => r.json())
@@ -135,12 +143,23 @@ fetch("https://api.counterapi.dev/v1/sketchetc/installs/")
   }).catch(() => {});
 
 const REPO = "himanshu007-creator/sketchetc";
-[["stars", "social"], ["forks", "social"], ["last-commit", "flat"], ["license", "flat"]].forEach(([kind]) => {
+["stars", "forks", "last-commit"].forEach(kind => {
   const img = new Image();
   img.src = `https://img.shields.io/github/${kind}/${REPO}?style=flat&color=555&labelColor=222`;
   img.alt = kind;
   img.onload = () => $("#badges").appendChild(img);
 });
+// OpenSSF Scorecard, once the workflow has published results
+const sc = new Image();
+sc.src = `https://api.scorecard.dev/projects/github.com/${REPO}/badge`;
+sc.alt = "OpenSSF Scorecard";
+sc.onload = () => {
+  const a = el("a");
+  a.href = `https://scorecard.dev/viewer/?uri=github.com/${REPO}`;
+  a.target = "_blank"; a.rel = "noopener";
+  a.appendChild(sc);
+  $("#badges").appendChild(a);
+};
 
 fetch("data/site.json")
   .then(r => r.json())

@@ -55,8 +55,16 @@
       <button id="copy" class="btn-copy">copy</button>
     </div>
     <details class="alt reveal">
-      <summary>prefer git?</summary>
-      <code>git clone -b production https://github.com/himanshu007-creator/sketchetc.git &amp;&amp; cd sketchetc &amp;&amp; ./install.sh</code>
+      <summary>don't pipe to bash blindly — read it first</summary>
+      <code>curl -fsSLO https://himanshu007-creator.github.io/sketchetc/install.sh
+shasum -a 256 install.sh   <span id="sum">…</span>
+less install.sh
+bash install.sh</code>
+      <p class="micro">Or pin a release: <code id="pin">raw.githubusercontent.com/…/v1.0.0/docs/install.sh</code><br>
+        <a href="https://github.com/himanshu007-creator/sketchetc/blob/production/docs/install.sh" target="_blank" rel="noopener">read the installer on GitHub ↗</a>
+        · <a href="https://github.com/himanshu007-creator/sketchetc/blob/production/SECURITY.md" target="_blank" rel="noopener">security policy ↗</a>
+        · <span id="lines"></span> lines, no obfuscation</p>
+      <p class="micro">Prefer git? <code>git clone -b production https://github.com/himanshu007-creator/sketchetc.git &amp;&amp; cd sketchetc &amp;&amp; ./install.sh</code></p>
     </details>
     <p class="counter reveal" id="counter" hidden><b id="installs">—</b> installs and counting</p>
     <div class="badges reveal" id="badges"></div>

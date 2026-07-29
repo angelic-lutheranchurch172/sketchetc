@@ -11,6 +11,7 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 <img alt="stars" src="https://img.shields.io/github/stars/himanshu007-creator/sketchetc?style=flat&color=9b5de5">
 <img alt="forks" src="https://img.shields.io/github/forks/himanshu007-creator/sketchetc?style=flat&color=555">
 <img alt="last commit" src="https://img.shields.io/github/last-commit/himanshu007-creator/sketchetc?style=flat&color=555">
+<a href="https://scorecard.dev/viewer/?uri=github.com/himanshu007-creator/sketchetc"><img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/himanshu007-creator/sketchetc/badge"></a>
 </p>
 
 ## Install
@@ -18,6 +19,169 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 ```bash
 curl -fsSL https://himanshu007-creator.github.io/sketchetc/install.sh | bash
 ```
+
+<!-- INSTALLER:START -->
+<details>
+<summary><b>Read the installer before you run it</b> (recommended — it is 131 lines, no obfuscation)</summary>
+
+```bash
+#!/bin/bash
+# sketchetc installer · curl -fsSL https://himanshu007-creator.github.io/sketchetc/install.sh | bash
+# Idempotent: first run installs, later runs upgrade in place.
+set -euo pipefail
+
+REPO_URL="https://github.com/himanshu007-creator/sketchetc.git"
+BRANCH="${SKETCHETC_CHANNEL:-production}"
+APP="$HOME/.local/share/sketchetc/app"
+DRY=0
+COUNT=1
+for a in "$@"; do
+  [ "$a" = "--dry-run" ] && DRY=1
+  [ "$a" = "--no-count" ] && COUNT=0
+done
+[ -n "${SKETCHETC_NO_TELEMETRY:-}" ] && COUNT=0
+
+say()  { printf '[38;5;213m==>[0m %s
+' "$1"; }
+warn() { printf '[38;5;215m  ! [0m%s
+' "$1"; }
+run()  { if [ "$DRY" = 1 ]; then printf '   would run: %s
+' "$*"; else "$@"; fi }
+
+[ "$(uname)" = "Darwin" ] || { echo "sketchetc is macOS only."; exit 1; }
+
+# ---------- dependencies ----------
+if ! command -v brew >/dev/null; then
+  say "Homebrew is required: https://brew.sh"
+  exit 1
+fi
+say "Installing dependencies"
+run brew tap FelixKratz/formulae
+run brew tap koekeishiya/formulae
+brew trust felixkratz/formulae   2>/dev/null || true
+brew trust koekeishiya/formulae  2>/dev/null || true
+for f in sketchybar macmon pngpaste switchaudio-osx blueutil cliclick; do
+  if brew list "$f" &>/dev/null; then printf '   have %s
+' "$f"; else run brew install "$f"; fi
+done
+brew list skhd &>/dev/null || run brew install koekeishiya/formulae/skhd
+brew list --cask font-jetbrains-mono-nerd-font &>/dev/null || run brew install --cask font-jetbrains-mono-nerd-font
+if [ ! -f "$HOME/Library/Fonts/sketchybar-app-font.ttf" ]; then
+  run curl -sL "https://github.com/kvndrsslr/sketchybar-app-font/releases/latest/download/sketchybar-app-font.ttf" \
+    -o "$HOME/Library/Fonts/sketchybar-app-font.ttf"
+fi
+
+# ---------- code ----------
+if [ -d "$APP/.git" ]; then
+  say "Updating sketchetc ($BRANCH)"
+  run git -C "$APP" fetch --quiet origin "$BRANCH"
+  run git -C "$APP" checkout --quiet "$BRANCH"
+  run git -C "$APP" pull --ff-only --quiet origin "$BRANCH"
+else
+  say "Fetching sketchetc ($BRANCH)"
+  run mkdir -p "$(dirname "$APP")"
+  run git clone --quiet --branch "$BRANCH" "$REPO_URL" "$APP"
+fi
+
+# ---------- link config ----------
+say "Linking config into ~/.config/sketchybar"
+if [ -e "$HOME/.config/sketchybar" ] && [ ! -L "$HOME/.config/sketchybar" ]; then
+  BK="$HOME/.config/sketchybar.bak.$(date +%s)"
+  warn "existing config moved to $BK"
+  run mv "$HOME/.config/sketchybar" "$BK"
+fi
+run mkdir -p "$HOME/.config"
+run ln -sfn "$APP/config" "$HOME/.config/sketchybar"
+[ "$DRY" = 1 ] || chmod +x "$APP/config/sketchybarrc" "$APP/config"/*.sh "$APP/config/items/"* "$APP/config/plugins/"*.sh 2>/dev/null || true
+
+# ---------- helpers ----------
+if command -v swiftc >/dev/null; then
+  say "Compiling helpers"
+  for s in "$APP/config/plugins/bin/"*.swift; do
+    [ -e "$s" ] || continue
+    run swiftc -O -o "${s%.swift}" "$s"
+  done
+else
+  warn "swiftc missing (install Xcode command line tools) — windows and pickers will be unavailable"
+fi
+
+# ---------- macOS bits ----------
+say "System setup"
+run defaults write NSGlobalDomain _HIHideMenuBar -bool false
+if [ "$DRY" = 0 ]; then
+  TMP=$(mktemp -d); defaults export com.apple.symbolichotkeys "$TMP/shk.plist"
+  python3 - "$TMP/shk.plist" <<'PY'
+import plistlib, sys
+p = sys.argv[1]
+with open(p, 'rb') as f: d = plistlib.load(f)
+hk = d.setdefault('AppleSymbolicHotKeys', {})
+for i, key in enumerate([118, 119, 120, 121]):   # Switch to Desktop 1-4
+    hk[str(key)] = {'enabled': True, 'value': {'parameters': [65535, 18 + i, 262144], 'type': 'standard'}}
+with open(p, 'wb') as f: plistlib.dump(d, f)
+PY
+  defaults import com.apple.symbolichotkeys "$TMP/shk.plist"
+  /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+  killall Finder 2>/dev/null || true
+fi
+
+if [ "$DRY" = 0 ]; then
+mkdir -p "$HOME/.config/skhd" 2>/dev/null || true
+grep -q clipboard_choose "$HOME/.config/skhd/skhdrc" 2>/dev/null || \
+  echo 'alt - v : CONFIG_DIR=$HOME/.config/sketchybar $HOME/.config/sketchybar/plugins/clipboard_choose.sh' >> "$HOME/.config/skhd/skhdrc"
+fi
+run skhd --install-service
+run skhd --start-service
+
+say "Starting sketchetc"
+run brew services restart sketchybar
+
+# anonymous install counter: one hit on a public tally, nothing about you is
+# sent (no IP logging on our side, no id, no phone home afterwards).
+# Skip with --no-count or SKETCHETC_NO_TELEMETRY=1
+if [ "$COUNT" = 1 ] && [ "$DRY" = 0 ]; then
+  curl -s --max-time 3 "https://api.counterapi.dev/v1/sketchetc/installs/up" >/dev/null 2>&1 || true
+  printf '   counted this install on a public tally · skip with --no-count
+'
+elif [ "$COUNT" = 0 ]; then
+  printf '   install counter skipped
+'
+fi
+
+cat <<EOF
+
+  sketchetc $( [ -f "$APP/VERSION" ] && cat "$APP/VERSION" ) is running.
+
+  Grant these when macOS asks (everything degrades gracefully if you don't):
+    Accessibility   → window snapping, desktop switching, paste
+    Automation      → media controls, app switching
+    Calendar        → the meeting widget
+    Screen Recording → the screenshot widget
+
+  Press Option+V for clipboard history · click 󰨝 to toggle widgets
+  Click 󰏘 → studio for themes · 󰀵 → Settings for notifications
+  Updates appear as a 󰚰 pill in the bar. Uninstall: $APP/uninstall.sh
+
+EOF
+```
+
+</details>
+
+**Verify it instead of trusting us:**
+
+```bash
+curl -fsSLO https://himanshu007-creator.github.io/sketchetc/install.sh
+shasum -a 256 install.sh    # expect 481858602fe65024268faf0bf8dba285e723afc7c317b0d74b32141eb443ee82
+less install.sh             # read it
+bash install.sh
+```
+
+**Pin to a release** (immutable — this exact commit, forever):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/himanshu007-creator/sketchetc/v1.0.0/docs/install.sh -o install.sh
+shasum -a 256 install.sh && bash install.sh
+```
+<!-- INSTALLER:END -->
 
 Re-running the same command upgrades in place. Prefer git? `git clone -b production …` then `./install.sh`.
 Skip the anonymous install counter with `--no-count` or `SKETCHETC_NO_TELEMETRY=1`.
