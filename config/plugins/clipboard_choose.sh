@@ -1,6 +1,7 @@
 #!/bin/bash
 # Option+V: centered clipboard picker (arrow keys + Enter, click, Esc; image previews)
-STORE="$HOME/.local/share/sketchetc/clipboard"
+source "${CONFIG_DIR:-$HOME/.config/sketchybar}/plugins/storage_lib.sh"
+STORE="$(clip_dir)"
 CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
 
 FILES=()

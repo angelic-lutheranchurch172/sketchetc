@@ -21,7 +21,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
       label="Journal · $([ -f "$(jfile_for "$(jtarget_date)")" ] && echo 'up to date ✓' || echo "$(jtarget_date) open")" \
       label.color=$PINK label.font="$HEAD_FONT" label.padding_left=12 label.padding_right=12
   if [ -z "$(jroot)" ]; then
-    add_jrow setup 󰒓 "Set up journal…" setup
+    add_jrow setup 󰒓 "Choose data folder…" setup
   else
     add_jrow open 󱓧 "Open journal" open
     sketchybar --add item journal.row.copyhead popup.journal \

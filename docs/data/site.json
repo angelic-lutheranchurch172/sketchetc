@@ -1,0 +1,405 @@
+{
+ "version": "1.0.0",
+ "repo": "himanshu007-creator/sketchetc",
+ "replaces_total": 119,
+ "widgets": [
+  {
+   "key": "aura",
+   "default_on": true,
+   "description": "Your effort score. Pomodoros and real activity earn points. Click for totals and shareable PNG cards via Export.",
+   "icons": {
+    "emoji": "✨",
+    "minimal": "󰫢",
+    "nerd": "󱠇",
+    "outline": "󱐋",
+    "plain": "✦",
+    "retro": "󰚥"
+   },
+   "replaces": null
+  },
+  {
+   "key": "caffeine",
+   "default_on": true,
+   "description": "Keeps the Mac and display awake. Click to toggle. Only tracks its own keep-awake, so other tools' caffeinate sessions are left alone.",
+   "icons": {
+    "emoji": "☕",
+    "minimal": "󰛊",
+    "nerd": "󰅶",
+    "outline": "󱌢",
+    "plain": "●",
+    "retro": "󰅶"
+   },
+   "replaces": {
+    "app": "Lungo",
+    "price": 10
+   }
+  },
+  {
+   "key": "clipboard",
+   "default_on": true,
+   "description": "Your last 5 copies, text and images. Press Option+V anywhere for the picker: arrow keys and Enter, image previews included. Click entries to paste.",
+   "icons": {
+    "emoji": "📋",
+    "minimal": "󰨸",
+    "nerd": "󰅍",
+    "outline": "󱉫",
+    "plain": "⧉",
+    "retro": "󰅍"
+   },
+   "replaces": {
+    "app": "Paste",
+    "price": 30
+   }
+  },
+  {
+   "key": "journal",
+   "default_on": true,
+   "description": "Daily work log that locks each day at noon the next day (hash-chained, tamper-evident), plus a personal scratchpad with autosave.",
+   "icons": {
+    "emoji": "📓",
+    "minimal": "󰧮",
+    "nerd": "󱓧",
+    "outline": "󱓷",
+    "plain": "▤",
+    "retro": "󰋖"
+   },
+   "replaces": null
+  },
+  {
+   "key": "network",
+   "default_on": true,
+   "description": "Live download and upload speed, sampled every 2 seconds. Click for the top 5 processes using your bandwidth.",
+   "icons": {
+    "emoji": "🌐",
+    "minimal": "󰅧",
+    "nerd": "󰛴",
+    "outline": "󰛳",
+    "plain": "↕",
+    "retro": "󰛴"
+   },
+   "replaces": {
+    "app": "iStat Menus",
+    "price": 12
+   }
+  },
+  {
+   "key": "pomodoro",
+   "default_on": true,
+   "description": "A 25 minute focus timer. Click to start or stop. Finishing a pomodoro earns aura points scored on your real activity during it.",
+   "icons": {
+    "emoji": "🍅",
+    "minimal": "󱦟",
+    "nerd": "󰔛",
+    "outline": "󱦠",
+    "plain": "◔",
+    "retro": "󰔛"
+   },
+   "replaces": {
+    "app": "Flow",
+    "price": 0
+   }
+  },
+  {
+   "key": "ports",
+   "default_on": true,
+   "description": "Every dev server you are running (ports 1024-9999, system noise filtered). Click a row to kill that process, with a notification when it stops.",
+   "icons": {
+    "emoji": "🔌",
+    "minimal": "󰈀",
+    "nerd": "󰙨",
+    "outline": "󱂛",
+    "plain": "⚓",
+    "retro": "󰙨"
+   },
+   "replaces": null
+  },
+  {
+   "key": "shot",
+   "default_on": true,
+   "description": "Screenshot menu: area, window, full screen, clipboard, 5s timer. A free CleanShot-lite.",
+   "icons": {
+    "emoji": "📸",
+    "minimal": "󰄀",
+    "nerd": "󰹑",
+    "outline": "󰄄",
+    "plain": "⧇",
+    "retro": "󰄃"
+   },
+   "replaces": {
+    "app": "CleanShot",
+    "price": 29
+   }
+  },
+  {
+   "key": "snap",
+   "default_on": true,
+   "description": "Window snapping: halves, thirds, maximize, center for the frontmost window. Replaces Magnet.",
+   "icons": {
+    "emoji": "🪟",
+    "minimal": "󰁌",
+    "nerd": "󱂬",
+    "outline": "󰩨",
+    "plain": "⊞",
+    "retro": "󰓎"
+   },
+   "replaces": {
+    "app": "Magnet",
+    "price": 8
+   }
+  },
+  {
+   "key": "bluetooth",
+   "default_on": false,
+   "description": "Paired Bluetooth devices with battery where reported. Click a device to connect or disconnect.",
+   "icons": {
+    "emoji": "🎧",
+    "minimal": "󰂲",
+    "nerd": "󰂯",
+    "outline": "󰂰",
+    "plain": "ᛒ",
+    "retro": "󰂯"
+   },
+   "replaces": {
+    "app": "AirBuddy",
+    "price": 10
+   }
+  },
+  {
+   "key": "focus",
+   "default_on": false,
+   "description": "Toggles Do Not Disturb. Needs a macOS Shortcut named Toggle Focus (two clicks to create in the Shortcuts app).",
+   "icons": {
+    "emoji": "🌙",
+    "minimal": "󰽥",
+    "nerd": "󰂛",
+    "outline": "󰽦",
+    "plain": "☾",
+    "retro": "󰦶"
+   },
+   "replaces": null
+  },
+  {
+   "key": "github",
+   "default_on": false,
+   "description": "PRs awaiting your review and your open PRs. Click a row to open it on GitHub. Refreshes every 5 minutes.",
+   "icons": {
+    "emoji": "1·2·3",
+    "minimal": "1·2·3",
+    "nerd": "1·2·3",
+    "outline": "1·2·3",
+    "plain": "1·2·3",
+    "retro": "1·2·3"
+   },
+   "replaces": null
+  },
+  {
+   "key": "media",
+   "default_on": false,
+   "description": "Now playing from Spotify or Music. Click to play or pause, right-click for previous, next and a progress bar.",
+   "icons": {
+    "emoji": "🎵",
+    "minimal": "󰽰",
+    "nerd": "󰝚",
+    "outline": "󰎇",
+    "plain": "♪",
+    "retro": "󰝚"
+   },
+   "replaces": null
+  },
+  {
+   "key": "meeting",
+   "default_on": false,
+   "description": "Shows your next calendar meeting when it is under an hour away, pulsing when imminent. Click to join the Zoom, Meet or Teams link.",
+   "icons": {
+    "emoji": "📅",
+    "minimal": "󰃰",
+    "nerd": "󰤙",
+    "outline": "󱁍",
+    "plain": "▷",
+    "retro": "󰘙"
+   },
+   "replaces": {
+    "app": "Meeter",
+    "price": 0
+   }
+  },
+  {
+   "key": "spaces",
+   "default_on": false,
+   "description": "Desktop spaces 1-4. Click a number to switch desktops (uses the system ctrl+number shortcuts).",
+   "icons": {
+    "emoji": "1·2·3",
+    "minimal": "1·2·3",
+    "nerd": "1·2·3",
+    "outline": "1·2·3",
+    "plain": "1·2·3",
+    "retro": "1·2·3"
+   },
+   "replaces": null
+  },
+  {
+   "key": "speedtest",
+   "default_on": false,
+   "description": "One-click internet speed test using Apple's built-in networkQuality. Result shows in the bar for 10 seconds and arrives as a notification.",
+   "icons": {
+    "emoji": "🚀",
+    "minimal": "󰾅",
+    "nerd": "󰓅",
+    "outline": "󱎼",
+    "plain": "⇅",
+    "retro": "󰓅"
+   },
+   "replaces": {
+    "app": "Speedtest app",
+    "price": 0
+   }
+  },
+  {
+   "key": "switches",
+   "default_on": false,
+   "description": "Quick toggles: dark mode, hide desktop icons, empty Trash, screensaver. Replaces One Switch.",
+   "icons": {
+    "emoji": "🎚️",
+    "minimal": "󰨙",
+    "nerd": "󰨚",
+    "outline": "󱕭",
+    "plain": "⇄",
+    "retro": "󰫰"
+   },
+   "replaces": {
+    "app": "One Switch",
+    "price": 10
+   }
+  },
+  {
+   "key": "temps",
+   "default_on": false,
+   "description": "CPU temperature, plus fan RPM on Macs that have a fan. Reads via macmon, no admin access needed.",
+   "icons": {
+    "emoji": "🌡️",
+    "minimal": "󱃃",
+    "nerd": "󰔏",
+    "outline": "󱃂",
+    "plain": "↑t",
+    "retro": "󰔏"
+   },
+   "replaces": {
+    "app": "TG Pro",
+    "price": 10
+   }
+  },
+  {
+   "key": "weather",
+   "default_on": false,
+   "description": "Current temperature and air quality index for your location, color coded by AQI band. Refreshes every 30 minutes.",
+   "icons": {
+    "emoji": "☀️",
+    "minimal": "󰖕",
+    "nerd": "󰖙",
+    "outline": "󰖨",
+    "plain": "☀",
+    "retro": "󰖙"
+   },
+   "replaces": null
+  }
+ ],
+ "themes": [
+  {
+   "name": "catppuccin",
+   "colors": {
+    "BAR_COLOR": "#1e1e2e",
+    "ITEM_BG_COLOR": "#313244",
+    "POPUP_BG": "#181825",
+    "POPUP_BORDER": "#b4befe",
+    "PINK": "#cba6f7",
+    "CYAN": "#89dceb",
+    "ORANGE": "#fab387",
+    "RED": "#f38ba8",
+    "PURPLE": "#b4befe",
+    "WHITE": "#cdd6f4"
+   }
+  },
+  {
+   "name": "cyberpunk",
+   "colors": {
+    "BAR_COLOR": "#0d0d0f",
+    "ITEM_BG_COLOR": "#1a1a20",
+    "POPUP_BG": "#121216",
+    "POPUP_BORDER": "#fcee0a",
+    "PINK": "#fcee0a",
+    "CYAN": "#00f0ff",
+    "ORANGE": "#ff9f00",
+    "RED": "#ff003c",
+    "PURPLE": "#fcee0a",
+    "WHITE": "#e8e8e4"
+   }
+  },
+  {
+   "name": "matrix",
+   "colors": {
+    "BAR_COLOR": "#020a04",
+    "ITEM_BG_COLOR": "#0a1f0e",
+    "POPUP_BG": "#041006",
+    "POPUP_BORDER": "#00ff41",
+    "PINK": "#00ff41",
+    "CYAN": "#2fbf71",
+    "ORANGE": "#cfff04",
+    "RED": "#ff3131",
+    "PURPLE": "#00ff41",
+    "WHITE": "#d6ffd6"
+   }
+  },
+  {
+   "name": "miami-sunset",
+   "colors": {
+    "BAR_COLOR": "#1a0b2e",
+    "ITEM_BG_COLOR": "#2d1445",
+    "POPUP_BG": "#160a28",
+    "POPUP_BORDER": "#a06cd5",
+    "PINK": "#ff5e78",
+    "CYAN": "#ffc15e",
+    "ORANGE": "#ff8c42",
+    "RED": "#ff2e63",
+    "PURPLE": "#a06cd5",
+    "WHITE": "#f5e9da"
+   }
+  },
+  {
+   "name": "vice-city",
+   "colors": {
+    "BAR_COLOR": "#170a2e",
+    "ITEM_BG_COLOR": "#241640",
+    "POPUP_BG": "#1b0d33",
+    "POPUP_BORDER": "#9b5de5",
+    "PINK": "#ff6ec7",
+    "CYAN": "#0bd3d3",
+    "ORANGE": "#ffa552",
+    "RED": "#ff5577",
+    "PURPLE": "#9b5de5",
+    "WHITE": "#e8e6f0"
+   }
+  }
+ ],
+ "iconsets": [
+  "emoji",
+  "minimal",
+  "nerd",
+  "outline",
+  "plain",
+  "retro"
+ ],
+ "latest": {
+  "version": "1.0.0",
+  "headline": "1.0.0 — the first real release",
+  "notes": [
+   "Clipboard history with Option+V picker: last 5 copies, text and image thumbnails, pastes into any app including terminals",
+   "Theme Studio: 5 built-in palettes (read only) plus your own, every color role editable with native pickers, 6 global icon sets",
+   "Window snapping, quick switches, screenshot menu, Bluetooth devices, audio output switching",
+   "Aura points: pomodoros scored on real activity, shareable PNG cards",
+   "Journal: tamper-evident daily work log that locks at noon the next day, plus a personal scratchpad",
+   "Settings window: silence any notification category, sounds, spoken announcements, screenshot behavior",
+   "Fixed widget widths so ticking numbers never reflow the bar",
+   "One-line installer and in-bar update nudges"
+  ]
+ }
+}

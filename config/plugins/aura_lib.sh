@@ -1,7 +1,8 @@
 #!/bin/bash
 # aura accounting · source after hover.sh. CSV: date,points,kind,keys,clicks,agents,prs
-AURA_DIR="$HOME/.local/share/sketchetc/aura"
-mkdir -p "$AURA_DIR"
+source "$CONFIG_DIR/plugins/storage_lib.sh"
+AURA_DIR="$(aura_dir)"
+mkdir -p "$AURA_DIR" 2>/dev/null
 
 aura_csv() { echo "$AURA_DIR/$(date +%Y-%m).csv"; }
 

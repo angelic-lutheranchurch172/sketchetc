@@ -4,11 +4,13 @@
 # Before noon you may still write YESTERDAY (late nights, weekends); at noon
 # yesterday locks forever (stub entry if nothing was written).
 # conf: root=<dir> only. Personal notes live under root/personal/ (never locked).
+source "$CONFIG_DIR/plugins/storage_lib.sh"
 JCONF="$HOME/.local/share/sketchetc/journal.conf"
 JDRAFT="$HOME/.local/share/sketchetc/journal_draft.md"
 
 jconf() { awk -F= -v k="$1" '$1 == k {print $2}' "$JCONF" 2>/dev/null; }
-jroot() { jconf root; }
+# the journal lives inside the single data folder
+jroot() { data_ready && { data_ensure; journal_root; }; }
 
 jfile_for() { # YYYY-MM-DD -> path
   echo "$(jroot)/${1:0:4}/${1:5:2}/${1:8:2}.md"

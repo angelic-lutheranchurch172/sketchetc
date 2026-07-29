@@ -5,6 +5,25 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 
 ![topbar](assets/topbar.png)
 
+<p>
+<a href="https://himanshu007-creator.github.io/sketchetc"><img alt="site" src="https://img.shields.io/badge/site-sketchetc-ff6ec7?style=flat"></a>
+<img alt="installs" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.counterapi.dev%2Fv1%2Fsketchetc%2Finstalls%2F&query=%24.count&label=installs&color=0bd3d3&style=flat">
+<img alt="stars" src="https://img.shields.io/github/stars/himanshu007-creator/sketchetc?style=flat&color=9b5de5">
+<img alt="forks" src="https://img.shields.io/github/forks/himanshu007-creator/sketchetc?style=flat&color=555">
+<img alt="last commit" src="https://img.shields.io/github/last-commit/himanshu007-creator/sketchetc?style=flat&color=555">
+</p>
+
+## Install
+
+```bash
+curl -fsSL https://himanshu007-creator.github.io/sketchetc/install.sh | bash
+```
+
+Re-running the same command upgrades in place. Prefer git? `git clone -b production …` then `./install.sh`.
+Skip the anonymous install counter with `--no-count` or `SKETCHETC_NO_TELEMETRY=1`.
+
+
+
 ## Replaces ~$120 of paid apps
 
 | Widget | What it does | Replaces |

@@ -3,7 +3,8 @@ source "$CONFIG_DIR/plugins/hover.sh"
 hover
 close_popup_on_exit
 
-STORE="$HOME/.local/share/sketchetc/clipboard"
+source "${CONFIG_DIR:-$HOME/.config/sketchybar}/plugins/storage_lib.sh"
+STORE="$(clip_dir)"
 mkdir -p "$STORE"
 MAX=5   # keep it tight: only the last five copies
 

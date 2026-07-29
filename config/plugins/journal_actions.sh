@@ -11,11 +11,8 @@ line_input() { # title placeholder -> stdout
 
 case "$1" in
   setup)
-    ROOT=$(osascript -e 'POSIX path of (choose folder with prompt "Where should your journal live?")' 2>/dev/null)
-    [ -z "$ROOT" ] && exit 0
-    mkdir -p "$(dirname "$JCONF")"
-    printf 'root=%s\n' "${ROOT%/}" > "$JCONF"
-    "$CONFIG_DIR/plugins/notify.sh" journal "Journal" "Journal ready. Each day locks the next day at noon."
+    # one folder for everything; adopts existing data when it finds it
+    exec "$CONFIG_DIR/plugins/data_folder.sh" pick
     ;;
   open)
     # detach: the window must outlive this click_script
