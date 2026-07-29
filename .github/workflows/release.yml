@@ -50,14 +50,18 @@ jobs:
         run: |
           set -euo pipefail
           cd dist
-          # Two formats on purpose: the sigstore bundle is what current cosign
-          # verifies natively, the detached .sig/.pem pair is what older cosign
-          # and most verification docs still expect.
+          # cosign v4 only writes sigstore bundles; the deprecated detached
+          # flags are refused outright. The .sig/.pem pair is unpacked from the
+          # bundle afterwards, so older verifiers still have something to use.
           for f in install.sh SHA256SUMS sketchetc-*.tar.gz; do
             cosign sign-blob --yes --bundle "$f.sigstore.json" "$f"
-            cosign sign-blob --yes --new-bundle-format=false \
-              --output-signature "$f.sig" \
-              --output-certificate "$f.pem" "$f"
+            jq -r '.messageSignature.signature' "$f.sigstore.json" > "$f.sig"
+            {
+              echo "-----BEGIN CERTIFICATE-----"
+              jq -r '.verificationMaterial.certificate.rawBytes' "$f.sigstore.json" | fold -w 64
+              echo "-----END CERTIFICATE-----"
+            } > "$f.pem"
+            openssl x509 -in "$f.pem" -noout -subject >/dev/null   # fail loudly on a malformed cert
           done
           ls -l
 
