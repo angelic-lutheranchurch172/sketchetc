@@ -11,7 +11,7 @@ if grep -q "^$W=on" "$CONF"; then
 else
   ACTIVE=$(grep -c '=on$' "$CONF")
   if [ "$ACTIVE" -ge "$MAX" ]; then
-    osascript -e "display notification \"Bar is full ($ACTIVE/$MAX active). Turn something off first.\" with title \"Widgets\""
+    "$CONFIG_DIR/plugins/notify.sh" "Widgets" "Bar is full ($ACTIVE of $MAX active). Turn something off first."
     exit 0
   fi
   sed -i '' "s/^$W=off/$W=on/" "$CONF"

@@ -9,6 +9,6 @@ if [ -n "$DOWN" ]; then
   "$HOME/.config/sketchybar/plugins/notify.sh" "Speedtest done" "Down $DOWN · Up $UP"
 else
   rm -f "$STATE"
-  osascript -e 'display notification "Could not measure. Check the connection." with title "Speedtest failed"'
+  "$CONFIG_DIR/plugins/notify.sh" "Speedtest failed" "Could not measure. Check the connection."
 fi
 sketchybar --update

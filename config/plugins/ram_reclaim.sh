@@ -46,5 +46,6 @@ else
 fi
 
 "$HOME/.config/sketchybar/plugins/notify.sh" "RAM Reclaim" "Freed ${AMOUNT} · reaped ${REAPED} orphaned helper(s) · nothing running was stopped"
+sleep 0.5
 say -v Samantha "Reclaimed ${SPOKEN} of RAM. ${REAPED} orphaned helpers reaped." &
 sketchybar --update

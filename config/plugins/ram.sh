@@ -19,7 +19,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   done
   sketchybar --add item ram.top.clear popup.ram \
     --set ram.top.clear icon=$ICON_CLEAN icon.color=$PINK icon.padding_left=12 \
-      background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 \
+      background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 width=280 \
       label="Clear RAM" label.color=$PINK \
       label.font="JetBrainsMono Nerd Font:Bold:12.0" label.padding_right=12 \
       script="$CONFIG_DIR/plugins/popup_row.sh" \

@@ -519,6 +519,26 @@ ctl.noteTable = noteTable; ctl.noteTitle = noteTitle
 ctl.noteEditor = noteEditor; ctl.savedLabel = savedLabel
 ctl.workView = workView; ctl.personalView = personalView
 
+// resizable window: pin lists left, header top, buttons bottom; panes flex
+win.styleMask.insert(.resizable)
+win.minSize = NSSize(width: 800, height: 520)
+title.autoresizingMask = [.minYMargin]
+tabs.autoresizingMask = [.minXMargin, .minYMargin]
+workView.autoresizingMask = [.width, .height]
+personalView.autoresizingMask = [.width, .height]
+oScroll.autoresizingMask = [.height]
+editSplit.autoresizingMask = [.width, .height]
+readWrap.autoresizingMask = [.width, .height]
+eScroll.autoresizingMask = [.width, .height]
+vScroll.autoresizingMask = [.width, .height]
+rScroll.autoresizingMask = [.width, .height]
+bFinal.autoresizingMask = [.minXMargin]
+bSave.autoresizingMask = [.minXMargin]
+nScroll.autoresizingMask = [.height]
+neScroll.autoresizingMask = [.width, .height]
+noteTitle.autoresizingMask = [.width, .minYMargin]
+savedLabel.autoresizingMask = [.minXMargin, .minYMargin]
+
 ctl.reloadWork()
 if CommandLine.arguments.contains("--personal") {
     tabs.selectedSegment = 1

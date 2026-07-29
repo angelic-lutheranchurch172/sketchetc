@@ -3,7 +3,7 @@ widget_on clipboard || return 0
 sketchybar --add event clip_hotkey
 sketchybar --add item clipboard right \
   --set clipboard \
-    update_freq=2 \
+    update_freq=1 \
     icon=$ICON_CLIP \
     icon.color=$WHITE \
     label.drawing=off \

@@ -15,7 +15,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
     i=$((i + 1))
     sketchybar --add item "github.row.$i" popup.github \
       --set "github.row.$i" icon=󰊤 icon.color=$CYAN icon.padding_left=10 \
-        background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 \
+        background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 width=340 \
         label="$title" label.font="$ROW_FONT" label.padding_right=12 \
         script="$CONFIG_DIR/plugins/popup_row.sh" \
         click_script="open '$url'; sketchybar --set github popup.drawing=off" \

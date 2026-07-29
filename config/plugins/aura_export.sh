@@ -42,4 +42,4 @@ OUT="$HOME/Downloads/aura-$RANGE-$(date +%Y%m%d).png"
 ACCENT=$(printf '%s' "$PINK" | sed 's/0xff/#/')
 BG=$(printf '%s' "$BAR_COLOR" | sed 's/0x..//; s/^/#/')
 "$CONFIG_DIR/plugins/bin/aura_card" "$TITLE" "$TOTAL" "$OUT" "$ACCENT" "$BG" "$BARS" \
-  && { open -R "$OUT"; osascript -e "display notification \"Saved to Downloads\" with title \"Aura card exported\""; }
+  && { open -R "$OUT"; "$CONFIG_DIR/plugins/notify.sh" "Aura card exported" "Saved to Downloads"; }
