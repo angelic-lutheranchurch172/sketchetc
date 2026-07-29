@@ -21,6 +21,7 @@ jobs:
     permissions:
       contents: write   # uploads assets to the release
       id-token: write   # keyless signing via OIDC
+      attestations: write   # build provenance for the artifacts
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -64,6 +65,11 @@ jobs:
             openssl x509 -in "$f.pem" -noout -subject >/dev/null   # fail loudly on a malformed cert
           done
           ls -l
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: dist/install.sh, dist/sketchetc-*.tar.gz
 
       - name: Attach to the release
         env:
