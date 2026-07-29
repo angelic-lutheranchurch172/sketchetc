@@ -7,9 +7,10 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 
 <p>
 <a href="https://himanshu007-creator.github.io/sketchetc"><img alt="site" src="https://img.shields.io/badge/site-sketchetc-ff6ec7?style=flat"></a>
-<img alt="installs" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.counterapi.dev%2Fv1%2Fsketchetc%2Finstalls%2F&query=%24.count&label=installs&color=0bd3d3&style=flat">
-<img alt="stars" src="https://img.shields.io/github/stars/himanshu007-creator/sketchetc?style=flat&color=9b5de5">
-<img alt="forks" src="https://img.shields.io/github/forks/himanshu007-creator/sketchetc?style=flat&color=555">
+<img alt="installs" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.counterapi.dev%2Fv1%2Fsketchetc%2Finstalls%2F&query=%24.count&label=installs&color=0bd3d3&labelColor=1b0d33&style=flat">
+<img alt="stars" src="https://img.shields.io/github/stars/himanshu007-creator/sketchetc?style=flat&logo=github&logoColor=white&label=stars&color=9b5de5&labelColor=1b0d33">
+<img alt="forks" src="https://img.shields.io/github/forks/himanshu007-creator/sketchetc?style=flat&logo=github&logoColor=white&label=forks&color=555&labelColor=1b0d33">
+<img alt="visits" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.counterapi.dev%2Fv1%2Fsketchetc%2Fvisits%2F&query=%24.count&label=site%20visits&color=ffa552&labelColor=1b0d33">
 <img alt="last commit" src="https://img.shields.io/github/last-commit/himanshu007-creator/sketchetc?style=flat&color=555">
 <a href="https://scorecard.dev/viewer/?uri=github.com/himanshu007-creator/sketchetc"><img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/himanshu007-creator/sketchetc/badge"></a>
 </p>

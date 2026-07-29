@@ -5,14 +5,15 @@ on:
     paths: ["config/**", "VERSION", "RELEASES.md", "scripts/gen_site_data.sh"]
   workflow_dispatch:
 
-permissions:
-  contents: write
+permissions: read-all
 
 jobs:
   regen:
     runs-on: macos-latest
+    permissions:
+      contents: write   # commits the regenerated site data
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Regenerate docs/data/site.json from the live config
         run: ./scripts/gen_site_data.sh
       - name: Commit if the site data changed

@@ -1,5 +1,6 @@
 #!/bin/bash
 widget_on clipboard || return 0
+source "$CONFIG_DIR/plugins/storage_lib.sh"
 sketchybar --add event clip_hotkey
 sketchybar --add event clip_captured
 sketchybar --add item clipboard right \
@@ -18,7 +19,7 @@ start_clip_watch() {
   if [ -f "$pid_file" ] && kill -0 "$(cat "$pid_file" 2>/dev/null)" 2>/dev/null; then
     return
   fi
-  nohup "$CONFIG_DIR/plugins/bin/clip_watch" > /dev/null 2>&1 &
+  nohup "$CONFIG_DIR/plugins/bin/clip_watch" "$(clip_dir)" > /dev/null 2>&1 &
   echo $! > "$pid_file"
 }
 start_clip_watch

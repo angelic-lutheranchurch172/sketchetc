@@ -1,24 +1,128 @@
-// clip_watch — polls NSPasteboard changeCount, triggers clip_captured on change.
-// Zero-latency clipboard detection without polling sketchybar's routine event.
+// clip_watch — two jobs, both about never missing something you copied:
+//  1. poll NSPasteboard.changeCount and trigger clip_captured on any change
+//  2. watch the macOS screenshot folder, because ⌘⇧4 / ⌘⇧5 write a file and
+//     never touch the pasteboard — so without this, screenshots would never
+//     appear in clipboard history.
 import AppKit
+
+let store = CommandLine.arguments.count > 1
+    ? CommandLine.arguments[1]
+    : NSString(string: "~/.local/share/sketchetc/data/clipboard").expandingTildeInPath
 
 let app = NSApplication.shared
 app.setActivationPolicy(.accessory)
 
+func sketchybar(_ args: [String]) {
+    let t = Process()
+    t.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+    t.arguments = ["sketchybar"] + args
+    try? t.run()
+}
+
+// ---------- 1. pasteboard ----------
 var lastCount = NSPasteboard.general.changeCount
-
-signal(SIGTERM) { _ in exit(0) }
-signal(SIGINT) { _ in exit(0) }
-
 Timer.scheduledTimer(withTimeInterval: 0.15, repeats: true) { _ in
     let current = NSPasteboard.general.changeCount
     if current != lastCount {
         lastCount = current
-        let task = Process()
-        task.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        task.arguments = ["sketchybar", "--trigger", "clip_captured"]
-        try? task.run()
+        sketchybar(["--trigger", "clip_captured"])
     }
+}
+
+// ---------- 2. screenshot folder ----------
+func screenshotDir() -> String {
+    let p = Process()
+    p.executableURL = URL(fileURLWithPath: "/usr/bin/defaults")
+    p.arguments = ["read", "com.apple.screencapture", "location"]
+    let pipe = Pipe(); p.standardOutput = pipe; p.standardError = Pipe()
+    try? p.run(); p.waitUntilExit()
+    let out = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?
+        .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+    let dir = out.isEmpty ? "~/Desktop" : out
+    return NSString(string: dir).expandingTildeInPath
+}
+
+let fm = FileManager.default
+let shotDir = screenshotDir()
+try? fm.createDirectory(atPath: store, withIntermediateDirectories: true)
+
+// remember what was already there so we only import genuinely new shots
+var known = Set((try? fm.contentsOfDirectory(atPath: shotDir)) ?? [])
+
+func isImage(_ name: String) -> Bool {
+    let l = name.lowercased()
+    return l.hasSuffix(".png") || l.hasSuffix(".jpg") || l.hasSuffix(".jpeg")
+}
+
+func md5(_ path: String) -> String {
+    let p = Process()
+    p.executableURL = URL(fileURLWithPath: "/sbin/md5")
+    p.arguments = ["-q", path]
+    let pipe = Pipe(); p.standardOutput = pipe
+    try? p.run(); p.waitUntilExit()
+    return (String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? "")
+        .trimmingCharacters(in: .whitespacesAndNewlines)
+}
+
+func importShot(_ path: String) {
+    // skip anything already in the store (same bytes)
+    let hash = md5(path)
+    guard !hash.isEmpty else { return }
+    for f in (try? fm.contentsOfDirectory(atPath: store)) ?? [] where f.hasSuffix(".png") {
+        if md5(store + "/" + f) == hash {
+            // same image copied again: make it newest
+            try? fm.setAttributes([.modificationDate: Date()], ofItemAtPath: store + "/" + f)
+            sketchybar(["--update"])
+            return
+        }
+    }
+    let dest = "\(store)/\(Int(Date().timeIntervalSince1970))-img.png"
+    // normalise jpg to png so the picker's thumbnails stay uniform
+    if path.lowercased().hasSuffix(".png") {
+        try? fm.copyItem(atPath: path, toPath: dest)
+    } else if let img = NSImage(contentsOfFile: path),
+              let tiff = img.tiffRepresentation,
+              let rep = NSBitmapImageRep(data: tiff),
+              let png = rep.representation(using: .png, properties: [:]) {
+        try? png.write(to: URL(fileURLWithPath: dest))
+    }
+    // keep only the newest five entries, same rule as the shell side
+    let files = ((try? fm.contentsOfDirectory(atPath: store)) ?? [])
+        .filter { !$0.hasPrefix(".") }
+        .map { (name: $0, date: (try? fm.attributesOfItem(atPath: store + "/" + $0)[.modificationDate] as? Date) ?? nil) }
+        .sorted { ($0.date ?? .distantPast) > ($1.date ?? .distantPast) }
+    for old in files.dropFirst(5) { try? fm.removeItem(atPath: store + "/" + old.name) }
+    sketchybar(["--update"])
+}
+
+// these must outlive the setup scope or the source is cancelled on dealloc
+var watchSource: DispatchSourceFileSystemObject?
+var debounce: DispatchWorkItem?
+
+let fd = open(shotDir, O_EVTONLY)
+if fd >= 0 {
+    let src = DispatchSource.makeFileSystemObjectSource(
+        fileDescriptor: fd, eventMask: .write, queue: .main)
+    src.setEventHandler {
+        debounce?.cancel()
+        // screenshots land in two steps (temp file then rename); wait it out
+        let work = DispatchWorkItem {
+            let now = Set((try? fm.contentsOfDirectory(atPath: shotDir)) ?? [])
+            for name in now.subtracting(known) where isImage(name) {
+                let full = shotDir + "/" + name
+                // only fresh files, and only once they finished writing
+                if let d = (try? fm.attributesOfItem(atPath: full)[.modificationDate] as? Date) ?? nil,
+                   Date().timeIntervalSince(d) < 30 {
+                    importShot(full)
+                }
+            }
+            known = now
+        }
+        debounce = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: work)
+    }
+    src.resume()
+    watchSource = src
 }
 
 app.run()

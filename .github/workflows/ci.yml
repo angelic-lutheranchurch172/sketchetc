@@ -1,0 +1,37 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [develop, production]
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  checks:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Shell syntax
+        run: |
+          for f in $(git ls-files '*.sh') config/sketchybarrc; do bash -n "$f"; done
+          echo "all shell parses"
+      - name: Swift syntax
+        run: |
+          for f in $(git ls-files 'config/plugins/bin/*.swift'); do swiftc -parse "$f"; done
+          echo "all swift parses"
+      - name: Site data generator is deterministic
+        run: |
+          ./scripts/gen_site_data.sh
+          git diff --exit-code docs/data/site.json || (echo "site.json is stale, run scripts/gen_site_data.sh"; exit 1)
+      - name: Installer dry run touches nothing
+        run: |
+          TMPH=$(mktemp -d)
+          HOME="$TMPH" PATH="/usr/bin:/bin:/usr/sbin:/sbin" bash docs/install.sh --dry-run || true
+          COUNT=$(find "$TMPH" -type f | wc -l | tr -d ' ')
+          [ "$COUNT" = "0" ] || (echo "dry run wrote $COUNT files"; exit 1)
+          echo "dry run is clean"
+      - name: Checksum matches the published one
+        run: |
+          shasum -a 256 docs/install.sh | awk '{print $1"  install.sh"}' > /tmp/sum
+          diff /tmp/sum docs/install.sh.sha256 || (echo "run scripts/sync_trust.sh"; exit 1)

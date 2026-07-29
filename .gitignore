@@ -1,15 +1,9 @@
 .DS_Store
-config/plugins/bin/mouse_info
 config/.fs_guard.log
 config/.fs_guard_prompted
 config/.fs_guard_off
-config/plugins/bin/next_event
 config/.loc
 config/.theme
-config/plugins/bin/aura_card
-config/plugins/bin/clip_picker
-config/plugins/bin/entry_box
-config/plugins/bin/journal_win
-config/plugins/bin/help_win
-config/plugins/bin/theme_win
-config/plugins/bin/settings_win
+# compiled helpers are built on the user machine, never committed
+config/plugins/bin/*
+!config/plugins/bin/*.swift
