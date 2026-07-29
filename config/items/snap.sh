@@ -2,8 +2,10 @@
 widget_on snap || return 0
 sketchybar --add item snap right \
   --set snap \
+    width=32 \
     icon=$ICON_SNAP \
     icon.color=$CYAN \
+    icon.padding_left=7 icon.padding_right=7 \
     label.drawing=off \
     $POPUP_PROPS \
     popup.align=right \

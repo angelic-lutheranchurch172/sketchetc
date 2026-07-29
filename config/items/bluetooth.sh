@@ -3,6 +3,7 @@ widget_on bluetooth || return 0
 command -v blueutil >/dev/null || return 0
 sketchybar --add item bluetooth right \
   --set bluetooth \
+    width=46 \
     update_freq=30 \
     icon=$ICON_BT \
     icon.color=$CYAN \

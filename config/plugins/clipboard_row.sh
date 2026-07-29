@@ -30,7 +30,7 @@ if [ "$1" = "paste" ]; then
   else
     KEYMOD="command down"; [ "$MOD" = "ctrl" ] && KEYMOD="control down"
     osascript -e "tell application \"System Events\" to keystroke \"v\" using $KEYMOD" 2>/dev/null \
-      || "$CONFIG_DIR/plugins/notify.sh" "Clipboard" "Copied · press ⌘V to paste"
+      || "$CONFIG_DIR/plugins/notify.sh" clipboard "Clipboard" "Copied · press ⌘V to paste"
   fi
   exit 0
 fi

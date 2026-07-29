@@ -26,7 +26,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
         background.drawing=on background.color=$TRANSPARENT background.corner_radius=6 width=300 \
         label=":$port · $comm (pid $pid)" label.font="$ROW_FONT" label.padding_right=12 \
         script="$CONFIG_DIR/plugins/popup_row.sh" \
-        click_script="kill $pid && $CONFIG_DIR/plugins/notify.sh 'Dev servers' 'Stopped $comm on port $port'; sketchybar --set ports popup.drawing=off" \
+        click_script="kill $pid && $CONFIG_DIR/plugins/notify.sh ports ports 'Dev servers' 'Stopped $comm on port $port'; sketchybar --set ports popup.drawing=off" \
       --subscribe "ports.row.$i" mouse.entered mouse.exited
   done
   toggle_popup

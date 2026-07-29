@@ -2,6 +2,7 @@
 widget_on network || return 0
 sketchybar --add item network right \
   --set network \
+    width=112 \
     update_freq=2 \
     icon=$ICON_NET \
     icon.color=$CYAN \

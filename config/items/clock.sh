@@ -1,6 +1,7 @@
 #!/bin/bash
 sketchybar --add item clock right \
   --set clock \
+    width=152 \
     update_freq=10 \
     icon=$ICON_CLOCK \
     icon.color=$CYAN \

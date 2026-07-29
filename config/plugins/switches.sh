@@ -21,7 +21,7 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   row desk 󰇄 "$([ "$DESK" = "0" ] || [ "$DESK" = "false" ] && echo 'Show desktop icons' || echo 'Hide desktop icons')" \
     "CUR=\$(defaults read com.apple.finder CreateDesktop 2>/dev/null); if [ \"\$CUR\" = \"0\" ] || [ \"\$CUR\" = \"false\" ]; then defaults write com.apple.finder CreateDesktop -bool true; else defaults write com.apple.finder CreateDesktop -bool false; fi; killall Finder"
   row trash 󰩹 "Empty Trash" \
-    "osascript -e 'display dialog \"Empty the Trash?\" buttons {\"Cancel\",\"Empty\"} default button \"Cancel\"' | grep -q Empty && osascript -e 'tell application \"Finder\" to empty trash' && $CONFIG_DIR/plugins/notify.sh Switches 'Trash emptied'"
+    "osascript -e 'display dialog \"Empty the Trash?\" buttons {\"Cancel\",\"Empty\"} default button \"Cancel\"' | grep -q Empty && osascript -e 'tell application \"Finder\" to empty trash' && $CONFIG_DIR/plugins/notify.sh toggles Switches 'Trash emptied'"
   row saver 󱄄 "Start screensaver" "open -a ScreenSaverEngine"
   toggle_popup
   exit 0

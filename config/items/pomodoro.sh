@@ -2,6 +2,7 @@
 widget_on pomodoro || return 0
 sketchybar --add item pomodoro right \
   --set pomodoro \
+    width=76 \
     update_freq=1 \
     icon=$ICON_POMO \
     icon.color=$WHITE \

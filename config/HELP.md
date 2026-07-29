@@ -2,13 +2,15 @@
 
 ## Always on
 
-- **󰀵 apple** · system menu: About, Settings, Lock, Sleep, Reload, notification
-  sound, Fullscreen Guard toggle, and *Revert to macOS bar*.
+- **󰀵 apple** · system menu: About, System Settings, Lock, Sleep, Reload,
+  **Settings…** (notification categories, sound, voice, screenshot behavior),
+  notification sound, Fullscreen Guard toggle, and *Revert to macOS bar*.
 - **󰏘 theme dot** · a dot per theme (click to hot-swap the whole bar), three
   icon sets, and **studio** which opens Theme Studio: six icon sets (nerd,
   minimal, outline, retro, emoji, plain), and full color editing. Built-in
   themes are read only, so Duplicate one to make it yours, then edit any color
-  with the native picker and Apply.
+  with the native picker and Apply. Colors are per theme; the **icon set is
+  global** and lives in the studio's footer.
 - **󰨝 widgets** · turn any widget below on or off. The bar allows 9 active at
   a time so it never overflows.
 - **front app** · the focused app. Click for a switcher listing running apps.
@@ -47,7 +49,9 @@
 - ○ **switches** · quick toggles: dark mode, hide desktop icons, empty Trash,
   screensaver. Replaces One Switch.
 - ○ **shot** · screenshot menu: area, window, full screen, straight to
-  clipboard, 5 second timer.
+  clipboard, 5 second timer. New shots are also copied to the clipboard (so
+  they show up at the top of clipboard history, ready to share) — switch that
+  off in Settings.
 - ○ **bluetooth** · paired devices with battery where reported; click to
   connect or disconnect.
 - ○ **journal** · daily work log that locks at noon next day, plus a personal
@@ -57,6 +61,8 @@
 
 - Popups behave like native menus: they stay until you click outside, click
   another item, or switch apps.
-- Notification sound is customizable from the 󰀵 menu; if the file disappears
-  the system default is used.
+- Every notification category can be silenced individually in Settings, along
+  with sounds and spoken announcements. The notification sound is customizable
+  from the 󰀵 menu; if the file disappears the system default is used.
+- Widgets have fixed widths, so changing numbers never shift the bar around.
 - Leaving: 󰀵 → Revert to macOS bar (instant, reversible) or `./uninstall.sh`.

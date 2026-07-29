@@ -2,6 +2,7 @@
 widget_on github || return 0
 sketchybar --add item github right \
   --set github \
+    width=64 \
     update_freq=300 \
     icon=󰊤 \
     icon.color=$WHITE \

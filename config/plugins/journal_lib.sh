@@ -55,7 +55,7 @@ jfinalize() { # <YYYY-MM-DD> [content-file] · write that day's entry, chain, lo
   jchain_append "$f"
   chflags uchg "$f"
   rm -f "$JDRAFT"
-  "$CONFIG_DIR/plugins/notify.sh" "Journal" "Entry for $day is locked in" &
+  "$CONFIG_DIR/plugins/notify.sh" journal "Journal" "Entry for $day is locked in" &
 }
 
 jenforce_noon() { # at/after noon: lock yesterday if still open (stub if empty)

@@ -1,6 +1,7 @@
 #!/bin/bash
 sketchybar --add item ram right \
   --set ram \
+    width=64 \
     update_freq=4 \
     icon=$ICON_RAM \
     icon.color=$PINK \
@@ -12,6 +13,7 @@ sketchybar --add item ram right \
 
 sketchybar --add item cpu right \
   --set cpu \
+    width=64 \
     update_freq=4 \
     icon=$ICON_CPU \
     icon.color=$CYAN \

@@ -8,6 +8,6 @@ SketchyBar will stop (the native bar is already underneath). Bring it back anyti
 brew services start sketchybar" buttons {"Cancel", "Revert"} default button "Cancel" with icon caution' 2>/dev/null)
 
 if [[ "$CHOICE" == *"Revert"* ]]; then
-  "$CONFIG_DIR/plugins/notify.sh" "SketchyBar stopped" "Restore anytime: brew services start sketchybar"
+  "$CONFIG_DIR/plugins/notify.sh" toggles "SketchyBar stopped" "Restore anytime: brew services start sketchybar"
   brew services stop sketchybar
 fi

@@ -29,6 +29,7 @@ add_row settings 󰒓 "System Settings…" "open -a 'System Settings'"
 add_row lock     󰌾 "Lock Screen"      "pmset displaysleepnow"
 add_row sleep    󰐥 "Sleep"            "pmset sleepnow"
 add_row reload   󰑓 "Reload SketchyBar" "sketchybar --reload"
+add_row settings2 󰒓 "Settings…" "osascript -e 'do shell script \"nohup $PLUGIN_DIR/settings_open.sh > /dev/null 2>&1 &\"'"
 add_row sound    󰋋 "Notification sound…" "$PLUGIN_DIR/notify_pick.sh"
 
 FS_LABEL=$([ -f "$CONFIG_DIR/.fs_guard_off" ] && echo "Fullscreen Guard: OFF" || echo "Fullscreen Guard: ON")

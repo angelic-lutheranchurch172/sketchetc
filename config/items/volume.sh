@@ -1,6 +1,7 @@
 #!/bin/bash
 sketchybar --add item volume right \
   --set volume \
+    width=64 \
     icon=$ICON_VOL_HI \
     icon.color=$PINK \
     $POPUP_PROPS \

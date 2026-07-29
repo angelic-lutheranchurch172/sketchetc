@@ -45,7 +45,7 @@ else
   SPOKEN="${GAINED} megabytes"
 fi
 
-"$HOME/.config/sketchybar/plugins/notify.sh" "RAM Reclaim" "Freed ${AMOUNT} · reaped ${REAPED} orphaned helper(s) · nothing running was stopped"
-sleep 0.5
-say -v Samantha "Reclaimed ${SPOKEN} of RAM. ${REAPED} orphaned helpers reaped." &
+"$HOME/.config/sketchybar/plugins/notify.sh" ram "RAM Reclaim" "Freed ${AMOUNT} · reaped ${REAPED} orphaned helper(s) · nothing running was stopped"
+source "$HOME/.config/sketchybar/plugins/settings_lib.sh"
+if setting_on voice; then sleep 0.5; say -v Samantha "Reclaimed ${SPOKEN} of RAM. ${REAPED} orphaned helpers reaped." & fi
 sketchybar --update

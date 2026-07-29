@@ -16,12 +16,12 @@ if [ "$SENDER" = "mouse.clicked" ]; then
   if ours_running; then
     kill "$(cat "$PIDFILE")" 2>/dev/null
     rm -f "$PIDFILE"
-    "$CONFIG_DIR/plugins/notify.sh" "Keep awake off" "Mac can sleep normally again" &
+    "$CONFIG_DIR/plugins/notify.sh" toggles "Keep awake off" "Mac can sleep normally again" &
   else
     # osascript's do shell script daemonizes properly and hands back the pid
     P=$(osascript -e 'do shell script "nohup caffeinate -di > /dev/null 2>&1 & echo $!"')
     [ -n "$P" ] && echo "$P" > "$PIDFILE"
-    "$CONFIG_DIR/plugins/notify.sh" "Keep awake on" "Display and system will stay awake" &
+    "$CONFIG_DIR/plugins/notify.sh" toggles "Keep awake on" "Display and system will stay awake" &
   fi
 fi
 

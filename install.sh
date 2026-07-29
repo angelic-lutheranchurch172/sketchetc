@@ -58,6 +58,7 @@ if command -v swiftc >/dev/null; then
   swiftc -O -o "$REPO/config/plugins/bin/journal_win" "$REPO/config/plugins/bin/journal_win.swift"
   swiftc -O -o "$REPO/config/plugins/bin/help_win" "$REPO/config/plugins/bin/help_win.swift"
   swiftc -O -o "$REPO/config/plugins/bin/theme_win" "$REPO/config/plugins/bin/theme_win.swift"
+  swiftc -O -o "$REPO/config/plugins/bin/settings_win" "$REPO/config/plugins/bin/settings_win.swift"
 else
   echo "   swiftc not found — skipping (popups still close via app-switch; meetings widget hides)"
 fi

@@ -1,6 +1,7 @@
 #!/bin/bash
 sketchybar --add item battery right \
   --set battery \
+    width=64 \
     update_freq=120 \
     icon.color=$ORANGE \
     $POPUP_PROPS \

@@ -1,6 +1,7 @@
 #!/bin/bash
 sketchybar --add item ai_agents right \
   --set ai_agents \
+    width=46 \
     update_freq=10 \
     icon=$ICON_AGENTS \
     icon.color=$PURPLE \

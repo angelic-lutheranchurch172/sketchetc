@@ -76,7 +76,8 @@ func writeTheme(_ t: Theme) {
 let app = NSApplication.shared
 app.setActivationPolicy(.accessory)
 
-let W: CGFloat = 780, H: CGFloat = 560, PAD: CGFloat = 20, LIST_W: CGFloat = 240
+let W: CGFloat = 780, H: CGFloat = 610, PAD: CGFloat = 20, LIST_W: CGFloat = 240
+let FOOT: CGFloat = 92   // global footer height (iconset + settings)
 
 // theme-colored selection instead of the system accent
 final class Row: NSTableRowView {
@@ -136,8 +137,8 @@ final class Ctl: NSObject, NSTableViewDataSource, NSTableViewDelegate {
         for (_, w) in wells { w.isEnabled = !built }
         applyBtn.title = built ? "Use theme" : "Apply"
         lockLabel.stringValue = built
-            ? "built in · read only. Duplicate it to edit the colors."
-            : "your theme · edit any color, then Apply"
+            ? "built in · read only. Duplicate it to edit these colors."
+            : "your theme · colors are per theme, edit any and Apply"
         lockLabel.textColor = built ? dimC : accent2
     }
 
@@ -196,6 +197,9 @@ final class Ctl: NSObject, NSTableViewDataSource, NSTableViewDelegate {
         shell("echo '\(b.alternateTitle)' > \"$HOME/.config/sketchybar/.iconset\"; sketchybar --reload")
     }
     @objc func doClose() { exit(0) }
+    @objc func openSettings() {
+        shell("nohup \"$HOME/.config/sketchybar/plugins/settings_open.sh\" > /dev/null 2>&1 &")
+    }
 }
 let ctl = Ctl()
 
@@ -223,7 +227,7 @@ table.backgroundColor = panel
 table.addTableColumn(col)
 table.dataSource = ctl
 table.delegate = ctl
-let scroll = NSScrollView(frame: NSRect(x: PAD, y: PAD, width: LIST_W, height: H - 60 - PAD))
+let scroll = NSScrollView(frame: NSRect(x: PAD, y: FOOT, width: LIST_W, height: H - 60 - FOOT))
 scroll.documentView = table
 scroll.hasVerticalScroller = true
 scroll.wantsLayer = true
@@ -233,7 +237,7 @@ scroll.backgroundColor = panel
 content.addSubview(scroll)
 
 let dX = PAD + LIST_W + 18, dW = W - dX - PAD
-let detail = NSView(frame: NSRect(x: dX, y: PAD, width: dW, height: H - 60 - PAD))
+let detail = NSView(frame: NSRect(x: dX, y: FOOT, width: dW, height: H - 60 - FOOT))
 detail.wantsLayer = true
 detail.layer?.backgroundColor = panel.cgColor
 detail.layer?.cornerRadius = 10
@@ -263,12 +267,21 @@ for (i, role) in ROLES.enumerated() {
     wells[role.key] = well
 }
 
-// iconset strip
-let stripY: CGFloat = 102
-let stripLabel = NSTextField(labelWithString: "iconset")
-stripLabel.font = mono; stripLabel.textColor = dimC
-stripLabel.frame = NSRect(x: 20, y: stripY + 30, width: 100, height: 16)
-detail.addSubview(stripLabel)
+// ---- global footer: icon set applies to EVERY theme ----
+let footer = NSView(frame: NSRect(x: PAD, y: 14, width: W - 2 * PAD, height: FOOT - 26))
+footer.wantsLayer = true
+footer.layer?.backgroundColor = panel.withAlphaComponent(0.55).cgColor
+footer.layer?.cornerRadius = 10
+content.addSubview(footer)
+let stripY: CGFloat = 8
+let stripLabel = NSTextField(labelWithString: "icon set · applies to every theme")
+stripLabel.font = mono; stripLabel.textColor = accent2
+stripLabel.frame = NSRect(x: 14, y: FOOT - 48, width: 340, height: 16)
+footer.addSubview(stripLabel)
+let settingsBtn = NSButton(title: "Settings…", target: ctl, action: #selector(Ctl.openSettings))
+settingsBtn.bezelStyle = .rounded
+settingsBtn.frame = NSRect(x: footer.frame.width - 118, y: FOOT - 52, width: 104, height: 26)
+footer.addSubview(settingsBtn)
 // iconsets are files in ../icons — read them and preview real glyphs
 let iconDir = (themesDir as NSString).deletingLastPathComponent + "/icons"
 let sets = ((try? FileManager.default.contentsOfDirectory(atPath: iconDir)) ?? [])
@@ -287,18 +300,18 @@ func sample(_ set: String) -> String {
     }
     return glyphs.joined(separator: " ")
 }
-let perRow = 3
-let bw = (dW - 40 - CGFloat(perRow - 1) * 8) / CGFloat(perRow)
+let perRow = max(sets.count, 1)
+let bw = (footer.frame.width - 28 - CGFloat(perRow - 1) * 6) / CGFloat(perRow)
 for (i, set) in sets.enumerated() {
     let b = NSButton(title: "\(set)  \(sample(set))", target: ctl, action: #selector(Ctl.setIconset(_:)))
     b.alternateTitle = set
     b.bezelStyle = .rounded
     b.font = mono
     let rowIdx = i / perRow, colIdx = i % perRow
-    b.frame = NSRect(x: 20 + CGFloat(colIdx) * (bw + 8),
-                     y: stripY - CGFloat(rowIdx) * 36, width: bw, height: 30)
+    _ = rowIdx
+    b.frame = NSRect(x: 14 + CGFloat(colIdx) * (bw + 6), y: stripY, width: bw, height: 28)
     if set == activeIconset { b.contentTintColor = accent1 }
-    detail.addSubview(b)
+    footer.addSubview(b)
 }
 
 func btn(_ t: String, _ x: CGFloat, _ w: CGFloat, _ a: Selector) -> NSButton {

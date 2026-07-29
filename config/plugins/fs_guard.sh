@@ -42,7 +42,7 @@ case "$RESULT" in
   *"not allowed"*|*1002*|*25211*|*1719*)
     if [ ! -f "$PROMPTED" ]; then
       touch "$PROMPTED"
-      "$CONFIG_DIR/plugins/notify.sh" "SketchyBar needs Accessibility" "Enable sketchybar under Privacy & Security → Accessibility, then fullscreen apps will auto-fit below the bar"
+      "$CONFIG_DIR/plugins/notify.sh" toggles "SketchyBar needs Accessibility" "Enable sketchybar under Privacy & Security → Accessibility, then fullscreen apps will auto-fit below the bar"
       open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
     fi
     ;;

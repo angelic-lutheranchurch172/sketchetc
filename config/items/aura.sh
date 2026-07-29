@@ -2,6 +2,7 @@
 widget_on aura || return 0
 sketchybar --add item aura right \
   --set aura \
+    width=60 \
     update_freq=1800 \
     icon=$ICON_AURA \
     icon.color=$PURPLE \

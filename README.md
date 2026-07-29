@@ -19,7 +19,7 @@ Free and open source — and it replaces a small pile of paid menu bar apps.
 | 󰙨 Dev ports | running dev servers (3000, 5173, 8080…), click to kill | — |
 | 󱂬 Window snapping | halves, thirds, maximize, center the frontmost window | Magnet ($8) |
 | 󰨚 Quick switches | dark mode, hide desktop icons, empty Trash, screensaver | One Switch ($10) |
-| 󰹑 Screenshots | area, window, full screen, to clipboard, 5s timer | CleanShot ($29) |
+| 󰹑 Screenshots | area, window, full screen, 5s timer — every shot also lands on the clipboard, ready to paste | CleanShot ($29) |
 | 󰂯 Bluetooth | paired devices + battery, click to connect | AirBuddy ($10) |
 | 󰕾 Audio switching | pick output device right in the volume popup | SoundSource ($47) |
 | 󰚩 AI agents | running claude/codex/gemini sessions with uptime | — |
@@ -43,9 +43,10 @@ switchable next to the theme dots in the 󰏘 popover.
 | **Matrix** ![](assets/theme-matrix.png) | **Catppuccin** ![](assets/theme-catppuccin.png) |
 | **Miami Sunset** ![](assets/theme-miami-sunset.png) | *[add yours →](WIDGETS.md)* |
 
-**Theme Studio** (󰏘 → studio) ships six icon sets (nerd, minimal, outline,
-retro, emoji, plain) and full color editing with native pickers. Built-in themes
-are read only: Duplicate one, then edit and Apply. A theme is a 12-line file in
+**Theme Studio** (󰏘 → studio) gives every color role a native picker. Built-in
+themes are read only: Duplicate one, then edit and Apply. The **icon set is a
+global setting** (six of them: nerd, minimal, outline, retro, emoji, plain) and
+lives in the studio footer, so it applies across every theme. A theme is a 12-line file in
 `config/themes/`, and every widget uses palette roles, so any theme restyles the
 whole bar including popups.
 
@@ -55,6 +56,10 @@ whole bar including popups.
 - **Reserved space** — windows tile below the bar, never behind it
 - **Fullscreen guard** — fullscreening an app converts it to fill-below-the-bar (toggleable)
 - Hover glows, bounce animations, all in the active theme's colors
+- **Fixed widget widths** — changing numbers never reflow the bar
+- **Settings** (󰀵 → Settings…) — silence any notification category, turn sounds
+  or spoken announcements off, control screenshot-to-clipboard. Stored in
+  `config/settings.conf`, editable by hand too.
 - **Autostarts** on login (brew services / launchd)
 
 ## Install

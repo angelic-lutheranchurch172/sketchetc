@@ -2,8 +2,10 @@
 widget_on shot || return 0
 sketchybar --add item shot right \
   --set shot \
+    width=32 \
     icon=$ICON_SHOT \
     icon.color=$CYAN \
+    icon.padding_left=7 icon.padding_right=7 \
     label.drawing=off \
     $POPUP_PROPS \
     popup.align=right \
