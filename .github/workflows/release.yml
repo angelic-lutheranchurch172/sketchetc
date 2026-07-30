@@ -67,9 +67,15 @@ jobs:
           ls -l
 
       - name: Attest build provenance
+        id: attest
         uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
         with:
           subject-path: dist/install.sh, dist/sketchetc-*.tar.gz
+
+      - name: Attach the provenance bundle as an asset
+        # the attestation is queryable via the API, but auditors look for the
+        # in-toto bundle sitting on the release itself
+        run: cp "${{ steps.attest.outputs.bundle-path }}" dist/provenance.intoto.jsonl
 
       - name: Attach to the release
         env:
